@@ -26,3 +26,29 @@ export interface ClothesProps {
     description: string;
     //image: string;
 }
+
+export interface UserProps {
+    
+    id: string;
+    fullName: string;
+    phone: string;
+    email: string;
+    password: string;
+    role: string;
+    enabled: boolean;
+    image: string | null;
+    
+}
+
+/*id: string;
+fullName: string;
+email: string;
+password: string;
+phone: string;
+dateOfBirth?: string;
+role: string;
+image?: string;
+enabled: boolean;
+accountNonExpired: boolean;
+credentialsNonExpired: boolean;
+accountNonLocked: boolean;*/
