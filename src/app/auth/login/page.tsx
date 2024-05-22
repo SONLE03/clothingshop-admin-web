@@ -1,168 +1,124 @@
+// src/components/LoginForm.tsx
 "use client";
 
-import { SafetyOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Card, Input } from "antd";
+import React, { useState } from 'react';
+import loginUser from '../../../api/auth/login';
 import Image from "next/image";
-import { useRef, useState } from "react";
-import axios from "axios";
-import { cookies, headers } from "next/headers";
-import { error } from "console";
-import envConfig from "@/src/config";
-//import { useRouter } from "next/router";
-//import { signIn } from "next-auth/react";
-import loginUser from "../form/login";
-import { useRouter } from "next/router";
+import toast, { Toaster } from 'react-hot-toast';
+import { SafetyOutlined, UserOutlined } from "@ant-design/icons";
+import Card from 'antd/es/card/Card';
 
+const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
+const LoginForm: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState(false);
+  const [capsLockOn, setCapsLockOn] = useState(false);
+  //const router = useRouter();
 
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    setEmailError(!emailRegex.test(e.target.value));
+  };
 
+  const handleLogin = async () => {
+    if (emailError) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
 
-export default function Login()
-{
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [capsLockOn, setCapsLockOn] = useState(false);
-    //const [error, setError] = useState('');
+    try {
+      const data = await loginUser(email, password);
+      localStorage.setItem('access_cookie', JSON.stringify(data.access_cookie));
+      localStorage.setItem('refresh_cookie', JSON.stringify(data.refresh_cookie));
 
-    //const router = useRouter();
-
-    //const userName = useRef ("");
-    //const pass = useRef("");
-    //const onSubmit = async () => {
-    //  const result = await signIn("credentials", {
-    //    username: userName.current,
-    //    password: pass.current,
-    //    redirect: true,
-    //    callbackUrl: "/"
-    //    
-    //  })
-    //}
-
-    //const envLogin = envConfig.NEXT_PUBLIC_API_ENDPOINT + "/auth/login"
-    //console.log(envLogin)
-    
-
-    //const { toast } = useToast()
-    
-    const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.getModifierState('CapsLock')) {
-        setCapsLockOn(true);
+      toast.success("Login success");
+      if (data.role === 'ADMIN') {
+        window.location.href = "/pages/manage-users";
+      } else if (data.role === 'STAFF') {
+        window.location.href = "/admin/dashboard";
       } else {
-        setCapsLockOn(false);
+        window.location.href = "/noAuth";
       }
-    };
-    
+    } catch (error) {
+      toast.error("Incorrect Email or Password, please try again!");
+    }
+  };
 
-    const parseMaxAge = (maxAge: string) => {
-      const regex = /PT(\d+)H/;
-      const matches = maxAge.match(regex);
-      if (matches && matches.length === 2) {
-        const hours = parseInt(matches[1]);
-        return hours * 60 * 60; // Chuyển đổi thành giây
-      }
-      return 0;
-    };
-    
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.getModifierState('CapsLock')) {
+      setCapsLockOn(true);
+    } else {
+      setCapsLockOn(false);
+    }
+  };
+  
 
-    /*const handleLogin = () => {
-      let data = JSON.stringify({
-        username,
-        password,
-      });
+
+  return (
+    <div className='flex flex-row-reverse justify-center h-screen pt-20 bg-gray-100 ' >
       
-
-      let config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: envLogin,
-        headers: { 
-          'Content-Type': 'application/json'
-
-        },
-        data : data
-      };
-      
-      axios.request(config)
-      .then((response) => {
-        console.log(JSON.stringify(response.data));
-        const { access_cookie, refresh_cookie } = response.data;
-        //console.log(access_cookie.maxAge);
-        //document.cookie = `${refresh_cookie.name}=${refresh_cookie.value}; max-age=${refresh_cookie.maxAge}; path=${refresh_cookie.path}; secure=${refresh_cookie.secure}; httpOnly=${refresh_cookie.httpOnly}`;
-        const maxAgeAccess = parseMaxAge(access_cookie.maxAge)
-        const maxAgeRefresh = parseMaxAge(refresh_cookie.maxAge)
-
-      })
-      .catch((error) => {
-        toast ({
-          variant: "destructive",
-          title: "Uh oh! Something went wrong.",
-          description: "Wrong email or password",
-          action: <ToastAction altText="Try again">Try again</ToastAction>,
-        })
-        
-      });
-
-          
-
-    }*/
-
-    const handleLogin = async () => {
-      try {
-        const data = await loginUser(username, password);
-        localStorage.setItem('access_token', data.access_cookie.value);
-        localStorage.setItem('refresh_token', data.refresh_cookie.value);
-        console.log(localStorage.getItem('access_token'))
-
-        window.location.href = "/";
-        
-      } catch {
-        throw new Error('Đã xảy ra lỗi khi đăng nhập');
-      }
-    };
-
-    
-
-
-    return (
-        <div className="py-12">
-            <div className ="grid grid-cols-3 gap-4">
-            <Card className="col-start-2 mt-20 bg-white shadow-xl h-96">
-                <h1 className=" text-center text-xl font-bold text-blue-500">Sign in</h1>
-                <h2 className=" text-center font-semibold mt-1">Welcome back!</h2>
-
-                <div className="mt-4">
-                    <Input 
-                        className="focus:placeholder-transparent mt-4" 
-                        value={username} 
-                        onChange={(val) => setUsername(val.target.value)} 
-                        size="large" placeholder="Username" 
-                        type="username" 
-                        prefix={<UserOutlined />} 
-                    />
-                    <Input.Password 
-                        className="focus:placeholder-transparent mt-9" 
-                        value={password} 
-                        onChange={(val) => setPassword(val.target.value)} 
-                        size="large" placeholder="Password" type="password" 
-                        prefix={<SafetyOutlined />}
-                        onKeyUp={handleKeyUp}
-                    />
-
-                    
-                </div>
-
-                {capsLockOn && 
-                    <div className="flex gap-2 mt-2">
-                        <Image src="/warning.png" alt="warning" width={20} height={20}/>
-                        <p className="text-red-500 font-semibold">Caps Lock is on!</p> 
-                    </div>}
-
-                <div className="flex justify-center items-center mt-9">
-                    <Button onClick={handleLogin} type="primary" style={{width: "100%"}} >Log in</Button>
-                </div>
-            </Card>  
+      <div className='flex justify-end w-2/3 h-3/4 backdrop-blur-md bg-[url("/bg-logins.jpg")] bg-cover bg-no-repeat rounded-2xl shadow-2xl border border-gray-300'>
+        <Toaster />
+        <div className=" bg-transparent justify-end items-center p-8 rounded-2xl w-full max-w-md">
+          <h2 className="text-2xl font-bold mb-0 text-center">Welcome to Clotheshop! 👋🏻 </h2> <br/>
+          <h2 className="text-xl font-semibold mb-3 text-center"> Please sign-in to your account and start the adventure </h2>
+          <div className="mb-4 mt-2">
+            <label htmlFor="email" className="block text-sm font-semibold text-gray-700">Email</label>
+            <div className="flex space-x-1 space-y-0 mt-2">
+              <UserOutlined/>
+              
+              <input
+                type="email"
+                id="email"
+                placeholder='Type your email...'
+                className={`mt-1 block w-full px-3 py-2 border-b-2 ${emailError ? 'border-red-500' : 'border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                value={email}
+                onChange={handleEmailChange}
+              />
             </div>
-        </div>
-    )
-}
+            
+            {emailError && (
+              <div className=" bg-red-50 mt-2 rounded-lg items-center text-center"><p className="text-red-500 text-sm mt-1 transition-opacity duration-500 ease-in-out">The email format must include @gmail.com, please fill it correctly!</p></div>
+              
+            )}
+          </div>
+          <div className="mb-4 mt-4">
+            <label htmlFor="password" className="block text-sm font-semibold text-gray-700">Password</label>
+            <div className="flex space-x-1 space-y-0 mt-1">
+              <SafetyOutlined/>
+              <input
+                type="password"
+                id="password"
+                placeholder='Type your password...'
+                className="mt-1 block w-full px-3 py-2 border-b-2 border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onKeyUp={handleKeyUp}
+              />
+            </div>
+          </div>
+          {capsLockOn && 
+                    <div className="flex gap-2 mt-2">
+                        <Image src="/warning.png" alt="warning" width={20} height={17}/>
+                        <p className="text-red-500 font-semibold">Caps Lock is on!</p> 
+                    </div>
+          }
 
+          <div className="flex justify-between items-center mb-6">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline mt-6"
+              onClick={handleLogin}
+            >
+              Login
+            </button>
+            <a href="/emailValidate" className="text-red-500 underline font-semibold mt-6">Forgot Password?</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default LoginForm;

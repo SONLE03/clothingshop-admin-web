@@ -103,7 +103,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
           >
             <li className="p-2 hover:bg-indigo-700 flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
               <FileText className="mr-2" />
-              <Link href="/manage-users">List</Link>
+              <Link href="/pages/manage-users">List</Link>
             </li>
             <li className="p-2 hover:bg-indigo-700 flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
               <FileText className="mr-2" />
