@@ -1,33 +1,35 @@
 "use client";
+
 import { Fragment, useEffect, useState } from 'react';
-import axios, { AxiosResponse } from 'axios';
-import envConfig from '@/src/config'; // Điều chỉnh đường dẫn này theo cấu trúc dự án của bạn
 import { Listbox, Menu, Transition } from '@headlessui/react';
-import { Check, CheckIcon, ChevronDown, EllipsisVertical, User } from 'lucide-react';
+import { Check, ChevronDown, EllipsisVertical, User } from 'lucide-react';
 import { UserProps } from '@/src/types';
 import { GetAllUsers } from '@/src/api/users/GetAllUsers';
+import deleteUser from '@/src/api/users/deleteUser';
+import DetailDrawer from '@/src/components/DetailDrawer';
+import toast, { Toaster } from 'react-hot-toast';
 
 const roles = [
-    { name: 'No Filter', value: null, bgColor: 'bg-gray-200', textColor: 'text-gray-900' },
-    { name: 'Customer', value: 'Customer', bgColor: 'bg-green-100', textColor: 'text-green-800' },
-    { name: 'Admin', value: 'Admin', bgColor: 'bg-red-100', textColor: 'text-red-800' },
-    { name: 'Staff', value: 'Staff', bgColor: 'bg-yellow-100', textColor: 'text-yellow-800' }
-  ];
-  
-  
-  const statuses = [
-    { name: 'No Filter', value: null, color: 'text-indigo-500' },
-    { name: 'Active', value: true, color: 'text-green-500' },
-    { name: 'Inactive', value: false, color: 'text-red-500' }
-  ];
+  { name: 'No Filter', value: null, bgColor: 'bg-gray-200', textColor: 'text-gray-900' },
+  { name: 'Customer', value: 'Customer', bgColor: 'bg-green-100', textColor: 'text-green-800' },
+  { name: 'Admin', value: 'Admin', bgColor: 'bg-red-100', textColor: 'text-red-800' },
+  { name: 'Staff', value: 'Staff', bgColor: 'bg-yellow-100', textColor: 'text-yellow-800' }
+];
+
+const statuses = [
+  { name: 'No Filter', value: null, color: 'text-indigo-500' },
+  { name: 'Active', value: true, color: 'text-green-500' },
+  { name: 'Inactive', value: false, color: 'text-red-500' }
+];
 
 const ManageUsers: React.FC = () => {
   const [users, setUsers] = useState<UserProps[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<UserProps[]>([]);
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<boolean | null>(null);
-    
-  //////////////////
+  const [selectedUser, setSelectedUser] = useState<UserProps | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+
   useEffect(() => {
     const fetchData = async () => {
       const usersData = await GetAllUsers();
@@ -38,7 +40,6 @@ const ManageUsers: React.FC = () => {
     fetchData();
   }, []);
 
-  /////////////////
   useEffect(() => {
     let filtered = users;
 
@@ -53,8 +54,24 @@ const ManageUsers: React.FC = () => {
     setFilteredUsers(filtered);
   }, [selectedRole, selectedStatus, users]);
 
+  const handleDelete = async (userId: string) => {
+    try {
+      await deleteUser(userId);
+      setUsers(users.filter(user => user.id !== userId));
+      toast.success('Delete user success');
+    } catch (error) {
+      toast.error('Failed to delete user');
+    }
+  };
+
+  const handleView = (user: UserProps) => {
+    setSelectedUser(user);
+    setIsDrawerOpen(true);
+  };
+
   return (
     <div className="p-4">
+      <Toaster />
       <h1 className="text-2xl font-semibold mb-4">Manage Users</h1>
       <div className="flex gap-4 mb-4">
         <Listbox value={selectedRole} onChange={setSelectedRole}>
@@ -65,47 +82,24 @@ const ManageUsers: React.FC = () => {
                   {selectedRole || "Select Role"}
                 </span>
                 <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                  <ChevronDown
-                    className={`w-5 h-5 ${open ? 'transform rotate-180' : ''}`}
-                    aria-hidden="true"
-                  />
+                  <ChevronDown className={`w-5 h-5 ${open ? 'transform rotate-180' : ''}`} aria-hidden="true" />
                 </span>
               </Listbox.Button>
-              <Transition
-                as={Fragment}
-                leave="transition ease-in duration-100"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
+              <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
                 <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                  {roles.map((role) => (
-                    <Listbox.Option
-                      key={role.value === null ? 'No Filter' : role.value}
-                      className={({ active }) =>
-                        `cursor-default select-none relative py-2 pl-10 pr-4 ${
-                          active ? 'text-gray-900 bg-gray-100' : 'text-gray-900'
-                        }`
-                      }
-                      value={role.value}
-                    >
+                  {roles.map(role => (
+                    <Listbox.Option key={role.value === null ? 'No Filter' : role.value} className={({ active }) =>
+                      `cursor-default select-none relative py-2 pl-10 pr-4 ${active ? 'text-gray-900 bg-gray-100' : 'text-gray-900'}`} value={role.value}>
                       {({ selected, active }) => (
                         <>
-                          <span
-                            className={`block truncate ${
-                              selected ? 'font-medium' : 'font-normal'
-                            }`}
-                          >
+                          <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>
                             {role.name}
                           </span>
-                          {selected ? (
-                            <span
-                              className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                active ? 'text-amber-600' : 'text-amber-600'
-                              }`}
-                            >
+                          {selected && (
+                            <span className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? 'text-amber-600' : 'text-amber-600'}`}>
                               <Check className="w-5 h-5" aria-hidden="true" />
                             </span>
-                          ) : null}
+                          )}
                           <span className={`absolute inset-y-0 left-1 flex items-center pl-3 bg-transparent rounded-full p-1`}>
                             <User className={`w-5 h-5 ${role.textColor}`} aria-hidden="true" />
                           </span>
@@ -123,54 +117,27 @@ const ManageUsers: React.FC = () => {
             <div className="relative w-60">
               <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md cursor-default focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm">
                 <span className="block truncate">
-                  {selectedStatus === null
-                    ? "Select Status"
-                    : selectedStatus
-                    ? "Active"
-                    : "Inactive"}
+                  {selectedStatus === null ? "Select Status" : selectedStatus ? "Active" : "Inactive"}
                 </span>
                 <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                  <ChevronDown
-                    className={`w-5 h-5 ${open ? 'transform rotate-180' : ''}`}
-                    aria-hidden="true"
-                  />
+                  <ChevronDown className={`w-5 h-5 ${open ? 'transform rotate-180' : ''}`} aria-hidden="true" />
                 </span>
               </Listbox.Button>
-              <Transition
-                as={Fragment}
-                leave="transition ease-in duration-100"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
+              <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
                 <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                  {statuses.map((status) => (
-                    <Listbox.Option
-                      key={status.name}
-                      className={({ active }) =>
-                        ` cursor-pointer select-none relative py-2 pl-10 pr-4 ${
-                          active ? 'text-gray-900 bg-gray-100' : 'text-gray-900'
-                        }`
-                      }
-                      value={status.value}
-                    >
+                  {statuses.map(status => (
+                    <Listbox.Option key={status.name} className={({ active }) =>
+                      `cursor-pointer select-none relative py-2 pl-10 pr-4 ${active ? 'text-gray-900 bg-gray-100' : 'text-gray-900'}`} value={status.value}>
                       {({ selected, active }) => (
                         <>
-                          <span
-                            className={`block truncate ${
-                              selected ? 'font-medium' : 'font-normal'
-                            }`}
-                          >
+                          <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>
                             {status.name}
                           </span>
-                          {selected ? (
-                            <span
-                              className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                active ? 'text-amber-600' : 'text-amber-600'
-                              }`}
-                            >
+                          {selected && (
+                            <span className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? 'text-amber-600' : 'text-amber-600'}`}>
                               <Check className="w-5 h-5" aria-hidden="true" />
                             </span>
-                          ) : null}
+                          )}
                           <span className={`absolute inset-y-0 left-0 flex items-center pl-1 ${status.color} rounded-full p-2`}>
                             <User className="w-5 h-5" aria-hidden="true" />
                           </span>
@@ -220,9 +187,7 @@ const ManageUsers: React.FC = () => {
                 <div className="text-sm text-gray-900">{user.email}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <span
-                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.enabled ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
-                >
+                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.enabled ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                   {user.enabled ? 'Yes' : 'No'}
                 </span>
               </td>
@@ -233,18 +198,13 @@ const ManageUsers: React.FC = () => {
                       <EllipsisVertical className="w-5 h-5" aria-hidden="true" />
                     </Menu.Button>
                   </div>
-                  <Transition
-                    as={Fragment}
-                    leave="transition ease-in duration-100"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                  >
+                  <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
                     <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="py-1">
                         <Menu.Item>
                           {({ active }) => (
                             <a
-                              href="#"
+                              onClick={() => handleView(user)}
                               className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
                             >
                               View
@@ -264,7 +224,7 @@ const ManageUsers: React.FC = () => {
                         <Menu.Item>
                           {({ active }) => (
                             <a
-                              href="#"
+                              onClick={() => handleDelete(user.id)}
                               className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
                             >
                               Delete
@@ -280,10 +240,9 @@ const ManageUsers: React.FC = () => {
           ))}
         </tbody>
       </table>
+      <DetailDrawer user={selectedUser} isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
     </div>
   );
-
-  
 };
 
-export default ManageUsers
+export default ManageUsers;

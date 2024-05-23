@@ -113,7 +113,7 @@ const LoginForm: React.FC = () => {
             >
               Login
             </button>
-            <a href="/emailValidate" className="text-red-500 underline font-semibold mt-6">Forgot Password?</a>
+            <a href="/emailValidate" className="text-red-500 underline font-semibold mt-0">Forgot Password?</a>
           </div>
         </div>
       </div>

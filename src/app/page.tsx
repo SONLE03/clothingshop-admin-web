@@ -8,6 +8,7 @@ import { CreditCard, Sidebar, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { GetAllProducts } from "../api/products/GetAllProducts";
 import { GetAllUsers } from "../api/users/GetAllUsers";
+import type { AppProps } from 'next/app';
 
 
 
@@ -25,6 +26,17 @@ export default function Home() {
 
     fetchTotalProducts();
   }, []);
+  
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (!token && window.location.pathname !== '/auth/login') {
+      window.location.href = '/auth/login';
+    }
+  }, []);
+
+
+
 
 
     useEffect(() => {
