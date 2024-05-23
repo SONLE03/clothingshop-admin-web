@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import CustomButton from "./CustomButton";
+import CustomButton from "./customUI/CustomButton";
 import router from "next/router";
 //import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
