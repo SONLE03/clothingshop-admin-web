@@ -16,8 +16,8 @@ export default function PageLayout({
   const { isSidebarCollapsed, toggleSidebar } = useSidebarState();
 
   return (
-        <div className="flex">
-          <aside className={`h-screen bg-white text-white transition-all ${isSidebarCollapsed ? 'w-10' : 'w-48'}`}>
+        <div className="flex bg-slate-400 rounded-3xl ">
+          <aside className={`h-screen bg-slate-400 rounded-3xl text-white transition-all ${isSidebarCollapsed ? 'w-10' : ' w-16'}`}>
             <Sidebar isCollapsed={isSidebarCollapsed} setIsCollapsed={toggleSidebar}/>
           </aside>
           <main className={`flex-1 p-4 transition-all ${isSidebarCollapsed ? 'ml-10' : 'ml-52'}`}>

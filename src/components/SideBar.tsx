@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Calendar, FileText, User, File, Lock, Wand, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Menu } from 'lucide-react';
+import { Calendar, FileText, Users,UserPlus, File, Lock, Wand, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Menu } from 'lucide-react';
 import { LayoutDashboardIcon } from 'lucide-react';
 
 interface SidebarProps {
@@ -30,13 +30,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
   };
 
   return (
-    <div className={`bg-indigo-600 text-white ${isCollapsed ? 'w-16' : 'w-64'} h-full fixed flex flex-col transition-all duration-300`}>
+    <div className={` bg-slate-900 rounded-2xl text-white ${isCollapsed ? 'w-16' : 'w-64'} h-full fixed flex flex-col transition-all duration-300`}>
       <div className="flex justify-between items-center p-4">
         {!isCollapsed && 
         <div className="text-2xl font-bold">
           Clotheshop
         </div>}
-        <button onClick={handleCollapseClick} className="text-white bg-indigo-800 h-8 w-8 rounded-lg">
+        <button onClick={handleCollapseClick} className="text-black bg-gray-200 h-8 w-8 rounded-lg">
           {isCollapsed ? <ChevronRight /> : <ChevronLeft />}
         </button>
       </div>
@@ -85,10 +85,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
             </li>
           </ul>
 
-          <li className="p-4 hover:bg-indigo-700 flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('users')}>
+          <li className="p-4 hover:bg-slate-500 flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('users')}>
             <div className="flex items-center cursor-pointer">
-              <User className="mr-2" />
-              {!isCollapsed && 'Users'}
+              <Users className="mr-2" />
+              {!isCollapsed && 'Customers'}
             </div>
             {!isCollapsed && (
               <div className={`transform transition-transform duration-300 ${openDropdown === 'users' ? 'rotate-180' : 'rotate-0'}`}>
@@ -97,25 +97,18 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
             )}
           </li>
           <ul
-            className={`pl-8 transition-max-height duration-300 ease-in-out focus:outline-none  overflow-hidden ${
+            className={`pl-8 m-2 transition-max-height duration-300 ease-in-out focus:outline-none  overflow-hidden ${
               openDropdown === 'users' && !isCollapsed ? 'max-h-64' : 'max-h-0'
             }`}
           >
-            <li className="p-2 hover:bg-indigo-700 flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
-              <FileText className="mr-2" />
-              <Link href="/pages/manage-users">List</Link>
+            <li className=" p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-slate-400 flex items-center transition duration-500 ease-out focus:outline-none active:bg-slate-900">
+              <FileText className="mr-2 rounded-md" />
+              <Link href="/pages/manage-customers/list-customers">List Customers</Link>
             </li>
-            <li className="p-2 hover:bg-indigo-700 flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
+            
+            <li className=" p-2 mb-2 rounded-lg hover:bg-slate-400 flex items-center transition duration-500 ease-out focus:outline-none active:bg-slate-900">
               <FileText className="mr-2" />
-              <Link href="/invoice/preview">Preview</Link>
-            </li>
-            <li className="p-2 hover:bg-indigo-700 flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
-              <FileText className="mr-2" />
-              <Link href="/invoice/edit">Edit</Link>
-            </li>
-            <li className="p-2 hover:bg-indigo-700 flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
-              <FileText className="mr-2" />
-              <Link href="/invoice/add">Add</Link>
+              <Link href="/invoice/add">Add Customer</Link>
             </li>
           </ul>
 

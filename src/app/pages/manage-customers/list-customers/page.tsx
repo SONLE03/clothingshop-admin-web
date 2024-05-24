@@ -8,6 +8,8 @@ import { GetAllUsers } from '@/src/api/users/GetAllUsers';
 import deleteUser from '@/src/api/users/deleteUser';
 import DetailDrawer from '@/src/components/DetailDrawer';
 import toast, { Toaster } from 'react-hot-toast';
+import { PencilIcon, Eye, Trash } from 'lucide-react';
+
 
 const roles = [
   { name: 'No Filter', value: null, bgColor: 'bg-gray-200', textColor: 'text-gray-900' },
@@ -69,10 +71,15 @@ const ManageUsers: React.FC = () => {
     setIsDrawerOpen(true);
   };
 
+  const handleEdit = (userId: string) => {
+
+    window.location.href = `/pages/manage-customers/${userId}`;
+  };
+
   return (
-    <div className="p-4">
+    <div className="p-4 bg-slate-600 h-full w-full rounded-3xl">
       <Toaster />
-      <h1 className="text-2xl font-semibold mb-4">Manage Users</h1>
+      <h1 className="text-2xl font-semibold text-gray-100 mb-4">Manage Customers</h1>
       <div className="flex gap-4 mb-4">
         <Listbox value={selectedRole} onChange={setSelectedRole}>
           {({ open }) => (
@@ -151,8 +158,8 @@ const ManageUsers: React.FC = () => {
           )}
         </Listbox>
       </div>
-      <table className="min-w-full divide-y divide-gray-200 shadow-sm">
-        <thead className="bg-gray-50">
+      <table className="min-w-full divide-y divide-gray-200 shadow-sm ">
+        <thead className="bg-gray-50 rounded-lg">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
@@ -205,28 +212,33 @@ const ManageUsers: React.FC = () => {
                           {({ active }) => (
                             <a
                               onClick={() => handleView(user)}
-                              className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
+                              className={`group flex px-4 py-2 text-sm cursor-pointer ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
                             >
+                              <Eye className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
                               View
                             </a>
                           )}
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
-                            <a
-                              href="#"
-                              className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
-                            >
-                              Edit
-                            </a>
+                            <button
+                            onClick={() => handleEdit(user.id)}
+                            className={`${
+                              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                            } group flex items-center px-4 py-2 text-sm w-full`}
+                          >
+                            <PencilIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                            Edit
+                          </button>
                           )}
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
                             <a
                               onClick={() => handleDelete(user.id)}
-                              className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
+                              className={` group flex px-4 py-2 text-sm cursor-pointer ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
                             >
+                              <Trash className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
                               Delete
                             </a>
                           )}

@@ -18,8 +18,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body>
-        <div className="flex justify-center  bg-gray-100">
-          <main className="w-full  p-4 bg-white shadow-md rounded">
+        <div className="flex justify-center  bg-slate-400 rounded-3xl">
+          <main className="w-full  p-4 bg-white shadow-md rounded-3xl">
             {children}
           </main>
         </div>

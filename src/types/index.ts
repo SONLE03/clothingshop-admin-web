@@ -40,6 +40,14 @@ export interface UserProps {
     
 }
 
+export interface UpdateUserParams {
+    id: string;
+    email: string;
+    fullName: string;
+    phone: string;
+  }
+  
+
 /*id: string;
 fullName: string;
 email: string;

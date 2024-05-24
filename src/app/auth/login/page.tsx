@@ -35,7 +35,7 @@ const LoginForm: React.FC = () => {
 
       toast.success("Login success");
       if (data.role === 'ADMIN') {
-        window.location.href = "/pages/manage-users";
+        window.location.href = "/pages/manage-customers/list-customers";
       } else if (data.role === 'STAFF') {
         window.location.href = "/admin/dashboard";
       } else {

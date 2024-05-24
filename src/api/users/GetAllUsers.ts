@@ -3,7 +3,8 @@ import axios, { AxiosResponse } from 'axios';
 import envConfig from '@/src/config';
 import { UserProps } from '@/src/types';
 
-const UsersUrl = envConfig.NEXT_PUBLIC_API_ENDPOINT + '/users/all/2';
+const UsersUrl = envConfig.NEXT_PUBLIC_API_ENDPOINT + '/customers';
+const accessToken = localStorage.getItem('access_token');
 
 export const GetAllUsers = async (): Promise<UserProps[]> => {
   try {
@@ -11,7 +12,10 @@ export const GetAllUsers = async (): Promise<UserProps[]> => {
       method: 'get',
       maxBodyLength: Infinity,
       url: UsersUrl,
-      headers: {}
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        
+      }
     };
 
     const response: AxiosResponse<UserProps[]> = await axios.request(config);
