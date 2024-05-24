@@ -77,9 +77,9 @@ const ManageUsers: React.FC = () => {
   };
 
   return (
-    <div className="p-4 bg-slate-600 h-full w-full rounded-3xl">
+    <div className="p-4 bg-white shadow-2xl border border-gray-200 h-full w-full rounded-3xl">
       <Toaster />
-      <h1 className="text-2xl font-semibold text-gray-100 mb-4">Manage Customers</h1>
+      <h1 className="text-2xl font-semibold text-gray-700 mb-4">Manage Customers</h1>
       <div className="flex gap-4 mb-4">
         <Listbox value={selectedRole} onChange={setSelectedRole}>
           {({ open }) => (
@@ -158,15 +158,15 @@ const ManageUsers: React.FC = () => {
           )}
         </Listbox>
       </div>
-      <table className="min-w-full divide-y divide-gray-200 shadow-sm ">
-        <thead className="bg-gray-50 rounded-lg">
+      <table className="min-w-full rounded-2xl divide-y divide-gray-200 shadow-sm ">
+        <thead className="bg-gray-200 rounded-lg">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Enabled</th>
-            <th className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
+            <th className="px-6 py-3 hover:bg-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+            <th className="px-6 py-3 hover:bg-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+            <th className="px-6 py-3 hover:bg-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+            <th className="px-6 py-3 hover:bg-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+            <th className="px-6 py-3 hover:bg-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Enabled</th>
+            <th className="relative px-6 py-3"><span className="sr-only text-gray-500">Actions</span></th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">

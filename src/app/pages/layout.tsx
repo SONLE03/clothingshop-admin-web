@@ -16,11 +16,11 @@ export default function PageLayout({
   const { isSidebarCollapsed, toggleSidebar } = useSidebarState();
 
   return (
-        <div className="flex bg-slate-400 rounded-3xl ">
-          <aside className={`h-screen bg-slate-400 rounded-3xl text-white transition-all ${isSidebarCollapsed ? 'w-10' : ' w-16'}`}>
+        <div className="flex bg-indigo-100 rounded-3xl ">
+          <aside className={`h-screen bg-indigo-100 rounded-3xl text-white transition-all ${isSidebarCollapsed ? 'w-10' : ' w-16'}`}>
             <Sidebar isCollapsed={isSidebarCollapsed} setIsCollapsed={toggleSidebar}/>
           </aside>
-          <main className={`flex-1 p-4 transition-all ${isSidebarCollapsed ? 'ml-10' : 'ml-52'}`}>
+          <main className={`flex-1 p-4 transition-all bg-indigo-100 ${isSidebarCollapsed ? 'ml-10' : 'ml-52'}`}>
             {children}
           </main>
         </div>

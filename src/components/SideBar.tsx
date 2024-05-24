@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Calendar, FileText, Users,UserPlus, File, Lock, Wand, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Menu } from 'lucide-react';
+import { Calendar, FileText, Users, UserPlus, File, Lock, Wand, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Menu } from 'lucide-react';
 import { LayoutDashboardIcon } from 'lucide-react';
+import { Tags, PersonStanding, Slack } from 'lucide-react';
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -30,62 +31,59 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
   };
 
   return (
-    <div className={` bg-slate-900 rounded-2xl text-white ${isCollapsed ? 'w-16' : 'w-64'} h-full fixed flex flex-col transition-all duration-300`}>
+    <div className={` bg-white shadow-2xl border border-slate-200 rounded-2xl text-indigo-500 ${isCollapsed ? 'w-16' : 'w-64'} h-full fixed flex flex-col transition-all duration-300`}>
       <div className="flex justify-between items-center p-4">
         {!isCollapsed && 
         <div className="text-2xl font-bold">
           Clotheshop
         </div>}
-        <button onClick={handleCollapseClick} className="text-black bg-gray-200 h-8 w-8 rounded-lg">
+        <button onClick={handleCollapseClick} className="text-gray-100 bg-indigo-600 h-8 w-8 rounded-lg shadow-xl">
           {isCollapsed ? <ChevronRight /> : <ChevronLeft />}
         </button>
       </div>
       <nav className="flex-1">
         <ul>
-          <li className="p-4 hover:bg-indigo-700 flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
+          <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-800">
             <LayoutDashboardIcon className="mr-2" />
             {!isCollapsed && <Link href="/calendar">Dashboard</Link>}
           </li>
 
-          <li className="p-4 hover:bg-indigo-700 flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
+          <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
             <Calendar className="mr-2" />
             {!isCollapsed && <Link href="/calendar">Calendar</Link>}
           </li>
-          <li className="p-4 hover:bg-indigo-700 flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('invoice')}>
+          <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('category')}>
             <div className="flex items-center cursor-pointer">
-              <FileText className="mr-2" />
-              {!isCollapsed && 'Invoice'}
+              <Slack className="mr-2" />
+              {!isCollapsed && 'Category'}
             </div>
             {!isCollapsed && (
-              <div className={`transform transition-transform duration-300 ${openDropdown === 'invoice' ? 'rotate-180' : 'rotate-0'}`}>
+              <div className={`transform transition-transform duration-300 ${openDropdown === 'category' ? 'rotate-180' : 'rotate-0'}`}>
                 <ChevronDown />
               </div>
             )}
           </li>
           <ul
-            className={`pl-8 transition-max-height duration-300 ease-in-out overflow-hidden ${
-              openDropdown === 'invoice' && !isCollapsed ? 'max-h-64' : 'max-h-0'
+            className={`pl-8 m-2 transition-max-height duration-300 ease-in-out overflow-hidden ${
+              openDropdown === 'category' && !isCollapsed ? 'max-h-64' : 'max-h-0'
             }`}
           >
-            <li className="p-2 hover:bg-indigo-700 flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
-              <FileText className="mr-2" />
-              <Link href="/invoice/list">List</Link>
+            <li className="p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
+              <Tags className="mr-2" />
+              <Link href="/pages/manage-category/branch">Branch</Link>
             </li>
-            <li className="p-2 hover:bg-indigo-700 flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
-              <FileText className="mr-2" />
-              <Link href="/invoice/preview">Preview</Link>
+            <li className="p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
+              <PersonStanding className="mr-2" />
+              <Link href="/pages/manage-category/gender">Product Gender</Link>
             </li>
-            <li className="p-2 hover:bg-indigo-700 flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
-              <FileText className="mr-2" />
-              <Link href="/invoice/edit">Edit</Link>
+            <li className="p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
+              <Slack className="mr-2" />
+              <Link href="/pages/manage-category/category">Category</Link>
             </li>
-            <li className="p-2 hover:bg-indigo-700 flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
-              <FileText className="mr-2" />
-              <Link href="/invoice/add">Add</Link>
-            </li>
+            
           </ul>
 
-          <li className="p-4 hover:bg-slate-500 flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('users')}>
+          <li className="p-4 mb-2 rounded-lg hover:bg-indigo-500 group hover:text-white font-semibold flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('users')}>
             <div className="flex items-center cursor-pointer">
               <Users className="mr-2" />
               {!isCollapsed && 'Customers'}
@@ -101,31 +99,31 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
               openDropdown === 'users' && !isCollapsed ? 'max-h-64' : 'max-h-0'
             }`}
           >
-            <li className=" p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-slate-400 flex items-center transition duration-500 ease-out focus:outline-none active:bg-slate-900">
+            <li className=" p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-amber-800">
               <FileText className="mr-2 rounded-md" />
               <Link href="/pages/manage-customers/list-customers">List Customers</Link>
             </li>
             
-            <li className=" p-2 mb-2 rounded-lg hover:bg-slate-400 flex items-center transition duration-500 ease-out focus:outline-none active:bg-slate-900">
-              <FileText className="mr-2" />
-              <Link href="/invoice/add">Add Customer</Link>
+            <li className=" p-2  rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-slate-900">
+              <UserPlus className="mr-2" />
+              <Link href="/pages/manage-customers/add-customer">Add Customer</Link>
             </li>
           </ul>
 
           
-          <li className="p-4 hover:bg-indigo-700 flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
+          <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
             <File className="mr-2" />
             {!isCollapsed && <Link href="/pages">Pages</Link>}
           </li>
-          <li className="p-4 hover:bg-indigo-700 flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
+          <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
             <Lock className="mr-2" />
             {!isCollapsed && <Link href="/auth-pages">Auth Pages</Link>}
           </li>
-          <li className="p-4 hover:bg-indigo-700 flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
+          <li className="p-4 mb-2 rounded-lg hover:bg-indigo-700 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
             <Wand className="mr-2" />
             {!isCollapsed && <Link href="/wizard-examples">Wizard Examples</Link>}
           </li>
-          <li className="p-4 hover:bg-indigo-700 flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
+          <li className="p-4 mb-2 rounded-lg hover:bg-indigo-700 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
             <MessageSquare className="mr-2" />
             {!isCollapsed && <Link href="/dialog-examples">Dialog Examples</Link>}
           </li>

@@ -40,6 +40,12 @@ export interface UserProps {
     
 }
 
+export interface Customer {
+    email: string;
+    fullName: string;
+    phone: string;
+}
+
 export interface UpdateUserParams {
     id: string;
     email: string;
