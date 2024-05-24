@@ -65,6 +65,13 @@ export interface Gender {
     
 }
 
+export interface Category {
+    id: string;
+    name: string;
+    productGender: Gender;
+}
+  
+
 
 
 /*id: string;
