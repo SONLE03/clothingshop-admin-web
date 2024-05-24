@@ -94,7 +94,7 @@ const ManageBranchPage: React.FC = () => {
             <table className=" m-4 w-full border-collapse rounded-3xl shadow-xl mt-2">
             <thead className="bg-indigo-500 text-white rounded-xl text-start">
                 <tr className="border border-gray-300 rounded-xl ">
-                <th className="px-4 py-2 bg-indigo-500 text-white font-semibold rounded-l-lg hover:bg-indigo-300">Name</th>
+                <th className="px-4 py-2 bg-indigo-500 text-white font-semibold text-start rounded-l-lg hover:bg-indigo-300">Name</th>
                 <th className="px-4 py-2 bg-indigo-500 text-white font-semibold text-start hover:bg-indigo-300 ">Edit</th>
                 <th className="px-4 py-2 bg-indigo-500 text-white font-semibold text-start rounded-r-lg hover:bg-indigo-300">Delete</th>
                 </tr>

@@ -59,6 +59,14 @@ export interface Branch {
     
 }
 
+export interface Gender {
+    id: string;
+    name: string;
+    
+}
+
+
+
 /*id: string;
 fullName: string;
 email: string;

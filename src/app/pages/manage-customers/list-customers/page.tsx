@@ -161,17 +161,17 @@ const ManageUsers: React.FC = () => {
       <table className="min-w-full rounded-2xl divide-y divide-gray-200 shadow-sm ">
         <thead className="bg-gray-200 rounded-lg">
           <tr>
-            <th className="px-6 py-3 hover:bg-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-            <th className="px-6 py-3 hover:bg-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-            <th className="px-6 py-3 hover:bg-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-            <th className="px-6 py-3 hover:bg-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-            <th className="px-6 py-3 hover:bg-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Enabled</th>
-            <th className="relative px-6 py-3"><span className="sr-only text-gray-500">Actions</span></th>
+            <th className="px-6 py-3 bg-indigo-500 border border-r-white hover:bg-indigo-300 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">User</th>
+            <th className="px-6 py-3 bg-indigo-500 border border-r-white hover:bg-indigo-300 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">Role</th>
+            <th className="px-6 py-3 bg-indigo-500 border border-r-white hover:bg-indigo-300 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">Phone</th>
+            <th className="px-6 py-3 bg-indigo-500 border border-r-white hover:bg-indigo-300 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">Email</th>
+            <th className="px-6 py-3 bg-indigo-500 border border-r-white hover:bg-indigo-300 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">Enabled</th>
+            <th className="relative px-6 py-3 bg-indigo-500 border border-r-white hover:bg-gray-300 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {filteredUsers.map(user => (
-            <tr key={user.id}>
+            <tr key={user.id} className='hover:bg-gray-200'>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="flex items-center">
                   {user.image ? (
