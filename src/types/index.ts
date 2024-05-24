@@ -53,6 +53,11 @@ export interface UpdateUserParams {
     phone: string;
   }
   
+export interface Branch {
+    id: string;
+    name: string;
+    
+}
 
 /*id: string;
 fullName: string;

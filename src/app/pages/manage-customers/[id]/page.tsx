@@ -34,6 +34,7 @@ const EditUserPage = () => {
     }
   }, [id]);
 
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser((prevUser) => (prevUser ? { ...prevUser, [name]: value } : null));
