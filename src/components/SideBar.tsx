@@ -2,9 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Calendar, FileText, Users, UserPlus, File, Lock, Wand, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Menu } from 'lucide-react';
+import { Calendar, FileText, Users, UserPlus, File, Lock, Wand, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Menu, Package, PencilRuler, PackageOpen } from 'lucide-react';
 import { LayoutDashboardIcon } from 'lucide-react';
 import { Tags, PersonStanding, Slack } from 'lucide-react';
+import { BgColorsOutlined } from '@ant-design/icons';
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -43,6 +44,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
       </div>
       <nav className="flex-1">
         <ul>
+
           <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-800">
             <LayoutDashboardIcon className="mr-2" />
             {!isCollapsed && <Link href="/calendar">Dashboard</Link>}
@@ -52,6 +54,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
             <Calendar className="mr-2" />
             {!isCollapsed && <Link href="/calendar">Calendar</Link>}
           </li>
+
           <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('category')}>
             <div className="flex items-center cursor-pointer">
               <Slack className="mr-2" />
@@ -63,22 +66,55 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
               </div>
             )}
           </li>
+
           <ul
             className={`pl-8 m-2 transition-max-height duration-300 ease-in-out overflow-hidden ${
               openDropdown === 'category' && !isCollapsed ? 'max-h-64' : 'max-h-0'
             }`}
           >
             <li className="p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
-              <Tags className="mr-2" />
-              <Link href="/pages/manage-category/branch">Branch</Link>
+              <Tags  className="mr-2" />
+              <Link href="/pages/manage-category/branch">Branchs</Link>
             </li>
             <li className="p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
               <PersonStanding className="mr-2" />
-              <Link href="/pages/manage-category/gender">Product Gender</Link>
+              <Link href="/pages/manage-category/gender">Genders</Link>
             </li>
             <li className="p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
               <Slack className="mr-2" />
               <Link href="/pages/manage-category/category">Category</Link>
+            </li>
+            
+          </ul>
+
+          <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('product')}>
+            <div className="flex items-center cursor-pointer">
+              <Package className="mr-2" />
+              {!isCollapsed && 'Products'}
+            </div>
+            {!isCollapsed && (
+              <div className={`transform transition-transform duration-300 ${openDropdown === 'product' ? 'rotate-180' : 'rotate-0'}`}>
+                <ChevronDown />
+              </div>
+            )}
+          </li>
+
+          <ul
+            className={`pl-8 m-2 transition-max-height duration-300 ease-in-out overflow-hidden ${
+              openDropdown === 'product' && !isCollapsed ? 'max-h-64' : 'max-h-0'
+            }`}
+          >
+            <li className="p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
+              <BgColorsOutlined  className="mr-2" />
+              <Link href="/pages/manage-products/colors">Colors</Link>
+            </li>
+            <li className="p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
+              <PencilRuler className="mr-2" />
+              <Link href="/pages/manage-products/sizes">Sizes</Link>
+            </li>
+            <li className="p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
+              <PackageOpen className="mr-2" />
+              <Link href="/pages/manage-products/products">Products</Link>
             </li>
             
           </ul>

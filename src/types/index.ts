@@ -71,6 +71,10 @@ export interface Category {
     productGender: Gender;
 }
   
+export interface Color {
+    id: number;
+    name: string;
+}
 
 
 
