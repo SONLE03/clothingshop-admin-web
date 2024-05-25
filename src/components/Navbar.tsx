@@ -4,13 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import CustomButton from "./customUI/CustomButton";
 import router from "next/router";
-//import { signOut, useSession } from "next-auth/react";
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import envConfig from "@/src/config";
 import { UserOutlined } from "@ant-design/icons";
 import { Card } from "antd";
 //import { Session } from "inspector";
+import { GetMe } from "../api/auth/GetMe";
 
 const Navbar = () => {
 
@@ -18,31 +19,27 @@ const Navbar = () => {
 
     const [username, setUsername] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const evnMe = envConfig.NEXT_PUBLIC_API_ENDPOINT + "/auth/me"
+    
 
     useEffect(() => {
         const accessToken = localStorage.getItem('access_token');
         if (accessToken) {
-            axios.get(evnMe, {
-                headers: {
-                  Authorization: `Bearer ${accessToken}`
-                }
-              })
-              .then(response => {
-                // Lưu thông tin người dùng vào state
-                setUsername(response.data.email);
-                setIsLoggedIn(true);
-              })
-              .catch(error => {
-                console.error('Error fetching user data:', error);
-              });
-            // Lấy username từ access token hoặc từ API
-            
-            
-        } else {
-            setIsLoggedIn(false);
+            fetchMe();
         }
     }, []);
+
+    const fetchMe = async () => {
+        try {
+            const response = await GetMe();
+            setUsername(response.email);
+            setIsLoggedIn(true);
+            console.log(response);
+        } catch (error) {
+            console.error(error);
+        }   
+    }
+
+    
 
     const handleLogout = () => {
         localStorage.removeItem('access_token');

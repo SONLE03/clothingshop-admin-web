@@ -16,7 +16,7 @@ const apiLogout = async (): Promise<void> => {
     url: LogOutURL,
     headers: {
       'Authorization': `${TOKEN_TYPE} ${accessToken}`,
-      'Cookie': 'clothing-shop-jwt='
+      
     }
   };
 

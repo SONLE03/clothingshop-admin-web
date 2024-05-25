@@ -1,14 +1,17 @@
 "use client";
 
 import { Fragment, useEffect, useState } from 'react';
+import ReactDOMServer from 'react-dom/server';
 import { Listbox, Menu, Transition } from '@headlessui/react';
-import { Check, ChevronDown, EllipsisVertical, User } from 'lucide-react';
+import { Check, ChevronDown, EllipsisVertical, RefreshCcw, User, Users } from 'lucide-react';
 import { UserProps } from '@/src/types';
 import { GetAllUsers } from '@/src/api/users/GetAllUsers';
 import deleteUser from '@/src/api/users/deleteUser';
 import DetailDrawer from '@/src/components/DetailDrawer';
 import toast, { Toaster } from 'react-hot-toast';
-import { PencilIcon, Eye, Trash } from 'lucide-react';
+import { PencilIcon, Eye, Trash, Search } from 'lucide-react';
+import { Input } from 'antd';
+
 
 
 const roles = [
@@ -31,6 +34,7 @@ const ManageUsers: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<boolean | null>(null);
   const [selectedUser, setSelectedUser] = useState<UserProps | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [searchCustomer, setSearchCustomer] = useState<string>('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,10 +80,38 @@ const ManageUsers: React.FC = () => {
     window.location.href = `/pages/manage-customers/${userId}`;
   };
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchCustomer(event.target.value);
+    const filtered = users.filter(user => user.fullName.toLowerCase().includes(event.target.value.toLowerCase()));
+    setFilteredUsers(filtered);
+  };
+
   return (
     <div className="p-4 bg-white shadow-2xl border border-gray-200 h-full w-full rounded-3xl">
       <Toaster />
-      <h1 className="text-2xl font-semibold text-gray-700 mb-4">Manage Customers</h1>
+      <div className="flex space-y-0 mb-6 ml-0 border border-gray-300 space-x-2 items-center bg-white rounded-xl shadow-xl w-1/4 h-12"> 
+            <Users className="ml-5 flex text-lg font-bold text-center text-indigo-600"/>
+            <h2 className=" space-y-0 text-xl font-semibold">Manage Customer</h2>
+      </div>
+
+      <div className=" flex flex-row space-x-2 space-y-0 mt-4">
+        <Input 
+            className="focus:placeholder-transparent focus:border-blue-500 mb-8 w-1/2 h-10 border border-gray-400 rounded-lg shadow-lg" 
+            value={searchCustomer} 
+            onChange={(val) => handleSearch(val)} 
+            placeholder="Search by name"
+            size="middle"
+            prefix={<Search/>}
+            
+        />
+
+        <button className='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-2 border border-gray-400 rounded-full h-10 shadow-md transform transition-transform duration-300 focus:rotate-180'>
+          <RefreshCcw/>
+        </button>
+      </div>
+
+      
+
       <div className="flex gap-4 mb-4">
         <Listbox value={selectedRole} onChange={setSelectedRole}>
           {({ open }) => (
@@ -162,11 +194,9 @@ const ManageUsers: React.FC = () => {
         <thead className="bg-gray-200 rounded-lg">
           <tr>
             <th className="px-6 py-3 bg-indigo-500 border border-r-white hover:bg-indigo-300 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">User</th>
-            <th className="px-6 py-3 bg-indigo-500 border border-r-white hover:bg-indigo-300 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">Role</th>
             <th className="px-6 py-3 bg-indigo-500 border border-r-white hover:bg-indigo-300 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">Phone</th>
             <th className="px-6 py-3 bg-indigo-500 border border-r-white hover:bg-indigo-300 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">Email</th>
-            <th className="px-6 py-3 bg-indigo-500 border border-r-white hover:bg-indigo-300 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">Enabled</th>
-            <th className="relative px-6 py-3 bg-indigo-500 border border-r-white hover:bg-gray-300 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">Actions</th>
+            <th className="relative px-6 py-3 bg-indigo-500 border border-r-white hover:bg-indigo-300 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -184,28 +214,22 @@ const ManageUsers: React.FC = () => {
                   </div>
                 </div>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">{user.role}</div>
-              </td>
+              
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">{user.phone}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">{user.email}</div>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.enabled ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                  {user.enabled ? 'Yes' : 'No'}
-                </span>
-              </td>
+              
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <Menu as="div" className="relative inline-block text-left">
+                <Menu as="div" className=" inline-block text-left">
                   <div>
                     <Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                       <EllipsisVertical className="w-5 h-5" aria-hidden="true" />
                     </Menu.Button>
                   </div>
-                  <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
+                  <Transition as={Fragment} leave="transition ease-in duration-300" leaveFrom="opacity-100" leaveTo="opacity-0">
                     <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="py-1">
                         <Menu.Item>
