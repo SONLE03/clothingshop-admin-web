@@ -33,7 +33,7 @@ const UserDetailDrawer: React.FC<UserDetailDrawerProps> = ({ user, isOpen, onClo
           leaveFrom="translate-x-0"
           leaveTo="translate-x-full"
         >
-          <div className="relative bg-gray-900 text-white w-full max-w-sm ml-auto shadow-xl rounded-lg">
+          <div className="relative bg-white text-black w-full max-w-sm ml-auto shadow-xl rounded-lg">
             <div className="p-4">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold">User Details</h2>
@@ -68,7 +68,7 @@ const UserDetailDrawer: React.FC<UserDetailDrawerProps> = ({ user, isOpen, onClo
                   <label className="block text-xs font-medium mb-2">Role</label>
                   <div className="p-2 border border-gray-700 rounded-lg">
                     
-                    <p className="text-sm">{user.role}</p>
+                    <p className="text-sm">Customer</p>
                   </div>
 
                   <label className="block text-xs font-medium mb-2">Status</label>

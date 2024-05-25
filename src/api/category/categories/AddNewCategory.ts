@@ -2,6 +2,7 @@ import axios from 'axios';
 import envConfig from '@/src/config';
 import { Category } from '@/src/types';
 
+
 const CreateCategoryURL = envConfig.NEXT_PUBLIC_API_ENDPOINT + '/category';
 const accessToken = localStorage.getItem('access_token');
 

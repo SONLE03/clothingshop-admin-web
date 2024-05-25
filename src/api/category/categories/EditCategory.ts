@@ -4,7 +4,7 @@ import envConfig from '@/src/config';
 
 const accessToken = localStorage.getItem('access_token');
 
-export const UpdateCategory = async ({ id, name, productGender }: Category): Promise<void> => {
+export const EditCategory = async ({ id, name, productGender }: Category): Promise<void> => {
   
     const UpdateURL = envConfig.NEXT_PUBLIC_API_ENDPOINT + `/category/${id}`;
   

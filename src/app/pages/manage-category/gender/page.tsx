@@ -3,25 +3,26 @@ import { GetAllGender } from "@/src/api/category/gender/GetAllGender";
 import { AddPG } from "@/src/api/category/gender/AddPGender";
 import { EditPG } from "@/src/api/category/gender/EditPGender";
 import { DeletePG } from "@/src/api/category/gender/DeletePGender";
-
-import { Card, Modal } from "antd";
-import React, { useState, useEffect, useRef } from "react";
-import { Gender } from "@/src/types";
+import { Table, Button, Modal, Input, Space, Typography } from "antd";
+import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { BookmarkPlus, Pen, PersonStanding, Plus, Slack, Trash } from "lucide-react";
+import { BookmarkPlus, Pen, PersonStanding, Plus, Trash } from "lucide-react";
+import { Gender } from "@/src/types";
+
+const { Title } = Typography;
 
 const ManagePGPage: React.FC = () => {
+  
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [genders, setGenders] = useState<Gender[]>([]);
   const [loading, setLoading] = useState(true);
   const [newGenderName, setNewGenderName] = useState("");
   const [editGender, setEditGender] = useState<Gender | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  useEffect (() => {
+  useEffect(() => {
     fetchData();
-  }) ;
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -29,169 +30,138 @@ const ManagePGPage: React.FC = () => {
       setGenders(data);
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching Genderes:", error);
+      console.error("Error fetching genders:", error);
       setLoading(false);
     }
   };
+
   const handleAddGender = async () => {
     try {
       await AddPG(newGenderName);
       fetchData();
       setNewGenderName("");
       toast.success("Gender added successfully");
+      setIsModalVisible(false);
     } catch (error) {
-        toast.error("Error adding Gender");
-      console.error("Error adding Gender:", error);
+      toast.error("Error adding gender");
+      console.error("Error adding gender:", error);
     }
   };
 
-  const handleEditGender = (Gender: Gender) => {
-    setEditGender(Gender);
-    setNewGenderName(Gender.name);
-    setIsModalOpen(true);
-  };
-
-  const handleSaveGender = async () => {
-    if (!editGender) {
-      return;
-    }
+  const handleEditGender = async () => {
+    if (!editGender) return;
     try {
       await EditPG(editGender.id, newGenderName);
       fetchData();
       setEditGender(null);
+      setIsEditModalVisible(false);
       toast.success("Gender updated successfully");
     } catch (error) {
-      toast.error("Error updating Gender");
-      console.error("Error updating Gender:", error);
+      toast.error("Error updating gender");
+      console.error("Error updating gender:", error);
     }
   };
 
-  const handleCancelGender = () => {
-    setEditGender(null);
-    setIsModalOpen(false);
-    setNewGenderName("");
-  };
-
-  const handleDeleteGender = async (Gender: string) => {
+  const handleDeleteGender = async (genderId: string) => {
     try {
-      await DeletePG(Gender);
+      await DeletePG(genderId);
       fetchData();
       toast.success("Gender deleted successfully");
     } catch (error) {
-      toast.error("Error deleting Gender");
-      console.error("Error deleting Gender:", error);
+      toast.error("Error deleting gender");
+      console.error("Error deleting gender:", error);
     }
   };
 
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Edit",
+      key: "edit",
+      render: (text: any, record: Gender) => (
+        <Button className="border border-blue-500 flex flex-row text-center items-center  text-lg"
+          icon={<Pen />}
+          onClick={() => {
+            setEditGender(record);
+            setNewGenderName(record.name);
+            setIsEditModalVisible(true);
+          }}
+        >
+          Edit
+        </Button>
+      ),
+    },
+    {
+      title: "Delete",
+      key: "delete",
+      render: (text: any, record: Gender) => (
+        <Button className="border border-red-500 flex flex-row text-center items-center  text-lg"
+          icon={<Trash />}
+          danger
+          onClick={() => handleDeleteGender(record.id)}
+        >
+          Delete
+        </Button>
+      ),
+    },
+  ];
+
   return (
-    <div className="flex bg-white border border-gray-200 rounded-3xl h-full shadow-2xl">
-        <Toaster/>
-        <div className="w-2/3">
-            <div className="flex space-y-0 mb-6 border border-gray-300 space-x-2 items-center m-4 bg-white rounded-xl shadow-xl w-1/3 h-14"> 
-            <PersonStanding className="ml-5 flex text-lg font-bold text-center text-indigo-600"/>
-            <h2 className=" space-y-0 text-xl font-semibold">Manage Gender</h2>
-            </div>
-            <table className=" m-4 w-full border-collapse rounded-3xl shadow-xl mt-2">
-            <thead className="bg-indigo-500 text-white rounded-xl text-start">
-                <tr className="border border-gray-300 rounded-xl ">
-                <th className="px-4 py-2 bg-indigo-500 text-white font-semibold text-start rounded-l-lg hover:bg-indigo-300">Name</th>
-                <th className="px-4 py-2 bg-indigo-500 text-white font-semibold text-start hover:bg-indigo-300 ">Edit</th>
-                <th className="px-4 py-2 bg-indigo-500 text-white font-semibold text-start rounded-r-lg hover:bg-indigo-300">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                {genders.map((gender) => (
-                <tr key={gender.id} className="border-b border-gray-300">
-                    <td className="px-4 py-2">{gender.name}</td>
-                    <td className="px-4 py-2 items-center justify-center">
-                    <button
-                        className="flex space-x-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg"
-                        onClick={() => handleEditGender(gender)}
-                    >
-                        <Pen className="mr-3 h-5 w-5 text-white" aria-hidden="true"/>
-                        Edit
-                    </button>
-                    </td>
-                    <td className="px-4 py-2">
-                    <button
-                        className="flex space-x-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg"
-                        onClick={() => handleDeleteGender(gender.id)}
-                    >       
-                        <Trash className="mr-3 h-5 w-5 text-white" aria-hidden="true" />
-                        Delete
-                    </button>
-                    </td>
-                </tr>
-                ))}
-            </tbody>
-            </table>
-        </div>
+    <div className="p-4 bg-white shadow-2xl border border-gray-200 h-full w-full rounded-3xl">
+      <Toaster />
+      <div className="flex space-y-0 mb-6 ml-0 border border-gray-300 space-x-2 items-center bg-white rounded-xl shadow-xl w-1/4 h-12"> 
+        <PersonStanding className="ml-5 flex text-lg font-bold text-center text-indigo-600" />
+        <Title level={4} className="space-y-0 text-xl font-semibold">Manage Gender</Title>
+      </div>
 
-        <div className="w-1/3 ml-4 justify-end items-center">
-            <div className="flex flex-col mt-24 border border-gray-300 space-y-0 space-x-2 items-center m-4 bg-white rounded-xl shadow-xl w-full h-72"> 
-                <div className="flex flex-row space-x-2 space-y-0 mb-6 mt-6">
-                    <BookmarkPlus className="text-lg font-bold text-center text-indigo-600"/>
-                    <h1 className=" m-6 text-lg font-semibold mb-4">Add Product Gender</h1>
-                </div>
-                    <div className="mb-4 justify-center">
-                    <label className="block text-gray-700 font-bold mb-2" htmlFor="GenderName">
-                        Gender Name
-                    </label>
-                    <input
-                        className="mb-8 shadow appearance-none border border-gray-500 rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
-                        id="GenderName"
-                        placeholder="Enter Gender name"
-                        type="text"
-                        value={newGenderName}
-                        onChange={(e) => setNewGenderName(e.target.value)}
-                    />
-                    </div>
-                    <div className="flex justify-end">
-                    <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                        onClick={handleAddGender}
-                    >
-                        Add
-                    </button>
-                    </div>
-            </div>
-        </div>
-        {editGender && (
-            <Modal
-                visible={isModalOpen}
-                onCancel={handleCancelGender}
-                getContainer={() => modalRef.current || document.body}
-            >
-            <div className="w-1/2 ">
+      <Space style={{ marginBottom: 16 }}>
+        <Button className="flex flex-row text-center items-center space-x-1 text-lg h-10 rounded-lg"
+          type="primary"
+          icon={<BookmarkPlus />}
+          onClick={() => setIsModalVisible(true)}
+        >
+          Add Gender
+        </Button>
+      </Space>
 
-                <h1 className="text-2xl font-bold mb-4">Edit Gender</h1>
-                <div className="mb-4">
-                    <label
-                        className="block text-gray-700 font-bold mb-2"
-                        htmlFor="GenderName"
-                    >
-                        Gender Name
-                    </label>
-                    <input
-                        className="shadow appearance-none border border-b-gray-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
-                        id="GenderName"
-                        placeholder="Enter Gender name..."
-                        type="text"
-                        value={newGenderName}
-                        onChange={(e) => setNewGenderName(e.target.value)}
-                    />
-                </div>
-                <div className="flex justify-end">
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mt-8"
-                    onClick={handleSaveGender}
-                >
-                    Save
-                </button>
-                </div>
-            </div>
-            </Modal>
-        )}
+      <Table
+        dataSource={genders}
+        columns={columns}
+        rowKey="id"
+        loading={loading}
+      />
+
+      <Modal
+        title="Add Gender"
+        visible={isModalVisible}
+        onOk={handleAddGender}
+        onCancel={() => setIsModalVisible(false)}
+        okText="Add"
+      >
+        <Input
+          placeholder="Enter gender name"
+          value={newGenderName}
+          onChange={(e) => setNewGenderName(e.target.value)}
+        />
+      </Modal>
+
+      <Modal
+        title="Edit Gender"
+        visible={isEditModalVisible}
+        onOk={handleEditGender}
+        onCancel={() => setIsEditModalVisible(false)}
+        okText="Save"
+      >
+        <Input
+          placeholder="Enter gender name"
+          value={newGenderName}
+          onChange={(e) => setNewGenderName(e.target.value)}
+        />
+      </Modal>
     </div>
   );
 };
