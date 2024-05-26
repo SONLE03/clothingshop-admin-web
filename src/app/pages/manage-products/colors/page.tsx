@@ -113,7 +113,7 @@ const ManageColorPage: React.FC = () => {
         {<BookmarkPlus />}
         Add New Color
         </Button>
-      <Table columns={columns} dataSource={colors} rowKey="id" />
+      <Table columns={columns} dataSource={colors} rowKey="id" pagination={{ pageSize: 5 }} />
       <Modal className='flex flex-col justify-center items-center'
         title={editMode ? 'Edit Color' : 'Add Color'}
         visible={visible}

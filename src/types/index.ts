@@ -76,6 +76,11 @@ export interface Color {
     name: string;
 }
 
+export interface Size {
+    id: number;
+    name: string;
+}
+
 
 
 /*id: string;
