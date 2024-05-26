@@ -128,7 +128,7 @@ const AddProductPage: React.FC = () => {
             </Select>
           </Form.Item>
           <Form.Item label="Description" name="description" rules={[{ required: true, message: 'Please enter description' }]}>
-            <Input />
+            <Input className='h-10' />
           </Form.Item>
           <Form.Item label="Price" name="price" rules={[{ required: true, message: 'Please enter price' }]}>
             <Input type="number" />
@@ -161,7 +161,7 @@ const AddProductPage: React.FC = () => {
           </Form.Item>
         </Form>
       </div>
-      <div className=' flex flex-col ml-2 w-1/3 border border-l-black justify-center items-center'>
+      <div className=' flex flex-col ml-2 w-1/3 border rounded-xl rounded-l-none border-l-black justify-center items-center'>
         <div className="flex space-y-0 mb-6 ml-0 border border-gray-300 space-x-2 items-center bg-white rounded-xl shadow-xl w-1/2 h-12"> 
             <ImagePlus  className="ml-5 flex text-lg font-bold text-center text-indigo-600" />
             <h3 className="space-y-0 font-semibold">Add Images</h3>

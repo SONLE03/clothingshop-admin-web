@@ -81,6 +81,27 @@ export interface Size {
     name: string;
 }
 
+export interface Coupon {
+    name: string;
+    startDate: string;
+    endDate: string;
+    discountValue: number;
+    minimumBill: number;
+    quantity: number;
+    status: number;
+}
+
+export interface ExistedCoupon {
+    id: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+    discountValue: number;
+    minimumBill: number;
+    quantity: number;
+    eventStatus: string;
+}
+
 export interface ProductRequest {
     product_Name: string;
     description: string;
@@ -90,15 +111,15 @@ export interface ProductRequest {
     productItemRequests: ProductItemRequest[];
   }
   
-  export interface ProductItemRequest {
+export interface ProductItemRequest {
     size: number;
     color: number;
-  }
+}
   
-  export interface CreateProductForm {
+export interface CreateProductForm {
     productRequest: ProductRequest;
     images: FileList;
-  }
+}
 
 
 

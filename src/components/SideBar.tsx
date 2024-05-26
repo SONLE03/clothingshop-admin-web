@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Calendar, FileText, Users, UserPlus, File, Lock, Wand, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Menu, Package, PencilRuler, PackageOpen } from 'lucide-react';
+import { Calendar, FileText, Users, UserPlus, File, Lock, Wand, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Menu, Package, PencilRuler, PackageOpen, TicketPercent, CalendarHeart } from 'lucide-react';
 import { LayoutDashboardIcon } from 'lucide-react';
 import { Tags, PersonStanding, Slack } from 'lucide-react';
 import { BgColorsOutlined } from '@ant-design/icons';
@@ -44,16 +44,22 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
       </div>
       <nav className="flex-1">
         <ul>
+          
+          {/*Dashboard Link */}
 
           <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-800">
             <LayoutDashboardIcon className="mr-2" />
             {!isCollapsed && <Link href="/calendar">Dashboard</Link>}
           </li>
 
+          {/*Calendar Link */}
+
           <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
             <Calendar className="mr-2" />
             {!isCollapsed && <Link href="/calendar">Calendar</Link>}
           </li>
+
+          {/*Category Link */}
 
           <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('category')}>
             <div className="flex items-center cursor-pointer">
@@ -87,6 +93,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
             
           </ul>
 
+          {/*Product Link */}
+
           <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('product')}>
             <div className="flex items-center cursor-pointer">
               <Package className="mr-2" />
@@ -119,6 +127,35 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
             
           </ul>
 
+          {/*Events Link */}
+
+          <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('events')}>
+            <div className="flex items-center cursor-pointer">
+              <CalendarHeart className="mr-2" />
+              {!isCollapsed && 'Events'}
+            </div>
+            {!isCollapsed && (
+              <div className={`transform transition-transform duration-300 ${openDropdown === 'category' ? 'rotate-180' : 'rotate-0'}`}>
+                <ChevronDown />
+              </div>
+            )}
+          </li>
+
+          <ul
+            className={`pl-8 m-2 transition-max-height duration-300 ease-in-out overflow-hidden ${
+              openDropdown === 'events' && !isCollapsed ? 'max-h-64' : 'max-h-0'
+            }`}
+          >
+            <li className="p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
+              <TicketPercent  className="mr-2" />
+              <Link href="/pages/manage-event">Coupons</Link>
+            </li>
+            
+            
+          </ul>
+
+          {/*Customers Link */}
+
           <li className="p-4 mb-2 rounded-lg hover:bg-indigo-500 group hover:text-white font-semibold flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('users')}>
             <div className="flex items-center cursor-pointer">
               <Users className="mr-2" />
@@ -146,7 +183,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
             </li>
           </ul>
 
-          
+
+          {/*Pages Link */}
+
           <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
             <File className="mr-2" />
             {!isCollapsed && <Link href="/pages">Pages</Link>}
