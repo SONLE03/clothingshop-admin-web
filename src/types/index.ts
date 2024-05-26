@@ -81,6 +81,26 @@ export interface Size {
     name: string;
 }
 
+export interface ProductRequest {
+    product_Name: string;
+    description: string;
+    price: number;
+    category: string;
+    branch: string;
+    productItemRequests: ProductItemRequest[];
+  }
+  
+  export interface ProductItemRequest {
+    size: number;
+    color: number;
+  }
+  
+  export interface CreateProductForm {
+    productRequest: ProductRequest;
+    images: FileList;
+  }
+
+
 
 
 /*id: string;

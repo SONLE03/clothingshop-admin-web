@@ -1,39 +1,36 @@
 import axios from 'axios';
+import { CreateProductForm } from '@/src/types';
 import envConfig from '@/src/config';
 
-const AddProductsUrl = envConfig.NEXT_PUBLIC_API_ENDPOINT + '/products';
+const AddProductUrl = envConfig.NEXT_PUBLIC_API_ENDPOINT + '/products';
 
-export async function AddProducts(product: Product) {
-    
-    const productForm = new FormData();
-    Object.entries(product).forEach(([key, value]) => {
-        value instanceof Array ? null : productForm.set(key, value.toString());
-    });
+export const AddProduct = async (data: CreateProductForm) => {
+  const formData = new FormData();
+  
+  // Append productRequest fields
+  formData.append('product_Name', data.productRequest.product_Name);
+  formData.append('description', data.productRequest.description);
+  formData.append('price', data.productRequest.price.toString());
+  formData.append('category', data.productRequest.category);
+  formData.append('branch', data.productRequest.branch);
 
-    productForm.delete("photo");
-    productForm.delete("specification");
-    console.log({product});
-    productForm.set("specification", JSON.stringify(product.specification));
-    productForm.photo.forEach((photo) => productForm.append("photo", photo));
+  data.productRequest.productItemRequests.forEach((item, index) => {
+    formData.append(`productItemRequests[${index}].size`, item.size.toString());
+    formData.append(`productItemRequests[${index}].color`, item.color.toString());
+  });
 
-    const response = await axios.post(AddProductsUrl, productForm, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            
-        }
-    });
-    return response.data;
-}
+  // Append images
+  for (let i = 0; i < data.images.length; i++) {
+    formData.append('images', data.images[i]);
+  }
 
-interface Product {
-    name: string;
-    categoryId?: string;
-    description: string;
-    price: number;
-    unit: string;
-    warantyPeriod: number;
-    photo: File[];
-    specification: {
-        [key: string]: string;
-    }
-}
+  const response = await axios.post(AddProductUrl, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return response.data;
+};
+
+
