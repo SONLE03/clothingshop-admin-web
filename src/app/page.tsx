@@ -4,103 +4,47 @@ import React from "react";
 import Image from "next/image";
 import TitleHeader from "../components/TitleHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { CreditCard, User } from "lucide-react";
+import { CreditCard, Plus, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { GetAllProducts } from "../api/products/GetAllProducts";
 import { GetAllUsers } from "../api/users/GetAllUsers";
 import type { AppProps } from 'next/app';
 import Sidebar from "../components/SideBar";
+import { ForwardOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 
 
 
 export default function Home() {
 
-
-  const [totalProducts, setTotalProducts] = useState<number>(0);
-  const [totalUsers, setTotalUsers] = useState<number>(0);
-
-  useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    if (!token) {
-      window.location.href = '/auth/login';
-    } else {
-      const fetchTotalProducts = async () => {
-        const total = await GetAllProducts();
-        setTotalProducts(total);
-      };
-      fetchTotalProducts();
-
-      const fetchTotalUsers = async () => {
-        try {
-          const users = await GetAllUsers()
-          setTotalUsers(users.length);
-        } catch (error) {
-          console.error('Failed to fetch total users:', error);
-        }
-      };
-      fetchTotalUsers();
-    }
-  }, []);
-
-
-
-  
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <div className='flex flex-row min-h-screen bg-[url("/bg-2.jpg")] bg-cover bg-no-repeat justify-center items-center p-12 rounded-2xl'>
       
-      <TitleHeader title="Dashboard" description="Overview of your store" />
-      
-      <div className="grid gap-4 grid-cols-2">
-        <Card className=" bg-slate-100 border-blue-500 border-2 rounded-xl">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 space-x-2 pb-4">
-            <CardTitle className=" text-[20px] font-medium ">Total products</CardTitle>
-            <CreditCard className=" h-10 w-10 text-muted-foreground gap-2 " />
-          </CardHeader>
-          <CardContent className="pl-6 pb-3">
-            <div className="text-2xl font-bold">
-              +{totalProducts}
-            </div>
-          </CardContent>
-        </Card>
+        <div className=' mt-10 ml-12  h-96 w-1/2 border border-gray-500 bg-white bg-opacity-20 rounded-3xl shadow-2xl'>
+          <div className="mt-6 ml-6 w-3/4 flex rounded-2xl border-2 border-black  bg-white shadow-lg items-center justify-center ">
+            <h1 className="m-4 text-3xl text-gray-700 font-semibold opacity-100">Welcome to Clotheshop</h1>
+            <ForwardOutlined className=" text-3xl"/>
+          </div>
 
-        <Card className=" bg-slate-100 border-blue-500 border-2 rounded-xl">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 space-x-2 pb-4">
-            <CardTitle className=" text-[20px] font-medium ">Total Users</CardTitle>
-            <User className=" h-10 w-10 text-muted-foreground gap-2 " />
-          </CardHeader>
-          <CardContent className="pl-6 pb-3">
-            <div className="text-2xl font-bold">
-              +{totalUsers}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className=" bg-slate-100 border-blue-500 border-2 rounded-xl">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 space-x-2 pb-4">
-            <CardTitle className=" text-[20px] font-medium ">Total products</CardTitle>
-            <CreditCard className=" h-10 w-10 text-muted-foreground gap-2 " />
-          </CardHeader>
-          <CardContent className="pl-6 pb-3">
-            <div className="text-2xl font-bold">
-              +{totalProducts}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className=" bg-slate-100 border-blue-500 border-2 rounded-xl">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 space-x-2 pb-4">
-            <CardTitle className=" text-[20px] font-medium ">Total products</CardTitle>
-            <CreditCard className=" h-10 w-10 text-muted-foreground gap-2 " />
-          </CardHeader>
-          <CardContent className="pl-6 pb-3">
-            <div className="text-2xl font-bold">
-              +{totalProducts}
-            </div>
-          </CardContent>
-        </Card>
-
+          <div className="mt-1 w-full h-52 flex justify-center items-center">
+            <Image className="flex rounded-full border-2 border-white" src="/nextjs-logo.jpg" alt="Nextjs" width={100} height={100} />
+            <Plus className=" text-white" width={60} height={60}/>
+            <Image className="flex rounded-xl border-2 border-white" src="/ts-logo.png" alt="TypeScript" width={100} height={100} />
+            <Plus className=" text-white" width={60} height={60}/>
+            <Image className="flex rounded-full border-2 border-white" src="/tw-logo.jpg" alt="Taiwind" width={100} height={100} />
+            <Plus className=" text-white" width={60} height={60}/>
+            <Image className="flex rounded-xl border-2 border-white" src="/shadcn-logo.jpg" alt="Shadcn Ui" width={100} height={100} />
+          </div>
+          <Button className="ml-8 shadow-xl hover:bg-indigo-700 hover:border-gray-600 bg-white text-gray-700 font-semibold text-lg border-2 border-black w-36 h-14 rounded-xl" 
+            icon={<ForwardOutlined />}
+            type="primary" onClick={() => window.location.href = "/auth/login"}>Get started
+           </Button>
         
         </div>
-    </main>
+        <div className="flex mt-12 ml-8 justify-center items-center">
+          <Image src="/bg-3.png" alt="bg" width={500} height={500} />
+        </div>
+    
+    </div>
   );
 }
