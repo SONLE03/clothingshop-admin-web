@@ -102,6 +102,17 @@ export interface ExistedCoupon {
     eventStatus: string;
 }
 
+export interface Product {
+    id: string;
+    product_Name: string;
+    description: string;
+    price: number;
+    category: string;
+    branch: string;
+    productStatus: string;
+    image: string;
+}
+
 export interface ProductRequest {
     product_Name: string;
     description: string;

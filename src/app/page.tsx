@@ -1,15 +1,8 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
 import TitleHeader from "../components/TitleHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { CreditCard, Plus, User } from "lucide-react";
-import { useEffect, useState } from "react";
-import { GetAllProducts } from "../api/products/GetAllProducts";
-import { GetAllUsers } from "../api/users/GetAllUsers";
-import type { AppProps } from 'next/app';
-import Sidebar from "../components/SideBar";
 import { ForwardOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 

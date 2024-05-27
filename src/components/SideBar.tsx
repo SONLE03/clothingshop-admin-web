@@ -32,8 +32,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
   };
 
   return (
-    <div className={` bg-white shadow-2xl border border-slate-200 rounded-2xl text-indigo-500 ${isCollapsed ? 'w-16' : 'w-64'} h-full fixed flex flex-col transition-all duration-300`}>
+    <div className={`overflow-y-auto bg-white shadow-2xl border border-slate-200 rounded-2xl text-indigo-500 ${isCollapsed ? 'w-20' : 'w-64'} h-full fixed flex flex-col transition-all duration-300`}>
       <div className="flex justify-between items-center p-4">
+        
         {!isCollapsed && 
         <div className="text-2xl font-bold">
           Clotheshop
@@ -56,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
 
           <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
             <Calendar className="mr-2" />
-            {!isCollapsed && <Link href="/calendar">Calendar</Link>}
+            {!isCollapsed && <Link href="/pages/calendar">Calendar</Link>}
           </li>
 
           {/*Category Link */}
@@ -122,7 +123,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
             </li>
             <li className="p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
               <PackageOpen className="mr-2" />
-              <Link href="/pages/manage-products/products">Add Products</Link>
+              <Link href="/pages/manage-products/products/list-products">Products list</Link>
             </li>
             
           </ul>
