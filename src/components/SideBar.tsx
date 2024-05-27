@@ -32,7 +32,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
   };
 
   return (
-    <div className={`overflow-y-auto bg-white shadow-2xl border border-slate-200 rounded-2xl text-indigo-500 ${isCollapsed ? 'w-20' : 'w-64'} h-full fixed flex flex-col transition-all duration-300`}>
+    <div className={`fixed left-0 top-0 overflow-y-auto bg-white shadow-2xl border border-slate-200 rounded-2xl text-indigo-500 ${isCollapsed ? 'w-20' : 'w-64'} h-full fixed flex flex-col transition-all duration-300`}>
       <div className="flex justify-between items-center p-4">
         
         {!isCollapsed && 

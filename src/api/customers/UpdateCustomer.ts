@@ -3,7 +3,7 @@ import envConfig from '@/src/config';
 import axios from 'axios';
 
 
-export const UpdateUser = async ({ id, email, fullName, phone }: UpdateUserParams) => {
+export const UpdateCustomer = async ({ id, email, fullName, phone }: UpdateUserParams) => {
 
     const UpdateURL = envConfig.NEXT_PUBLIC_API_ENDPOINT + `/customers/${id}`;
     const token = localStorage.getItem('access_token');

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import envConfig from '@/src/config';
 
-const deleteUser = async (userId: string): Promise<void> => {
+const DeleteCustomer = async (userId: string): Promise<void> => {
   const accessToken = localStorage.getItem('access_token');
   if (!accessToken) {
     throw new Error('No access token found');
@@ -25,4 +25,4 @@ const deleteUser = async (userId: string): Promise<void> => {
   }
 };
 
-export default deleteUser;
+export default DeleteCustomer;

@@ -1,10 +1,6 @@
 "use client";
 
 import React, { useState } from 'react';
-import CustomInput from '@/src/components/customUI/CustomInput';
-import CustomButton from '@/src/components/customUI/CustomButton';
-import CustomToast from '@/components/CustomToast';
-import Loader from '@/components/Loader';
 
 import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
@@ -122,7 +118,7 @@ const EmailValidate: React.FC = () => {
             </>
           )}
         </div>
-        {isSending && <Loader />}
+        
       </div>
       
     </div>

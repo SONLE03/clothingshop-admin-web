@@ -5,6 +5,7 @@ import { LogOutURL, TOKEN_TYPE } from '@/src/constant/ApiConstants';
 
 const apiLogout = async (): Promise<void> => {
   const accessToken = localStorage.getItem('access_token');
+  console.log(accessToken)
 
   if (!accessToken) {
     throw new Error('No access token found');
@@ -15,7 +16,7 @@ const apiLogout = async (): Promise<void> => {
     maxBodyLength: Infinity,
     url: LogOutURL,
     headers: {
-      'Authorization': `${TOKEN_TYPE} ${accessToken}`,
+      'Authorization': `Bearer ${accessToken}`, //TOKEN_TYPE: Bearer
       
     }
   };

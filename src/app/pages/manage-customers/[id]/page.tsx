@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
-import { UpdateUser } from '@/src/api/users/UpdateUser';
+import { UpdateCustomer } from '@/src/api/customers/UpdateCustomer';
 import { useParams, useRouter } from 'next/navigation';
 
 interface User {
@@ -55,7 +55,7 @@ const EditUserPage = () => {
     }
 
     try {
-      const updatedUser = await UpdateUser({ id, email: user.email, fullName: user.fullName, phone: user.phone });
+      const updatedUser = await UpdateCustomer({ id, email: user.email, fullName: user.fullName, phone: user.phone });
 
       if (updatedUser) {
         toast.success('User updated successfully.');

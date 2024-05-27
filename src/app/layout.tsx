@@ -18,11 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body>
-        <div className="flex justify-center  bg-indigo-100 rounded-3xl w-full h-full">
+        
           <main className="w-full  p-4 bg-indigo-100 shadow-md rounded-3xl">
             {children}
           </main>
-        </div>
+        
       </body>
     </html>
   );

@@ -1,134 +1,117 @@
 "use client";
+import React, { useState, useEffect } from 'react';
+import { Button, Dropdown, Menu, Modal, Input, Avatar, notification } from 'antd';
+import { SearchOutlined, UserOutlined, SettingOutlined, LogoutOutlined, QuestionCircleOutlined, DashboardOutlined, CalendarOutlined } from '@ant-design/icons';
+import { GetUserById } from '../api/users/GetUserById';
+import { UserProps } from '../types';
+import apiLogout from '../api/auth/logout';
+import Link from 'next/link';
+import toast, { Toaster } from 'react-hot-toast';
+import Title from 'antd/es/typography/Title';
+import { Calendar, PackageCheck, PackageOpen, PackagePlus, User, UserSquare, Users } from 'lucide-react';
 
-import Link from "next/link";
-import Image from "next/image";
-import CustomButton from "./customUI/CustomButton";
-import router from "next/router";
-
-import { useEffect, useState } from "react";
-import axios from "axios";
-import envConfig from "@/src/config";
-import { UserOutlined } from "@ant-design/icons";
-import { Card } from "antd";
-//import { Session } from "inspector";
-import { GetMe } from "../api/auth/GetMe";
-
-const Navbar = () => {
-
-    //const {data: session} = useSession();
-
-    const [username, setUsername] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+const Navbar: React.FC = () => {
+    const [user, setUser] = useState<UserProps | null>(null);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [searchResults, setSearchResults] = useState<string[]>([]);
     
 
     useEffect(() => {
-        const accessToken = localStorage.getItem('access_token');
-        if (accessToken) {
-            fetchMe();
-        }
+        const fetchUserData = async () => {
+            const userId = localStorage.getItem('user_id');
+            if (userId) {
+                const cleanUserId = userId.replace(/"/g, ''); // Remove any extraneous double quotes
+                console.log(cleanUserId); // Debug: Ensure this prints the correct user ID
+                const data = await GetUserById(cleanUserId);
+                setUser(data);
+                
+            }
+        };
+
+        fetchUserData();
     }, []);
 
-    const fetchMe = async () => {
+    const handleLogout = async () => {
         try {
-            const response = await GetMe();
-            setUsername(response.email);
-            setIsLoggedIn(true);
-            console.log(response);
+            await apiLogout();
+            localStorage.clear();
+            window.location.href = "/auth/login";
         } catch (error) {
-            console.error(error);
-        }   
-    }
-
-    
-
-    const handleLogout = () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        window.location.href = '/auth/login'; // Điều hướng về trang đăng nhập sau khi đăng xuất
+            notification.error({ message: 'Logout failed' });
+        }
     };
 
-  return (
-    <header className="w-full absolute z-10">
-        <nav className="max-w-[1500px] mx-auto
-        flex justify-between items-center
-        sm:px-16 px-6 py-4 shadow-xl">
-            <Link href="/" className="flex justify-center items-center">
-                <Image 
-                    src="/logo.png"
-                    alt="Fashion shop logo"
-                    width={80}
-                    height={18}
-                    className=" object-contain"
-                />
-            </Link>
+    const handleSearch = (value: string) => {
+        // Simulate search results based on the input value
+        const results = [
+            "Manage Users",
+            "Add User",
+            "Add Product",
+            "Manage Products",
+            "Manage Customers",
+            "Dashboard",
+        ].filter(item => item.toLowerCase().includes(value.toLowerCase()));
 
-            <div className="flex justify-center items-center">
-                <Link href="/" className="flex mr-8 justify-center items-center transition duration-500 ease-in-out border-b-2 border-b-blue-500 min-h-[50px] min-w-[80px] drop-shadow-xl hover:text-blue-500 hover:border-b-4 hover:font-bold">
-                    Dashboard
-                </Link>
+        setSearchResults(results);
+    };
 
-                <Link href="/" className="flex mr-8 justify-center items-center transition duration-500 ease-in-out border-b-2 border-b-blue-500 min-h-[50px] min-w-[80px] drop-shadow-xl hover:text-blue-500 hover:border-b-4 hover:font-bold">
-                    Orders
-                </Link>
+    const userMenu = (
+        <Menu>
+            <Menu.Item key="profile" icon={<UserOutlined />}>
+                <Link href="/pages/profile">Your Profile</Link>
+            </Menu.Item>
+            <Menu.Item key="settings" icon={<SettingOutlined />}>
+                <Link href={`/pages/setting/${user?.id}`}>Settings</Link>
+            </Menu.Item>
+            <Menu.Item key="help" icon={<QuestionCircleOutlined />}>
+                <Link href="/help">Help</Link>
+            </Menu.Item>
+            <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
+                Sign out
+            </Menu.Item>
+        </Menu>
+    );
 
-                <Link href="/" className="flex mr-8 justify-center items-center transition duration-500 ease-in-out border-b-2 border-b-blue-500 min-h-[50px] min-w-[80px] drop-shadow-xl hover:text-blue-500 hover:border-b-4 hover:font-bold">
-                    Category
-                </Link>
+    const shortcutsMenu = (
+        <Menu>
+            <Menu.Item key="dashboard" icon={<DashboardOutlined />}>
+                <Link href="/pages/dashboard">Dashboard</Link>
+            </Menu.Item>
+            <Menu.Item key="users" icon={<UserOutlined />}>
+                <Link href="/pages/manage-users/list-users">Users</Link>
+            </Menu.Item>
 
-                <Link href="/" className="flex mr-8 justify-center items-center transition duration-500 ease-in-out border-b-2 border-b-blue-500 min-h-[50px] min-w-[80px] drop-shadow-xl hover:text-blue-500 hover:border-b-4 hover:font-bold">
-                    Products
-                </Link>
+            <Menu.Item key="calendar" icon={<CalendarOutlined />}>
+                <Link href="/pages/calendar">Calendar</Link>
+            </Menu.Item>
+            {/* Add more shortcut items here */}
+        </Menu>
+    );
 
-                <Link href="/" className="flex mr-8 justify-center items-center transition duration-500 ease-in-out border-b-2 border-b-blue-500 min-h-[50px] min-w-[80px] drop-shadow-xl hover:text-blue-500 hover:border-b-4 hover:font-bold">
-                    Sizes
-                </Link>
-
-                <Link href="/" className="flex mr-8 justify-center items-center transition duration-500 ease-in-out border-b-2 border-b-blue-500 min-h-[50px] min-w-[80px] drop-shadow-xl hover:text-blue-500 hover:border-b-4 hover:font-bold">
-                    Colors
-                </Link>
-
-                <Link href="/" className="flex mr-8 justify-center items-center transition duration-500 ease-in-out border-b-2 border-b-blue-500 min-h-[50px] min-w-[80px] drop-shadow-xl hover:text-blue-500 hover:border-b-4 hover:font-bold">
-                    Users
-                </Link>
-
-                <Link href="/" className="flex mr-8 justify-center items-center transition duration-500 ease-in-out border-b-2 border-b-blue-500 min-h-[50px] min-w-[80px] drop-shadow-xl hover:text-blue-500 hover:border-b-4 hover:font-bold">
-                    Settings
-                </Link>
-
-            </div>
-
-            <div className="flex justify-center items-center space-x-4">
+    return (
+        <div className="fixed top-0 w-full flex items-start justify-around bg-white shadow-md p-4 z-10 h-16">
+            <Toaster/>
+            <Button className=' mr-96' icon={<SearchOutlined />} onClick={() => setIsModalVisible(true)}>Search</Button>
+            <Modal className='flex justify-center items-center text-center text-lg'
+                title="QUICK ACCESS"
+                visible={isModalVisible}
+                onCancel={() => setIsModalVisible(false)}
+                footer={null}
                 
-                {username ? ( 
-                    <>
-                    <Card className=" flex justify-center items-center
-                    bg-white rounded-full h-[35px] w-[200px] border-blue-500" >
-                        
-                        <p className="flex gap-1"> <UserOutlined /> {username}</p>
+            >
 
-                    </Card>
+            </Modal>
+            <Dropdown overlay={shortcutsMenu} placement="bottomLeft" arrow>
+                <Button icon={<DashboardOutlined />} />
+            </Dropdown>
+            <Dropdown className=' mr-52 border-2 border-gray-500 rounded-full justify-start items-center w-56' overlay={userMenu} placement="bottomLeft" arrow>
+                <div className="flex items-center cursor-pointer">
+                    <Avatar src={user?.image || "/nextjs-logo.jpg"} />
+                    <span className="ml-2">{user?.email}</span>
+                </div>
+            </Dropdown>
+        </div>
+    );
+};
 
-                    <button className="flex justify-center items-center text-white py-3 text-center transition duration-500 ease-in-out
-                rounded-full border border-white drop-shadow-xl bg-black min-w-[110px] hover:border-black hover:bg-white hover:text-black" onClick={handleLogout}>Log out</button>
-
-                     </>
-                ) : (
-                    <>
-                        <Link className="text-white py-3 text-center transition duration-500 ease-in-out
-                        rounded-full border border-white drop-shadow-xl bg-black min-w-[110px] hover:border-black hover:bg-white hover:text-black" href={"/auth/login"}>Sign in</Link>
-
-                       
-                    </>
-                )}
-
-                
-                    
-                
-            </div>
-            
-        </nav>
-    </header>
-  )
-}
-
-export default Navbar
+export default Navbar;

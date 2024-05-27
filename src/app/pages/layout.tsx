@@ -21,7 +21,9 @@ export default function PageLayout({
             <Sidebar isCollapsed={isSidebarCollapsed} setIsCollapsed={toggleSidebar}/>
             
           </aside>
-          <main className={`flex-1 p-4 transition-all bg-indigo-100 ${isSidebarCollapsed ? 'ml-10' : 'ml-52'}`}>
+          
+          <main className={`flex-1 flex flex-col p-4 transition-all bg-indigo-100 ${isSidebarCollapsed ? 'ml-10' : 'ml-52'} mt-16`}>
+            <Navbar/>
             {children}
           </main>
         </div>

@@ -28,7 +28,6 @@ export interface ClothesProps {
 }
 
 export interface UserProps {
-    
     id: string;
     fullName: string;
     phone: string;
@@ -37,7 +36,6 @@ export interface UserProps {
     role: string;
     enabled: boolean;
     image: string | null;
-    
 }
 
 export interface Customer {

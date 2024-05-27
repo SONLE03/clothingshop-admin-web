@@ -5,8 +5,8 @@ import { Listbox, Transition } from '@headlessui/react';
 import { Check, ChevronDown, Users, RefreshCcw, Eye, Search, PencilIcon, Trash } from 'lucide-react';
 import { Table, Button, Menu, Dropdown, Select, Input } from 'antd';
 import { UserProps } from '@/src/types';
-import { GetAllUsers } from '@/src/api/users/GetAllUsers';
-import deleteUser from '@/src/api/users/deleteUser';
+import { GetAllCustomers } from '@/src/api/customers/GetAllCustomers';
+import DeleteCustomer from '@/src/api/customers/DeleteCustomer';
 import DetailDrawer from '@/src/components/DetailDrawer';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -36,7 +36,7 @@ const ManageUsers: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const usersData = await GetAllUsers();
+      const usersData = await GetAllCustomers();
       setUsers(usersData);
       setFilteredUsers(usersData);
     };
@@ -60,7 +60,7 @@ const ManageUsers: React.FC = () => {
 
   const handleDelete = async (userId: string) => {
     try {
-      await deleteUser(userId);
+      await DeleteCustomer(userId);
       setUsers(users.filter(user => user.id !== userId));
       toast.success('Delete user success');
     } catch (error) {

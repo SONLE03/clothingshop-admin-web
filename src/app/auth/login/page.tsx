@@ -6,7 +6,7 @@ import loginUser from '../../../api/auth/login';
 import Image from "next/image";
 import toast, { Toaster } from 'react-hot-toast';
 import { SafetyOutlined, UserOutlined } from "@ant-design/icons";
-import Card from 'antd/es/card/Card';
+
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
@@ -30,8 +30,15 @@ const LoginForm: React.FC = () => {
 
     try {
       const data = await loginUser(email, password);
-      localStorage.setItem('access_cookie', JSON.stringify(data.access_cookie));
-      localStorage.setItem('refresh_cookie', JSON.stringify(data.refresh_cookie));
+      const accessToken = data.access_cookie.value;
+      //console.log(data);
+      localStorage.setItem('access_token', JSON.stringify(accessToken));
+      localStorage.setItem('refresh_token', JSON.stringify(data.refresh_cookie.value));
+      localStorage.setItem('user_id', JSON.stringify(data.id));
+      localStorage.setItem('login_time', JSON.stringify(new Date().toISOString()));
+
+      const userId = localStorage.getItem('user_id');
+      //console.log(userId);
 
       toast.success("Login success");
       if (data.role === 'ADMIN') {

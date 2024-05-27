@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Toaster, toast } from 'react-hot-toast';
-import { CreateCustomer } from '@/src/api/users/CreateCustomer';
+import { CreateCustomer } from '@/src/api/customers/CreateCustomer';
 import { Customer } from '@/src/types';
 
 const AddCustomerPage: React.FC = () => {
