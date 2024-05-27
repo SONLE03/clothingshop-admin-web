@@ -89,7 +89,7 @@ const Navbar: React.FC = () => {
     );
 
     return (
-        <div className="fixed top-0 w-full flex items-start justify-around bg-white shadow-md p-4 z-10 h-16">
+        <div className="fixed top-0 w-full flex items-start justify-around rounded-xl border border-gray-300 bg-white shadow-md p-4 z-10 h-16">
             <Toaster/>
             <Button className=' mr-96' icon={<SearchOutlined />} onClick={() => setIsModalVisible(true)}>Search</Button>
             <Modal className='flex justify-center items-center text-center text-lg'
