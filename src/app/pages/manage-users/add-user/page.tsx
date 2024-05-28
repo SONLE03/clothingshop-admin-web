@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { AddNewUser } from '@/src/api/users/AddNewUser';
 import { UserProps } from '@/src/types';
 import { UserPlus } from 'lucide-react';
+import Cookies from 'js-cookie';
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -13,6 +14,10 @@ const AddUser = () => {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
+    //const token = Cookies.get('access_token');
+    //console.log(token);
+    //console.log(Cookies.get('access_token'));
+
     const onFinish = async (values: UserProps) => {
         //const { confirmPassword, ...user } = values; // exclude confirmPassword from the user object
         setLoading(true);
@@ -20,6 +25,10 @@ const AddUser = () => {
             await AddNewUser(values);
             message.success('User added successfully');
             // 5 seconds delay
+            setTimeout(() => {
+                router.push('pages/manage-users/list-users');
+            }, 5000);
+        
         } catch (error) {
             message.error('Failed to add user');
         } finally {

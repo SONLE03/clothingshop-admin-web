@@ -1,19 +1,20 @@
 import axios from 'axios';
 import envConfig from '@/src/config';
+import Cookie from 'js-cookie'
 
-const access_token = localStorage.getItem('access_token');
+const accessToken = Cookie.get('access_token');
 
 export const GetUserById = async (id: string) => {
 
     const GetUserByIdUrl = envConfig.NEXT_PUBLIC_API_ENDPOINT + `/users/${id}`;
 
-    if (access_token) {
+    if (accessToken) {
         const config = {
             method: 'get',
             maxBodyLength: Infinity,
             url: GetUserByIdUrl,
             headers: {
-                'Authorization': `Bearer ${access_token}`
+                'Cookie': `clothing-shop-jwt=${accessToken}`
             }
         };
         try {

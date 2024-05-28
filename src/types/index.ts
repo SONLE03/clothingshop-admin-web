@@ -131,6 +131,45 @@ export interface CreateProductForm {
 }
 
 
+//Concrete product
+export interface ProductItem {
+    id: string;
+    sizeName: string;
+    colorName: string;
+    quantity: number;
+}
+
+export interface ImportInvoice {
+    createdAt: string;
+    updatedAt: string;
+
+    createdBy: string;
+    updatedBy: string;
+
+    id: string;
+    total: number;
+    
+}
+
+export interface ImportDetail {
+    id: {
+        importId: string;
+        productItemId: string;
+    };
+    importInvoice: ImportInvoice;
+    productItem: ProductItem[];
+    quantity: number;
+    price: number;
+    total: number;
+}
+
+export interface AddImportItem {
+    productItemId: string;
+    quantity: number;
+    price: number;
+    total: number;
+}
+
 
 
 /*id: string;

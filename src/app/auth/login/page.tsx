@@ -6,6 +6,8 @@ import loginUser from '../../../api/auth/login';
 import Image from "next/image";
 import toast, { Toaster } from 'react-hot-toast';
 import { SafetyOutlined, UserOutlined } from "@ant-design/icons";
+import { useRouter } from "next/navigation";
+import Cookies from 'js-cookie';
 
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
@@ -15,7 +17,8 @@ const LoginForm: React.FC = () => {
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState(false);
   const [capsLockOn, setCapsLockOn] = useState(false);
-  //const router = useRouter();
+
+  const router = useRouter();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -27,22 +30,24 @@ const LoginForm: React.FC = () => {
       toast.error("Please enter a valid email address");
       return;
     }
-
+  
     try {
       const data = await loginUser(email, password);
-      const accessToken = data.access_cookie.value;
-      //console.log(data);
-      localStorage.setItem('access_token', JSON.stringify(accessToken));
-      localStorage.setItem('refresh_token', JSON.stringify(data.refresh_cookie.value));
-      localStorage.setItem('user_id', JSON.stringify(data.id));
-      localStorage.setItem('login_time', JSON.stringify(new Date().toISOString()));
+      
+      console.log(data);
+      Cookies.set('access_token', JSON.stringify(data.access));
+      Cookies.set('refresh_token', JSON.stringify(data.refresh));
+      Cookies.set('user_id', JSON.stringify(data.id));
+      Cookies.set('login_time', JSON.stringify(new Date().toISOString()));
 
-      const userId = localStorage.getItem('user_id');
+      //console.log(Cookies.get('access_token'));
+  
+      const userId = Cookies.get('user_id');
       //console.log(userId);
-
+  
       toast.success("Login success");
       if (data.role === 'ADMIN') {
-        window.location.href = "/pages/manage-customers/list-customers";
+        router.push("/pages/manage-customers/list-customers");
       } else if (data.role === 'STAFF') {
         window.location.href = "/admin/dashboard";
       } else {

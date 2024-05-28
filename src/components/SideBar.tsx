@@ -2,10 +2,11 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Calendar, FileText, Users, UserPlus, File, Lock, Wand, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Menu, Package, PencilRuler, PackageOpen, TicketPercent, CalendarHeart, BookUser } from 'lucide-react';
+import { Calendar, FileText, Users, UserPlus, File, Lock, Wand, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Menu, Package, PencilRuler, PackageOpen, TicketPercent, CalendarHeart, BookUser, Scroll, ScrollText, Import } from 'lucide-react';
 import { LayoutDashboardIcon } from 'lucide-react';
 import { Tags, PersonStanding, Slack } from 'lucide-react';
 import { BgColorsOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/navigation';
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -15,6 +16,8 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   //const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const handleDropdownClick = (menu: string) => {
     if (openDropdown === menu) {
@@ -207,12 +210,35 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
           </ul>
 
 
-          {/*Pages Link */}
-
-          <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
-            <File className="mr-2" />
-            {!isCollapsed && <Link href="/pages">Pages</Link>}
+          {/*Imports Link */}
+          <li className="p-4 mb-2 rounded-lg hover:bg-indigo-500 group hover:text-white font-semibold flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('imports')}>
+            <div className="flex items-center cursor-pointer">
+              <Import className="mr-2" />
+              {!isCollapsed && 'Imports'}
+            </div>
+            {!isCollapsed && (
+              <div className={`transform transition-transform duration-300 ${openDropdown === 'users' ? 'rotate-180' : 'rotate-0'}`}>
+                <ChevronDown />
+              </div>
+            )}
           </li>
+          <ul
+            className={`pl-8 m-2 transition-max-height duration-300 ease-in-out focus:outline-none  overflow-hidden ${
+              openDropdown === 'imports' && !isCollapsed ? 'max-h-64' : 'max-h-0'
+            }`}
+          >
+            <li className=" p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-amber-800">
+              <ScrollText className="mr-2 rounded-md" />
+              <Link href="/pages/imports/list-imports">List Invoices</Link>
+            </li>
+            
+            <li className=" p-2  rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-slate-900">
+              <UserPlus className="mr-2" />
+              <Link href="/pages/imports/add-import">Add Invoice</Link>
+            </li>
+          </ul>
+
+
           <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
             <Lock className="mr-2" />
             {!isCollapsed && <Link href="/auth-pages">Auth Pages</Link>}

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import TitleHeader from "../components/TitleHeader";
@@ -5,10 +6,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import { CreditCard, Plus, User } from "lucide-react";
 import { ForwardOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-
+import { useRouter } from "next/navigation";
 
 
 export default function Home() {
+
+  const router = useRouter();
 
   return (
     <div className='flex flex-row min-h-screen bg-[url("/bg-2.jpg")] bg-cover bg-no-repeat justify-center items-center p-12 rounded-2xl'>
@@ -30,7 +33,7 @@ export default function Home() {
           </div>
           <Button className="ml-8 shadow-xl hover:bg-indigo-700 hover:border-gray-600 bg-white text-gray-700 font-semibold text-lg border-2 border-black w-36 h-14 rounded-xl" 
             icon={<ForwardOutlined />}
-            type="primary" onClick={() => window.location.href = "/auth/login"}>Get started
+            type="primary" onClick={() => router.push("/auth/login")}>Get started
            </Button>
         
         </div>
