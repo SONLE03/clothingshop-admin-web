@@ -262,7 +262,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
             
             <li className=" p-2  rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-slate-900">
               <FilePlus className="mr-2" />
-              <Link href="/pages/orders/add-order">Create order</Link>
+              <Link href="/pages/orders/create-order">Create order</Link>
             </li>
           </ul>
 

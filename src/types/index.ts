@@ -189,6 +189,19 @@ export interface OrderDetail {
     total: number;
 }
 
+//
+export interface OrderItemRequest {
+    productItemId: string;
+    quantity: number;
+}
+
+export interface CreateOrderRequest {
+    customerId: string;
+    paymentMethod: number;
+    orderItemRequestList: OrderItemRequest[];
+}
+
+
 
 /*id: string;
 fullName: string;

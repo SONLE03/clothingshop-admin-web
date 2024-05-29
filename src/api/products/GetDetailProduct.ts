@@ -1,4 +1,3 @@
-// Update GetDetailProduct.ts to return a list of product items
 import axios from 'axios';
 import envConfig from '@/src/config';
 //import Cookies from 'js-cookie';
