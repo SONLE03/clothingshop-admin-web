@@ -19,6 +19,7 @@ const Navbar: React.FC = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             const userId = localStorage.getItem('user_id');
+            console.log(userId);
             if (userId) {
                 const cleanUserId = userId.replace(/"/g, ''); // Remove any extraneous double quotes
                 console.log(cleanUserId); // Debug: Ensure this prints the correct user ID

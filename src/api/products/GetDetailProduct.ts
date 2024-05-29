@@ -1,22 +1,30 @@
 // Update GetDetailProduct.ts to return a list of product items
 import axios from 'axios';
 import envConfig from '@/src/config';
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
 import { ProductItem } from '@/src/types';
+import { ParseJSON } from '../auth/ParseJSON';
 
-const accessToken = Cookies.get('access_token');
+const accessToken = localStorage.getItem('access_token');
 
 export const GetDetailProduct = async (productId: string) => {
     const GetProductUrl = envConfig.NEXT_PUBLIC_API_ENDPOINT + `/products/${productId}`;
-    const config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url: GetProductUrl,
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Cookie': `clothing-shop-jwt=${accessToken}`
+    if (accessToken) {
+        const parseToken = ParseJSON(accessToken);
+        const config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: GetProductUrl,
+            headers: {
+                'Authorization': `Bearer ${parseToken}`,
+            },
+        };
+        try {
+            const response = await axios.request(config);
+            return response.data;
+        } catch (error) {
+            console.log(error);
         }
-    };
-    const response = await axios.request(config);
-    return response.data;
+    }
 };
+

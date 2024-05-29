@@ -92,7 +92,7 @@ const ManageImportPage = () => {
                 imports={imports}
                 users={users}
                 loading={loading}
-                onAddNewImport={() => router.push('/pages/add-import')}
+                onAddNewImport={() => router.push('/pages/imports/add-import')}
                 onViewImport={handleViewImport}
                 drawerVisible={drawerVisible}
                 selectedImportDetail={selectedImportDetail}

@@ -11,7 +11,7 @@ export const DeleteUser = async (userId: string) => {
         url: DeleteUserUrl,
         headers: {
             'Authorization': `Bearer ${access_token}`,
-            'Cookie': 'clothing-shop-jwt='
+            
         }
     };
     try {

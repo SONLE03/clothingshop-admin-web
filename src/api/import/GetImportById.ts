@@ -1,8 +1,8 @@
 import axios from 'axios';
 import envConfig from '@/src/config';
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
 
-const accessToken = Cookies.get('access_token');
+const accessToken = localStorage.getItem('access_token');
 
 export const GetImportById = (id: string) => {
 

@@ -18,6 +18,10 @@ const AddImport: React.FC = () => {
     const [form] = Form.useForm();
     const router = useRouter();
 
+    //console.log(localStorage.getItem('access_token'));
+
+    console.log(importItems);
+
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -68,7 +72,9 @@ const AddImport: React.FC = () => {
         try {
             await AddNewImport(importItems);
             message.success('Import added successfully');
-            router.push('/pages/manage-imports');
+            setTimeout(() => {
+                router.push('/pages/imports/list-imports');
+            }, 150000);
         } catch (error) {
             message.error('Failed to add import');
         } finally {

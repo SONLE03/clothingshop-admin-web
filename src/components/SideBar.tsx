@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Calendar, FileText, Users, UserPlus, File, Lock, Wand, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Menu, Package, PencilRuler, PackageOpen, TicketPercent, CalendarHeart, BookUser, Scroll, ScrollText, Import } from 'lucide-react';
+import { Calendar, FileText, Users, UserPlus, File, Lock, Wand, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Menu, Package, PencilRuler, PackageOpen, TicketPercent, CalendarHeart, BookUser, Scroll, ScrollText, Import, PieChart } from 'lucide-react';
 import { LayoutDashboardIcon } from 'lucide-react';
 import { Tags, PersonStanding, Slack } from 'lucide-react';
 import { BgColorsOutlined } from '@ant-design/icons';
@@ -238,11 +238,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
             </li>
           </ul>
 
-
+            {/*Reports Link */}
           <li className="p-4 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
-            <Lock className="mr-2" />
-            {!isCollapsed && <Link href="/auth-pages">Auth Pages</Link>}
+            <PieChart className="mr-2" />
+            {!isCollapsed && <Link href="/pages/reports">Reports</Link>}
           </li>
+
+
+
           <li className="p-4 mb-2 rounded-lg hover:bg-indigo-700 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-indigo-900">
             <Wand className="mr-2" />
             {!isCollapsed && <Link href="/wizard-examples">Wizard Examples</Link>}

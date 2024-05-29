@@ -7,7 +7,7 @@ import Image from "next/image";
 import toast, { Toaster } from 'react-hot-toast';
 import { SafetyOutlined, UserOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
 
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
@@ -35,15 +35,10 @@ const LoginForm: React.FC = () => {
       const data = await loginUser(email, password);
       
       console.log(data);
-      Cookies.set('access_token', JSON.stringify(data.access));
-      Cookies.set('refresh_token', JSON.stringify(data.refresh));
-      Cookies.set('user_id', JSON.stringify(data.id));
-      Cookies.set('login_time', JSON.stringify(new Date().toISOString()));
-
-      //console.log(Cookies.get('access_token'));
-  
-      const userId = Cookies.get('user_id');
-      //console.log(userId);
+      localStorage.setItem('access_token', JSON.stringify(data.access));
+      localStorage.setItem('refresh_token', JSON.stringify(data.refresh));
+      localStorage.setItem('user_id', JSON.stringify(data.id));
+      localStorage.setItem('login_time', JSON.stringify(new Date().toISOString()));
   
       toast.success("Login success");
       if (data.role === 'ADMIN') {
