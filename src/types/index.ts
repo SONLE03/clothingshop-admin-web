@@ -201,6 +201,24 @@ export interface CreateOrderRequest {
     orderItemRequestList: OrderItemRequest[];
 }
 
+//Reports
+
+//Daily reports
+export interface DailyRevenueResponse {
+    date: string;
+    totalCustomers: number;
+    totalOrders: number;
+    totalProductsSold: number;
+    totalRevenue: number;
+}
+
+export interface DailyExpenseResponse {
+    date: string;
+    totalInvoices: number;
+    totalProducts: number;
+    totalExpense: number;
+}
+
 
 
 /*id: string;
