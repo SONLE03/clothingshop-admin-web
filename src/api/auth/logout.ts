@@ -2,21 +2,28 @@
 
 import axios from 'axios';
 import { LogOutURL, TOKEN_TYPE } from '@/src/constant/ApiConstants';
+import { ParseJSON } from './ParseJSON';
+
+const accessToken = localStorage.getItem('access_token');
 
 const apiLogout = async (): Promise<void> => {
-  const accessToken = localStorage.getItem('access_token');
-  console.log(accessToken)
+  
+  
 
   if (!accessToken) {
     throw new Error('No access token found');
+    return;
+    
   }
+
+  const parseToken = ParseJSON(accessToken);
 
   const config = {
     method: 'post',
     maxBodyLength: Infinity,
     url: LogOutURL,
     headers: {
-      'Authorization': `Bearer ${accessToken}`, //TOKEN_TYPE: Bearer
+      'Authorization': `Bearer ${parseToken}`,
       
     }
   };
@@ -31,3 +38,5 @@ const apiLogout = async (): Promise<void> => {
 };
 
 export default apiLogout;
+
+

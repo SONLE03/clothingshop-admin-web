@@ -58,7 +58,7 @@ const AddUser = () => {
                     layout="vertical"
                     form={form}
                     onFinish={onFinish}
-                    initialValues={{ role: '1' }}
+                    initialValues={{ role: 1 }}
                 >
                     <Form.Item
                         name="fullName"
@@ -105,8 +105,8 @@ const AddUser = () => {
                         rules={[{ required: true, message: 'Please select a role' }]}
                     >
                         <Select>
-                            <Option value="STAFF">STAFF</Option>
-                            <Option value="ADMIN">ADMIN</Option>
+                            <Option value={1}>STAFF</Option>
+                            <Option value={0}>ADMIN</Option>
                         </Select>
                     </Form.Item>
                     <Form.Item>

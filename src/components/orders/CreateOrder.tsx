@@ -8,7 +8,9 @@ import { GetAllCustomers } from '@/src/api/customers/GetAllCustomers';
 import { GetAllProducts } from '@/src/api/products/GetAllProducts';
 import { GetDetailProduct } from '@/src/api/products/GetDetailProduct';
 import { CreateOrder } from '@/src/api/orders/CreateOrder';
+import { GetVNPayUrl } from '@/src/api/orders/VNPay';
 import { UserProps, Product, ProductItem, CreateOrderRequest, OrderItemRequest } from '@/src/types';
+import { title } from 'process';
 
 const { Option } = Select;
 
@@ -22,6 +24,8 @@ const CreateOrderComponent: React.FC = () => {
     const [loading, setLoading] = useState(false);
 
     const router = useRouter();
+
+    console.log(productItems);
 
     useEffect(() => {
         const fetchCustomers = async () => {
@@ -69,7 +73,8 @@ const CreateOrderComponent: React.FC = () => {
             ...values,
             productName: selectedProduct?.product_Name,
             sizeName: selectedProductItem?.sizeName,
-            colorName: selectedProductItem?.colorName
+            colorName: selectedProductItem?.colorName,
+            price: selectedProductItem?.price 
         };
 
         setOrderItems([...orderItems, newItem]);
@@ -80,7 +85,6 @@ const CreateOrderComponent: React.FC = () => {
     };
 
     const handleFinish = async (values: any) => {
-        
         const orderItemsRequest: OrderItemRequest[] = orderItems.map(item => ({
             productItemId: item.productItemId,
             quantity: item.quantity,
@@ -94,14 +98,24 @@ const CreateOrderComponent: React.FC = () => {
 
         setLoading(true);
         try {
-            await CreateOrder(order);
+            const orderResponse = await CreateOrder(order);
+            console.log(orderResponse);
+            const orderId = orderResponse;
+            const totalAmount = orderItems.reduce((acc, item) => acc + item.quantity * item.price, 0); // Calculate total amount as number
+
+            if (values.paymentMethod === 1) {
+                const vnpayUrl = await GetVNPayUrl(totalAmount, 'Thanh toán hóa đơn mua hàng', orderId);
+                console.log(vnpayUrl);
+                window.open(vnpayUrl, '_blank');
+            }
+
             message.success('Order created successfully');
             form.resetFields();
             setOrderItems([]);
             setLoading(false);
             setTimeout(() => {
                 router.push('/pages/orders/list-orders');
-            }, 1500);
+            }, 15000000);
             
         } catch (error) {
             message.error('Failed to create order');
@@ -128,6 +142,11 @@ const CreateOrderComponent: React.FC = () => {
             title: 'Quantity',
             dataIndex: 'quantity',
             key: 'quantity',
+        },
+        {
+            title: 'Price',
+            dataIndex: 'price',
+            key: 'price',
         },
         {
             title: 'Action',

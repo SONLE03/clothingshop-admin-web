@@ -110,22 +110,29 @@ const LoginForm: React.FC = () => {
                 onKeyUp={handleKeyUp}
               />
             </div>
-          </div>
-          {capsLockOn && 
+
+
+            {capsLockOn && 
                     <div className="flex gap-2 mt-2">
                         <Image src="/warning.png" alt="warning" width={20} height={17}/>
                         <p className="text-red-500 font-semibold">Caps Lock is on!</p> 
                     </div>
           }
 
-          <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-end items-end w-full mt-1">
+              <a href="/auth/emailValidate" className="text-red-500 underline font-semibold mt-0">Forgot Password?</a>
+            </div>
+            
+          </div>
+          
+          <div className="flex justify-center items-center w-full mb-6">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline mt-6"
+              className="bg-blue-500 hover:bg-blue-700 w-1/3 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline mt-6"
               onClick={handleLogin}
             >
               Login
             </button>
-            <a href="/auth/emailValidate" className="text-red-500 underline font-semibold mt-0">Forgot Password?</a>
+            
           </div>
         </div>
       </div>
