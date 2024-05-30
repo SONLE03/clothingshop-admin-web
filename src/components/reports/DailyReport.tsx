@@ -1,14 +1,12 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Form, Input, Button, DatePicker, Tabs, Card, Row, Col, message } from 'antd';
+import { Form, Button, DatePicker, Tabs, Card, Row, Col, message } from 'antd';
 import moment from 'moment';
 import { GetDailyRevenue } from '@/src/api/reports/daily-report/GetDailyRevenue';
 import { GetDailyExpense } from '@/src/api/reports/daily-report/GetDailyExpense';
 import { DailyRevenueResponse, DailyExpenseResponse } from '@/src/types';
 import { Line } from '@ant-design/charts';
-import { MailOutlined } from '@ant-design/icons';
-import { ClipboardPen } from 'lucide-react';
 
 const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
@@ -21,8 +19,6 @@ const DailyReport: React.FC = () => {
     const [expenseData, setExpenseData] = useState<DailyExpenseResponse[]>([]);
     const [activeTab, setActiveTab] = useState<string>('1');
 
-    console.log(startDate, endDate);
-
     const handleGenerateReport = async () => {
         if (!startDate || !endDate) {
             message.error('Please select a valid date range');
@@ -31,12 +27,12 @@ const DailyReport: React.FC = () => {
         try {
             if (activeTab === '1') {
                 const data = await GetDailyRevenue(startDate, endDate);
-                setRevenueData(data);
+                setRevenueData(data); // set data directly
             } else if (activeTab === '2') {
                 const data = await GetDailyExpense(startDate, endDate);
-                setExpenseData(data);
+                setExpenseData(data); // set data directly
             }
-        } catch (error : any) {
+        } catch (error: any) {
             message.error(`Failed to fetch report data: ${error.response?.data || error.message}`);
         }
     };
@@ -53,15 +49,31 @@ const DailyReport: React.FC = () => {
         height: 400,
         xField: 'date',
         yField: yKey,
-        xAxis: { title: { text: 'Date' }, type: 'timeCat', tickCount: 10 },
+        xAxis: { 
+            title: { text: 'Date' }, 
+            type: 'timeCat', 
+            tickCount: 10,
+            label: {
+                rotate: -45,
+                offset: 15,
+                style: {
+                    fill: '#000',
+                    fontSize: 12,
+                },
+                formatter: (val: string) => moment(val).format('DD/MM/YY'),
+            },
+        },
         yAxis: { title: { text: yLabel } },
+        lineStyle: {
+            stroke: '#1890ff',
+            lineWidth: 3,
+        },
         smooth: true,
         meta: {
-            date: { alias: 'Date', formatter: (val: string) => moment(val).format('DD/MM/YY') },
+            date: { alias: 'Date' },
             [yKey]: { alias: yLabel },
         },
     });
-
 
     return (
         <Form form={form} layout="vertical">
@@ -81,17 +93,17 @@ const DailyReport: React.FC = () => {
                     <Row gutter={16} style={{ marginTop: 20 }}>
                         <Col span={8}>
                             <Card title="Total Orders" bordered={false}>
-                                {calculateSummary(revenueData, 'totalOrders')}
+                                {calculateSummary(revenueData, 'totalOrders').toString()}
                             </Card>
                         </Col>
                         <Col span={8}>
                             <Card title="Total Products Sold" bordered={false}>
-                                {calculateSummary(revenueData, 'totalProductsSold')}
+                                {calculateSummary(revenueData, 'totalProductsSold').toString()}
                             </Card>
                         </Col>
                         <Col span={8}>
                             <Card title="Total Revenue" bordered={false}>
-                                {calculateSummary(revenueData, 'totalRevenue')}
+                                {calculateSummary(revenueData, 'totalRevenue').toString()}
                             </Card>
                         </Col>
                     </Row>
@@ -112,18 +124,17 @@ const DailyReport: React.FC = () => {
                     <Row gutter={16} style={{ marginTop: 20 }}>
                         <Col span={8}>
                             <Card title="Total Invoices" bordered={false}>
-                                {calculateSummary(expenseData, 'totalInvoices')}
-                                \
+                                {calculateSummary(expenseData, 'totalInvoices').toString()}
                             </Card>
                         </Col>
                         <Col span={8}>
                             <Card title="Total Products" bordered={false}>
-                                {calculateSummary(expenseData, 'totalProducts')}
+                                {calculateSummary(expenseData, 'totalProducts').toString()}
                             </Card>
                         </Col>
                         <Col span={8}>
                             <Card title="Total Expense" bordered={false}>
-                                {calculateSummary(expenseData, 'totalExpense')}
+                                {calculateSummary(expenseData, 'totalExpense').toString()}
                             </Card>
                         </Col>
                     </Row>

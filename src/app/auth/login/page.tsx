@@ -39,12 +39,17 @@ const LoginForm: React.FC = () => {
       localStorage.setItem('refresh_token', JSON.stringify(data.refresh));
       localStorage.setItem('user_id', JSON.stringify(data.id));
       localStorage.setItem('login_time', JSON.stringify(new Date().toISOString()));
+      localStorage.setItem('role', JSON.stringify(data.role));
+
+      //const role = localStorage.getItem('role');
+      //console.log(role);
+      //console.log(data.role);
   
       toast.success("Login success");
       if (data.role === 'ADMIN') {
         router.push("/pages/manage-customers/list-customers");
       } else if (data.role === 'STAFF') {
-        window.location.href = "/admin/dashboard";
+        window.location.href = "/pages/manage-customers/list-customers";
       } else {
         window.location.href = "/noAuth";
       }

@@ -34,6 +34,7 @@ const ManageUsers: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [searchCustomer, setSearchCustomer] = useState<string>('');
 
+
   useEffect(() => {
     const fetchData = async () => {
       const usersData = await GetAllCustomers();

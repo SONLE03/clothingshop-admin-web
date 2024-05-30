@@ -5,31 +5,21 @@ import { DailyExpenseResponse } from '@/src/types';
 const GetDailyExpenseUrl = envConfig.NEXT_PUBLIC_API_ENDPOINT + "/reports/daily-expense";
 
 export const GetDailyExpense = async (startDate: string, endDate: string) => {
-    const data = JSON.stringify({
-        startDate,
-        endDate
+    let data = JSON.stringify({
+        "startDate": startDate,
+        "endDate": endDate
     });
 
-    const config = {
-        method: 'get',
+    let config = {
+        method: 'post', // Change to 'post'
         maxBodyLength: Infinity,
         url: GetDailyExpenseUrl,
         headers: { 
             'Content-Type': 'application/json'
         },
-
-        //data: data,
+        data: data
     };
 
-    try {
-        const response = await axios.request(config);
-        return response.data;
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            console.error('Axios error:', error.response?.data || error.message);
-        } else {
-            console.error('Unexpected error:', error);
-        }
-        throw error;
-    }
+    const response = await axios.request(config);
+    return response.data;
 };
