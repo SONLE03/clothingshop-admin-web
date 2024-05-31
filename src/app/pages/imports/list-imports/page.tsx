@@ -61,19 +61,20 @@ const ManageImportPage = () => {
         setLoading(true);
         try {
             const response = await GetImportById(importId);
-            if (response) {
-                const importDetail: ImportDetail = response.data;
-                const productItems = [];
+            console.log(response.data.importResponse.id);
+            // if (response) {
+            //     const importDetail: ImportDetail = response.data;
+            //     const productItems = [];
 
-                for (let item of importDetail.productItem) {
-                    const productItemDetail = await GetDetailProduct(item.id);
-                    productItems.push(productItemDetail);
-                }
+            //     for (let item of importDetail.productItem) {
+            //         const productItemDetail = await GetDetailProduct(item.id);
+            //         productItems.push(productItemDetail);
+            //     }
 
-                importDetail.productItem = productItems;
-                setSelectedImportDetail(importDetail);
-                setDrawerVisible(true);
-            }
+            //     importDetail.productItem = productItems;
+            //     setSelectedImportDetail(importDetail);
+            //     setDrawerVisible(true);
+            // }
         } catch (error) {
             message.error('Failed to fetch import detail');
         } finally {

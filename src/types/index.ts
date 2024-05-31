@@ -155,17 +155,19 @@ export interface ImportInvoice {
     total: number;
     
 }
+export interface ImportProductItem{
+    id: string;
+    quantity: number;
+    price: number;
+    total: number;
+}
 
 export interface ImportDetail {
     id: {
         importId: string;
-        productItemId: string;
+        amount: number
     };
-    importInvoice: ImportInvoice;
-    productItem: ProductItem[];
-    quantity: number;
-    price: number;
-    total: number;
+    importItem: ImportProductItem[];
 }
 
 export interface AddImportItem {
