@@ -155,20 +155,47 @@ export interface ImportInvoice {
     total: number;
     
 }
-export interface ImportProductItem{
-    id: string;
+
+export interface ImportDetail {
+    id: {
+        importId: string;
+        productItemId: string;
+    };
+    importInvoice: ImportInvoice;
+    productItem: ProductItem[];
     quantity: number;
     price: number;
     total: number;
 }
 
-export interface ImportDetail {
-    id: {
-        importId: string;
-        amount: number
-    };
-    importItem: ImportProductItem[];
+
+
+export interface ImportItemResponse {
+    productItem: string;
+    quantity: number;
+    price: number;
+    total: number;
 }
+
+export interface ImportDetailResponse {
+    importResponse: {
+        id: string;
+        total: number;
+    };
+    importItemResponseList: ImportItemResponse[];
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 export interface AddImportItem {
     productItemId: string;

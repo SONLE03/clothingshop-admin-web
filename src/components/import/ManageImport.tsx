@@ -1,133 +1,106 @@
-import React from 'react';
-import { Table, Button, Drawer, Descriptions } from 'antd';
-import { format } from 'date-fns';
-import { ImportInvoice, ImportDetail, UserProps } from '@/src/types';
+"use client";
 
-interface ManageImportProps {
-    imports: ImportInvoice[];
-    users: { [key: string]: UserProps };
-    loading: boolean;
-    onAddNewImport: () => void;
-    onViewImport: (importId: string) => void;
-    drawerVisible: boolean;
-    selectedImportDetail: ImportDetail | null;
-    onCloseDrawer: () => void;
-}
+import React, { useEffect, useState } from 'react';
+import { Table, Avatar, Drawer, Button } from 'antd';
 
-const ManageImport: React.FC<ManageImportProps> = ({
-    imports,
-    users,
-    loading,
-    onAddNewImport,
-    onViewImport,
-    drawerVisible,
-    selectedImportDetail,
-    onCloseDrawer
-}) => {
+import { ImportInvoice, ImportDetailResponse, UserProps } from '@/src/types';
+import { GetAllImport } from '@/src/api/import/GetAllImport';
+import { GetUserById } from '@/src/api/users/GetUserById';
+import { GetImportById } from '@/src/api/import/GetImportById';
+
+const ManageImport: React.FC = () => {
+    const [imports, setImports] = useState<ImportInvoice[]>([]);
+    const [drawerVisible, setDrawerVisible] = useState(false);
+    const [selectedImport, setSelectedImport] = useState<ImportInvoice | null>(null);
+    const [importDetails, setImportDetails] = useState<ImportDetailResponse | null>(null);
+    const [user, setUser] = useState<UserProps | null>(null);
+
+    useEffect(() => {
+        const fetchImports = async () => {
+            try {
+                const data = await GetAllImport();
+                setImports(data);
+            } catch (error) {
+                console.error('Failed to fetch imports:', error);
+            }
+        };
+        fetchImports();
+    }, []);
+
+    const handleViewDetails = async (record: ImportInvoice) => {
+        try {
+            const userData = await GetUserById(record.createdBy);
+            setUser(userData);
+            const importData = await GetImportById(record.id);
+            setImportDetails(importData.data);
+            setSelectedImport(record);
+            setDrawerVisible(true);
+        } catch (error) {
+            console.error('Failed to fetch import details:', error);
+        }
+    };
+
     const columns = [
         {
-            title: 'Ngày tạo',
+            title: 'Created At',
             dataIndex: 'createdAt',
             key: 'createdAt',
-            render: (text: string) => format(new Date(text), 'dd/MM/yyyy HH:mm:ss')
         },
         {
-            title: 'Ngày chỉnh sửa',
-            dataIndex: 'updatedAt',
-            key: 'updatedAt',
-            render: (text: string) => format(new Date(text), 'dd/MM/yyyy HH:mm:ss')
-        },
-        {
-            title: 'Người tạo',
+            title: 'Created By',
             dataIndex: 'createdBy',
             key: 'createdBy',
-            render: (text: string) => {
-                const user = users[text];
-                return user ? (
-                    <div className="flex items-center">
-                        <img src={user.image || '/nextjs-logo.jpg'} alt="avatar" className="w-8 h-8 rounded-full mr-2" />
-                        {user.fullName}
+            render: (createdBy: string) => (
+                user && user.id === createdBy ? (
+                    <div>
+                        <Avatar src={user.image || '/nextjs-logo.jpg'} />
+                        <span>{user.fullName}</span>
                     </div>
-                ) : 'Loading...';
-            }
+                ) : null
+            ),
         },
         {
-            title: 'Người chỉnh sửa',
-            dataIndex: 'updateBy',
-            key: 'updateBy',
-            render: (text: string) => {
-                const user = users[text];
-                return user ? (
-                    <div className="flex items-center">
-                        <img src={user.image || '/nextjs-logo.jpg'} alt="avatar" className="w-8 h-8 rounded-full mr-2" />
-                        {user.fullName}
-                    </div>
-                ) : 'Loading...';
-            }
-        },
-        {
-            title: 'Tổng tiền',
+            title: 'Total',
             dataIndex: 'total',
             key: 'total',
         },
         {
             title: 'Action',
             key: 'action',
-            render: (_: any, record: { id: string; }) => (
-                <Button onClick={() => onViewImport(record.id)}>View</Button>
-            )
-        }
+            render: (text: string, record: ImportInvoice) => (
+                <Button onClick={() => handleViewDetails(record)}>View</Button>
+            ),
+        },
     ];
 
     return (
-        <div className="container mx-auto my-10">
-            <Button type="primary" onClick={onAddNewImport} className="mb-4">
-                Add New Import
-            </Button>
-            <Table
-                columns={columns}
-                dataSource={imports}
-                rowKey="id"
-                loading={loading}
-                pagination={{ pageSize: 6 }}
-                className="min-w-full rounded-lg shadow-sm border border-gray-400"
-                bordered
-            />
+        <div>
+            <Table columns={columns} dataSource={imports} rowKey="id" />
             <Drawer
-                title="Import Detail"
-                placement="left"
-                closable={true}
-                onClose={onCloseDrawer}
+                title="Import Details"
+                placement="right"
+                onClose={() => setDrawerVisible(false)}
                 visible={drawerVisible}
                 width={640}
             >
-                {selectedImportDetail && (
-                    <Descriptions column={1}>
-                        <Descriptions.Item label="Ngày tạo">
-                            {format(new Date(selectedImportDetail.importInvoice.createdAt), 'dd/MM/yyyy HH:mm:ss')}
-                        </Descriptions.Item>
-                        <Descriptions.Item label="Ngày chỉnh sửa">
-                            {format(new Date(selectedImportDetail.importInvoice.updatedAt), 'dd/MM/yyyy HH:mm:ss')}
-                        </Descriptions.Item>
-                        <Descriptions.Item label="Người tạo">
-                            {users[selectedImportDetail.importInvoice.createdBy]?.fullName || 'Loading...'}
-                        </Descriptions.Item>
-                        <Descriptions.Item label="Người chỉnh sửa">
-                            {users[selectedImportDetail.importInvoice.updatedBy]?.fullName || 'Loading...'}
-                        </Descriptions.Item>
-                        <Descriptions.Item label="Tổng tiền">
-                            {selectedImportDetail.importInvoice.total}
-                        </Descriptions.Item>
-                        <Descriptions.Item label="Chi tiết sản phẩm">
-                            {selectedImportDetail.productItem.map(item => (
-                                <div key={item.id} className="border p-2 my-2 rounded">
-                                    <div>Size: {item.sizeName}</div>
-                                    <div>Color: {item.colorName}</div>
-                                    <div>Quantity: {item.quantity}</div>
-                                </div>
-                            ))}
-                        </Descriptions.Item>
-                    </Descriptions>
+                {selectedImport && (
+                    <div>
+                        <p><strong>Import ID:</strong> {selectedImport.id}</p>
+                        <p><strong>Created At:</strong> {selectedImport.createdAt}</p>
+                        <p><strong>Created By:</strong> {user ? user.fullName : selectedImport.createdBy}</p>
+                        <p><strong>Total:</strong> {selectedImport.total}</p>
+                        <Table
+                            columns={[
+                                { title: 'Product Item', dataIndex: 'productItem', key: 'productItem' },
+                                { title: 'Quantity', dataIndex: 'quantity', key: 'quantity' },
+                                { title: 'Price', dataIndex: 'price', key: 'price' },
+                                { title: 'Total', dataIndex: 'total', key: 'total' },
+                            ]}
+                            dataSource={importDetails?.importItemResponseList || []}
+                            rowKey="productItem"
+                            pagination={false}
+                        />
+                    </div>
                 )}
             </Drawer>
         </div>

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import envConfig from '@/src/config';
-//import Cookies from 'js-cookie';
 import { AddImportItem } from '@/src/types';
 import { ParseJSON } from '../auth/ParseJSON';
 
@@ -21,7 +20,7 @@ export const AddNewImport = async (items: AddImportItem[]) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${parseToken}`,
             },
-            data: JSON.stringify(items),
+            data: items,
         };
         try {
             const response = await axios.request(config);
