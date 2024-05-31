@@ -21,7 +21,7 @@ export const AddNewImport = async (items: AddImportItem[]) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${parseToken}`,
             },
-            data: JSON.stringify({ items }),
+            data: JSON.stringify(items),
         };
         try {
             const response = await axios.request(config);
@@ -29,5 +29,8 @@ export const AddNewImport = async (items: AddImportItem[]) => {
         } catch (error) {
             console.log(error);
         }
+    }
+    else {
+        console.log('No access token found');
     }
 };

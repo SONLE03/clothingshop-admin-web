@@ -28,6 +28,7 @@ export interface ClothesProps {
 }
 
 export interface UserProps {
+    createdAt: string;
     id: string;
     fullName: string;
     phone: string;

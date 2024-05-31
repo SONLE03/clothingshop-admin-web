@@ -7,6 +7,7 @@ const UsersUrl = envConfig.NEXT_PUBLIC_API_ENDPOINT + '/customers';
 const accessToken = localStorage.getItem('access_token');
 
 export const GetAllCustomers = async (): Promise<UserProps[]> => {
+  
   if (accessToken) {
     const parsedToken = ParseJSON(accessToken);
     try {

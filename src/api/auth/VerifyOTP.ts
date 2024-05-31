@@ -9,12 +9,9 @@ export const VerifyOtp = async (otp: string, email: string) => {
       method: 'post',
       maxBodyLength: Infinity,
       url: OTPurl,
-      headers: {
-        'Cookie': 'clothing-shop-jwt='
-      }
+      headers: {}
     };
   
     return axios.request(config);
-  };
+};
 
-//export default VerifyOtp;

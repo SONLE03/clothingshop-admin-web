@@ -8,11 +8,9 @@ const accessToken = localStorage.getItem('access_token');
 
 const apiLogout = async (): Promise<void> => {
   
-  
 
   if (!accessToken) {
     throw new Error('No access token found');
-    return;
     
   }
 

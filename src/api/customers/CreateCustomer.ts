@@ -1,26 +1,24 @@
 import axios from 'axios';
 import envConfig from '@/src/config';
-
-
-interface CreateUserParams {
-  email: string;
-  fullName: string;
-  phone: string;
-}
+import { ParseJSON } from '../auth/ParseJSON';
+import { Customer } from '@/src/types';
 
 const CREATECUSTOMERURL = envConfig.NEXT_PUBLIC_API_ENDPOINT + '/customers';
 
-export const CreateCustomer = async ({ email, fullName, phone }: CreateUserParams) => {
+export const CreateCustomer = async ({ email, fullName, phone }: Customer) => {
   const data = JSON.stringify({
     email,
     fullName,
     phone,
   });
 
-  const token = localStorage.getItem('access_token');
-  if (!token) {
+  const accessToken = localStorage.getItem('access_token');
+
+  if (!accessToken) {
     throw new Error('Access token is not available');
   }
+
+  const parseToken = ParseJSON(accessToken);
 
   const config = {
     method: 'post',
@@ -28,7 +26,7 @@ export const CreateCustomer = async ({ email, fullName, phone }: CreateUserParam
     url: CREATECUSTOMERURL,
     headers: { 
       'Content-Type': 'application/json', 
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${parseToken}`
     },
     data: data
   };

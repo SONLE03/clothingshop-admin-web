@@ -1,8 +1,16 @@
 import axios from 'axios';
 import envConfig from '@/src/config';
+import { ParseJSON } from '../auth/ParseJSON';
+
+const accessToken = localStorage.getItem('access_token');
 
 export const AddExistedProduct = async (id: string, sizeId: string, colorId: string) => {
-    const AddExistedProductUrl = envConfig.NEXT_PUBLIC_API_ENDPOINT + `/products/${id}/`;
+    const AddExistedProductUrl = envConfig.NEXT_PUBLIC_API_ENDPOINT + `/products/${id}`;
+    if (!accessToken) {
+        throw new Error('No access token found');
+    }
+    const parseToken = ParseJSON(accessToken);
+
     try {
         const config = {
             method: "post",
@@ -10,6 +18,7 @@ export const AddExistedProduct = async (id: string, sizeId: string, colorId: str
             url: AddExistedProductUrl,
             headers: {
                 "Content-Type": "application/json",
+                'Authorization': `Bearer ${parseToken}`
             },
             data: {
                 sizeId,
