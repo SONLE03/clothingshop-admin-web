@@ -132,6 +132,35 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
                   <Link href="/pages/manage-products/products/list-products">Products list</Link>
                 </li>
               </ul>
+
+
+              {/*Imports Link */}
+            <li className="p-4 mb-2 rounded-lg hover:bg-indigo-500 group hover:text-white font-semibold flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('invoices')}>
+              <div className="flex items-center cursor-pointer">
+                <Import className="mr-2" />
+                {!isCollapsed && 'Import'}
+              </div>
+              {!isCollapsed && (
+                <div className={`transform transition-transform duration-300 ${openDropdown === 'invoices' ? 'rotate-180' : 'rotate-0'}`}>
+                  <ChevronDown />
+                </div>
+              )}
+            </li>
+            <ul
+              className={`pl-8 m-2 transition-max-height duration-300 ease-in-out focus:outline-none  overflow-hidden ${
+                openDropdown === 'invoices' && !isCollapsed ? 'max-h-64' : 'max-h-0'
+              }`}
+            >
+              <li className=" p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-amber-800">
+                <ScrollText className="mr-2 rounded-md" />
+                <Link href="/pages/imports/list-imports">List invoices</Link>
+              </li>
+              
+              <li className=" p-2  rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-slate-900">
+                <Blocks className="mr-2" />
+                <Link href="/pages/imports/add-import">Import products</Link>
+              </li>
+            </ul>
             </>
           ) : null}
 
@@ -144,7 +173,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
                   {!isCollapsed && 'Events'}
                 </div>
                 {!isCollapsed && (
-                  <div className={`transform transition-transform duration-300 ${openDropdown === 'category' ? 'rotate-180' : 'rotate-0'}`}>
+                  <div className={`transform transition-transform duration-300 ${openDropdown === 'events' ? 'rotate-180' : 'rotate-0'}`}>
                     <ChevronDown />
                   </div>
                 )}
@@ -174,7 +203,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
                 {!isCollapsed && 'Customers'}
               </div>
               {!isCollapsed && (
-                <div className={`transform transition-transform duration-300 ${openDropdown === 'users' ? 'rotate-180' : 'rotate-0'}`}>
+                <div className={`transform transition-transform duration-300 ${openDropdown === 'customers' ? 'rotate-180' : 'rotate-0'}`}>
                   <ChevronDown />
                 </div>
               )}
@@ -194,75 +223,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
                 <Link href="/pages/manage-customers/add-customer">Add Customer</Link>
               </li>
             </ul>
-            </>
-          ) : null}
-
-          {/* Orders Link */}
-          {role === 'ADMIN' || role === 'STAFF' ? (
-            <>
-              <li className="p-4 mb-2 rounded-lg hover:bg-indigo-500 group hover:text-white font-semibold flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('orders')}>
-            <div className="flex items-center cursor-pointer">
-              <ListOrdered className="mr-2" />
-              {!isCollapsed && 'Orders'}
-            </div>
-            {!isCollapsed && (
-              <div className={`transform transition-transform duration-300 ${openDropdown === 'users' ? 'rotate-180' : 'rotate-0'}`}>
-                <ChevronDown />
-              </div>
-            )}
-          </li>
-          <ul
-            className={`pl-8 m-2 transition-max-height duration-300 ease-in-out focus:outline-none  overflow-hidden ${
-              openDropdown === 'orders' && !isCollapsed ? 'max-h-64' : 'max-h-0'
-            }`}
-          >
-            <li className=" p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-amber-800">
-              <ListOrdered className="mr-2 rounded-md" />
-              <Link href="/pages/orders/list-orders">List orders</Link>
-            </li>
-            
-            <li className=" p-2  rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-slate-900">
-              <FilePlus className="mr-2" />
-              <Link href="/pages/orders/create-order">Create order</Link>
-            </li>
-          </ul>
-            </>
-          ) : null}
-
-          {/* Reports Link */}
-          {role === 'ADMIN' ? (
-            <>
-              <li className="p-4 mb-2 rounded-lg hover:bg-indigo-500 group hover:text-white font-semibold flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('reports')}>
-              <div className="flex items-center cursor-pointer">
-                <PieChart className="mr-2" />
-                {!isCollapsed && 'Reports'}
-              </div>
-              {!isCollapsed && (
-                <div className={`transform transition-transform duration-300 ${openDropdown === 'users' ? 'rotate-180' : 'rotate-0'}`}>
-                  <ChevronDown />
-                </div>
-              )}
-            </li>
-            <ul
-              className={`pl-8 m-2 transition-max-height duration-300 ease-in-out focus:outline-none  overflow-hidden ${
-                openDropdown === 'reports' && !isCollapsed ? 'max-h-64' : 'max-h-0'
-              }`}
-            >
-              <li className=" p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-amber-800">
-                <ListOrdered className="mr-2 rounded-md" />
-                <Link href="/pages/reports/daily-report">Daily reports</Link>
-              </li>
-              
-              <li className=" p-2 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-slate-900">
-                <LineChart className="mr-2" />
-                <Link href="/pages/reports/monthly-report">Monthly reports</Link>
-              </li>
-
-              <li className=" p-2  rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-slate-900">
-                <TrendingUp className="mr-2" />
-                <Link href="/pages/reports/yearly-report">Yearly reports</Link>
-              </li>
-              </ul>
             </>
           ) : null}
 
@@ -297,6 +257,77 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
               </ul>
             </>
           ) : null}
+
+          {/* Orders Link */}
+          {role === 'ADMIN' || role === 'STAFF' ? (
+            <>
+              <li className="p-4 mb-2 rounded-lg hover:bg-indigo-500 group hover:text-white font-semibold flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('orders')}>
+            <div className="flex items-center cursor-pointer">
+              <ListOrdered className="mr-2" />
+              {!isCollapsed && 'Orders'}
+            </div>
+            {!isCollapsed && (
+              <div className={`transform transition-transform duration-300 ${openDropdown === 'orders' ? 'rotate-180' : 'rotate-0'}`}>
+                <ChevronDown />
+              </div>
+            )}
+          </li>
+          <ul
+            className={`pl-8 m-2 transition-max-height duration-300 ease-in-out focus:outline-none  overflow-hidden ${
+              openDropdown === 'orders' && !isCollapsed ? 'max-h-64' : 'max-h-0'
+            }`}
+          >
+            <li className=" p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-amber-800">
+              <ListOrdered className="mr-2 rounded-md" />
+              <Link href="/pages/orders/list-orders">List orders</Link>
+            </li>
+            
+            <li className=" p-2  rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-slate-900">
+              <FilePlus className="mr-2" />
+              <Link href="/pages/orders/create-order">Create order</Link>
+            </li>
+          </ul>
+            </>
+          ) : null}
+
+          {/* Reports Link */}
+          {role === 'ADMIN' ? (
+            <>
+              <li className="p-4 mb-2 rounded-lg hover:bg-indigo-500 group hover:text-white font-semibold flex items-center justify-between transition duration-500 ease-out focus:outline-none active:bg-indigo-900" onClick={() => handleDropdownClick('reports')}>
+              <div className="flex items-center cursor-pointer">
+                <PieChart className="mr-2" />
+                {!isCollapsed && 'Reports'}
+              </div>
+              {!isCollapsed && (
+                <div className={`transform transition-transform duration-300 ${openDropdown === 'reports' ? 'rotate-180' : 'rotate-0'}`}>
+                  <ChevronDown />
+                </div>
+              )}
+            </li>
+            <ul
+              className={`pl-8 m-2 transition-max-height duration-300 ease-in-out focus:outline-none  overflow-hidden ${
+                openDropdown === 'reports' && !isCollapsed ? 'max-h-64' : 'max-h-0'
+              }`}
+            >
+              <li className=" p-2 mb-2 mt-2 left-3 rounded-lg hover:bg-indigo-600 hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-amber-800">
+                <ListOrdered className="mr-2 rounded-md" />
+                <Link href="/pages/reports/daily-report">Daily reports</Link>
+              </li>
+              
+              <li className=" p-2 mb-2 rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-slate-900">
+                <LineChart className="mr-2" />
+                <Link href="/pages/reports/monthly-report">Monthly reports</Link>
+              </li>
+
+              <li className=" p-2  rounded-lg hover:bg-indigo-600 group hover:text-white font-semibold flex items-center transition duration-500 ease-out focus:outline-none active:bg-slate-900">
+                <TrendingUp className="mr-2" />
+                <Link href="/pages/reports/yearly-report">Yearly reports</Link>
+              </li>
+              </ul>
+            </>
+          ) : null}
+
+          
         </ul>
       </nav>
     </div>

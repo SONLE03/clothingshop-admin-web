@@ -89,8 +89,9 @@ const ManageImport: React.FC<ManageImportProps> = ({
                 dataSource={imports}
                 rowKey="id"
                 loading={loading}
-                pagination={{ pageSize: 10 }}
-                className="shadow-lg"
+                pagination={{ pageSize: 6 }}
+                className="min-w-full rounded-lg shadow-sm border border-gray-400"
+                bordered
             />
             <Drawer
                 title="Import Detail"

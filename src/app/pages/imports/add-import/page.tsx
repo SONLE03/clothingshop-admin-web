@@ -1,5 +1,5 @@
 import React from 'react';
-import AddImport from '@/src/components/AddImport';
+import AddImport from '@/src/components/import/AddImport';
 import { Import } from 'lucide-react';
 
 const AddImportPage: React.FC = () => {

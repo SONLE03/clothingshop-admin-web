@@ -5,7 +5,7 @@ import { GetUserById } from '@/src/api/users/GetUserById';
 import { GetImportById } from '@/src/api/import/GetImportById';
 import { GetDetailProduct } from '@/src/api/products/GetDetailProduct';
 
-import ManageImport from '@/src/components/ManageImport';
+import ManageImport from '@/src/components/import/ManageImport';
 
 import { ImportInvoice, ImportDetail, UserProps } from '@/src/types';
 import { message } from 'antd';

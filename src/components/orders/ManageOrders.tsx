@@ -109,7 +109,7 @@ const ManageOrders: React.FC = () => {
     return (
         <div>
             <div className="flex justify-between items-center mb-4">
-                <Search className='border border-gray-500 rounded-lg w-2/3 mr-4'
+                <Search className='border border-gray-500 rounded-lg hover:border-blue-500 mr-4' variant='borderless'
                     placeholder="Search by customer phone"
                     enterButton={<SearchOutlined className='flex justify-center items-center' />}
                     onSearch={handleSearch}
@@ -119,7 +119,7 @@ const ManageOrders: React.FC = () => {
                     Create New Order
                 </Button>
             </div>
-            <Table dataSource={filteredOrders} columns={columns} rowKey="orderId" />
+            <Table dataSource={filteredOrders} columns={columns} rowKey="orderId" pagination={{ pageSize: 6 }} />
             <Modal className=' text-center'
                 title="Order Details"
                 visible={isModalVisible}
@@ -141,7 +141,8 @@ const ManageOrders: React.FC = () => {
                         <div className='flex p-2 mb-2 font-semibold border border-gray-600 rounded-lg h-10 items-center'>
                             <p>Total Bill: {selectedOrder.total.toFixed(2)} VNĐ</p>
                         </div>
-                        <Table className='border border-gray-400 rounded-lg'
+                        <Table className="min-w-full rounded-lg shadow-sm border border-gray-400"
+                            bordered
                             pagination={{ pageSize: 4 }}
                             dataSource={orderDetails}
                             columns={[

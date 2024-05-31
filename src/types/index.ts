@@ -79,6 +79,8 @@ export interface Size {
     name: string;
 }
 
+
+//Coupons
 export interface Coupon {
     name: string;
     startDate: string;
@@ -100,6 +102,7 @@ export interface ExistedCoupon {
     eventStatus: string;
 }
 
+//Products
 export interface Product {
     id: string;
     product_Name: string;

@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Select, message, InputNumber, Table } from 'antd';
-import { GetAllProducts } from '../api/products/GetAllProducts';
-import { GetDetailProduct } from '../api/products/GetDetailProduct';
-import { AddNewImport } from '../api/import/AddImport';
+import { GetAllProducts } from '../../api/products/GetAllProducts';
+import { GetDetailProduct } from '../../api/products/GetDetailProduct';
+import { AddNewImport } from '../../api/import/AddImport';
 import { Product, ProductItem, AddImportItem } from '@/src/types';
 import { useRouter } from 'next/navigation';
 
@@ -120,7 +120,7 @@ const AddImport: React.FC = () => {
                     label="Product"
                     rules={[{ required: true, message: 'Please select a product' }]}
                 >
-                    <Select onChange={handleProductChange} placeholder="Select a product">
+                    <Select className='border border-gray-500 rounded-lg hover:border-blue-500' variant='borderless' onChange={handleProductChange} placeholder="Select a product">
                         {products.map(product => (
                             <Option key={product.id} value={product.id}>
                                 {product.product_Name}
@@ -133,7 +133,7 @@ const AddImport: React.FC = () => {
                     label="Product Item"
                     rules={[{ required: true, message: 'Please select a product item' }]}
                 >
-                    <Select onChange={(value) => setSelectedProductItem(productItems.find(item => item.id === value) || null)} placeholder="Select a product item">
+                    <Select className='border border-gray-500 rounded-lg hover:border-blue-500' variant='borderless' onChange={(value) => setSelectedProductItem(productItems.find(item => item.id === value) || null)} placeholder="Select a product item">
                         {productItems.map(item => (
                             <Option key={item.id} value={item.id}>
                                 {`${item.sizeName} - ${item.colorName}`}
@@ -153,7 +153,7 @@ const AddImport: React.FC = () => {
                     label="Price"
                     rules={[{ required: true, message: 'Please enter the price' }]}
                 >
-                    <InputNumber type='number' min={1} />
+                    <InputNumber className='border border-gray-500 rounded-lg hover:border-blue-500' type='number' min={1} />
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
