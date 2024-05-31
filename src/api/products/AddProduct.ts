@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { CreateProductForm } from '@/src/types';
 import envConfig from '@/src/config';
+import { ParseJSON } from '../auth/ParseJSON';
 
 const AddProductUrl = envConfig.NEXT_PUBLIC_API_ENDPOINT + '/products';
+const accessToken = localStorage.getItem('access_token');
 
 export const AddProduct = async (data: CreateProductForm) => {
   const formData = new FormData();
@@ -24,9 +26,16 @@ export const AddProduct = async (data: CreateProductForm) => {
     formData.append('images', data.images[i]);
   }
 
+  if (!accessToken) {
+    throw new Error('No access token found');
+  }
+
+  const parseToken = ParseJSON(accessToken);
+
   const response = await axios.post(AddProductUrl, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
+      'Authorization': `Bearer ${parseToken}`,
     },
   });
 

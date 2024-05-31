@@ -20,6 +20,8 @@ const ManageImport: React.FC = () => {
             try {
                 const data = await GetAllImport();
                 setImports(data);
+                const userData = await GetUserById(data[0].createdBy);
+                setUser(userData);
             } catch (error) {
                 console.error('Failed to fetch imports:', error);
             }
@@ -53,7 +55,7 @@ const ManageImport: React.FC = () => {
             render: (createdBy: string) => (
                 user && user.id === createdBy ? (
                     <div>
-                        <Avatar src={user.image || '/nextjs-logo.jpg'} />
+                        <Avatar className='mr-2' src={user.image || '/nextjs-logo.jpg'} />
                         <span>{user.fullName}</span>
                     </div>
                 ) : null
