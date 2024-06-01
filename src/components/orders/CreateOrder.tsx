@@ -25,7 +25,6 @@ const CreateOrderComponent: React.FC = () => {
     const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
     const [selectedCoupon, setSelectedCoupon] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
-
     const router = useRouter();
 
     useEffect(() => {
@@ -128,6 +127,7 @@ const CreateOrderComponent: React.FC = () => {
 
         const order: CreateOrderRequest = {
             customerId: values.customerId,
+            coupon: selectedCoupon,
             paymentMethod: values.paymentMethod,
             orderItemRequestList: orderItemsRequest,
             total: finalTotal
@@ -147,6 +147,14 @@ const CreateOrderComponent: React.FC = () => {
             form.resetFields();
             setOrderItems([]);
             setLoading(false);
+            let storedValue: string | null = localStorage.getItem('revenue');
+            if (storedValue !== null) {
+                let numberValue: number = Number(storedValue);
+                numberValue += finalTotal;
+                localStorage.setItem('revenue', JSON.stringify(numberValue));
+            } else {
+                console.error("No value found in localStorage for 'myNumber'");
+            }
             setTimeout(() => {
                 router.push('/pages/orders/list-orders');
             }, 1500);

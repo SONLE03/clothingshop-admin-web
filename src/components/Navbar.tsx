@@ -14,9 +14,10 @@ const Navbar: React.FC = () => {
     const [user, setUser] = useState<UserProps | null>(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [searchResults, setSearchResults] = useState<string[]>([]);
-    
+    const [revenue, setRevenue] = useState<string | null>(null);
 
     useEffect(() => {
+       
         const fetchUserData = async () => {
             const userId = localStorage.getItem('user_id');
             console.log(userId);
@@ -31,6 +32,12 @@ const Navbar: React.FC = () => {
 
         fetchUserData();
     }, []);
+
+    const handleRevenue = () => {
+        let storedValue: string | null = localStorage.getItem('revenue');
+        setRevenue(storedValue);
+        setIsModalVisible(true);
+    }
 
     const handleLogout = async () => {
         try {
@@ -92,9 +99,9 @@ const Navbar: React.FC = () => {
     return (
         <div className="fixed top-0 w-full flex items-start justify-around rounded-xl border border-gray-300 bg-white shadow-md p-4 z-10 h-16">
             <Toaster/>
-            <Button className=' mr-96' icon={<SearchOutlined />} onClick={() => setIsModalVisible(true)}>Search</Button>
+            <Button className=' mr-96' onClick={handleRevenue}>My session revenue</Button>
             <Modal className='flex justify-center items-center text-center text-lg'
-                title="QUICK ACCESS"
+                title= {<h1>{revenue} VND</h1>}
                 visible={isModalVisible}
                 onCancel={() => setIsModalVisible(false)}
                 footer={null}

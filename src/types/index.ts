@@ -231,6 +231,7 @@ export interface OrderItemRequest {
 
 export interface CreateOrderRequest {
     customerId: string;
+    coupon: string;
     paymentMethod: number;
     orderItemRequestList: OrderItemRequest[];
 }

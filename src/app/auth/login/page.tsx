@@ -7,6 +7,7 @@ import Image from "next/image";
 import toast, { Toaster } from 'react-hot-toast';
 import { SafetyOutlined, UserOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
+import { totalmem } from 'os';
 //import Cookies from 'js-cookie';
 
 
@@ -40,6 +41,7 @@ const LoginForm: React.FC = () => {
       localStorage.setItem('user_id', JSON.stringify(data.id));
       localStorage.setItem('login_time', JSON.stringify(new Date().toISOString()));
       localStorage.setItem('role', JSON.stringify(data.role));
+      localStorage.setItem('revenue', JSON.stringify(0));
 
       //const role = localStorage.getItem('role');
       //console.log(role);

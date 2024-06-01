@@ -7,7 +7,7 @@ import { ParseJSON } from '../auth/ParseJSON';
 const accessToken = localStorage.getItem('access_token');
 
 export const CreateOrder = async (order: CreateOrderRequest) => {
-
+    console.log(order.coupon);
     if (accessToken) {
         const parsedToken = ParseJSON(accessToken);
 
