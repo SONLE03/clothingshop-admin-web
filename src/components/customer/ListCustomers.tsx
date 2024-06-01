@@ -124,12 +124,12 @@ const ManageUsers: React.FC = () => {
   return (
     <div>
       <Toaster />
-      <div className=" flex flex-row space-x-2 space-y-0 mt-4">
+      <div className=" flex flex-row space-x-2 space-y-0 mt-4 w-full">
         <Input 
-          className="focus:placeholder-transparent focus:border-blue-500 mb-8 w-1/2 h-10 border border-gray-400 rounded-lg shadow-lg" 
+          className="focus:placeholder-transparent focus:border-blue-500 mb-8 w-full h-10 border border-gray-400 rounded-lg shadow-lg" 
           value={searchCustomer} 
           onChange={handleSearch} 
-          placeholder="Search by name"
+          placeholder="Search by customer name"
           size="middle"
           prefix={<Search />}
         />

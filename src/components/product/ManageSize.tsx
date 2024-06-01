@@ -5,8 +5,9 @@ import { AddSize } from "@/src/api/products/sizes/AddSize";
 import { Table, Button, Modal, Input, Space } from "antd";
 import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { BookmarkPlus, Pen, Trash } from "lucide-react";
+import { BookmarkPlus, Pen, Tags, Trash } from "lucide-react";
 import { Size } from "@/src/types";
+import { SearchOutlined } from "@ant-design/icons";
 
 const ManageSize: React.FC = () => {
   const [sizes, setSizes] = useState<Size[]>([]);
@@ -15,6 +16,7 @@ const ManageSize: React.FC = () => {
   const [editSize, setEditSize] = useState<Size | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -70,6 +72,15 @@ const ManageSize: React.FC = () => {
     }
   };
 
+  const handleSearch = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value.toLowerCase());
+  };
+
+  const filteredSize = sizes.filter(size => {
+    return size.name.toLowerCase().includes(searchTerm);
+  });
+
+
   const columns = [
     {
       title: "Name",
@@ -110,18 +121,23 @@ const ManageSize: React.FC = () => {
   return (
     <div>
       <Toaster />
-      <Space style={{ marginBottom: 16 }}>
-        <Button className="flex flex-row text-center items-center space-x-1 text-lg h-10 rounded-lg mb-2"
-          type="primary"
-          icon={<BookmarkPlus />}
-          onClick={() => setIsModalVisible(true)}
-        >
-          Add Size
-        </Button>
-      </Space>
+      <div className="flex justify-between items-center w-full mb-6">
+          <Input className="focus:placeholder-transparent focus:border-blue-500 w-2/3 h-10 border border-gray-400 rounded-lg shadow-lg" 
+              placeholder="Search by size name"
+              prefix={<SearchOutlined className="mr-2" />}
+              onChange={handleSearch}
+          />
+            <Button className="flex flex-row text-center items-center space-x-1 text-lg h-10 rounded-lg"
+              type="primary"
+              icon={<BookmarkPlus />}
+              onClick={() => setIsModalVisible(true)}
+            >
+              Add Size
+            </Button>
+      </div>
 
       <Table className='border border-gray-500 rounded-lg text-lg font-semibold shadow-lg'
-        dataSource={sizes}
+        dataSource={filteredSize}
         columns={columns}
         rowKey="id"
         loading={loading}
@@ -130,7 +146,12 @@ const ManageSize: React.FC = () => {
       />
 
       <Modal
-        title="Add Size"
+        title={
+          <div className="flex justify-center items-center text-lg font-semibold mb-4 space-x-2">
+              <Tags /> 
+              <span>Add new Size</span>
+          </div>
+        }
         visible={isModalVisible}
         onOk={handleAddSize}
         onCancel={() => setIsModalVisible(false)}
@@ -144,7 +165,12 @@ const ManageSize: React.FC = () => {
       </Modal>
 
       <Modal
-        title="Edit Size"
+        title={
+          <div className="flex justify-center items-center text-lg font-semibold mb-4 space-x-2">
+              <Tags /> 
+              <span>Edit size</span>
+          </div>
+        }
         visible={isEditModalVisible}
         onOk={handleEditSize}
         onCancel={() => setIsEditModalVisible(false)}

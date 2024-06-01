@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { GetAllOrders } from '@/src/api/orders/GetAllOrders';
 import { GetOrderDetails } from '@/src/api/orders/GetOrderDetails';
 import { Orders, OrderDetail } from '@/src/types';
+import { BookmarkPlus } from 'lucide-react';
 
 
 
@@ -17,11 +18,13 @@ const { Search } = Input;
 
 const ManageOrders: React.FC = () => {
     const [orders, setOrders] = useState<Orders[]>([]);
-    const [filteredOrders, setFilteredOrders] = useState<Orders[]>([]);
+    //const [filteredOrders, setFilteredOrders] = useState<Orders[]>([]);
     const [selectedOrder, setSelectedOrder] = useState<Orders | null>(null);
     const [orderDetails, setOrderDetails] = useState<OrderDetail[]>([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+
 
     const router = useRouter();
 
@@ -30,7 +33,7 @@ const ManageOrders: React.FC = () => {
             try {
                 const data = await GetAllOrders();
                 setOrders(data ?? []);
-                setFilteredOrders(data ?? []);
+                //setFilteredOrders(data ?? []);
             } catch (error) {
                 message.error('Failed to fetch orders');
             }
@@ -43,7 +46,7 @@ const ManageOrders: React.FC = () => {
         try {
             const response = await GetOrderDetails(order.orderId);
             if (response) {
-                setOrderDetails(response.data);
+                setOrderDetails(response);
                 setIsModalVisible(true);
             }
         } catch (error) {
@@ -51,13 +54,15 @@ const ManageOrders: React.FC = () => {
         }
     };
 
-    const handleSearch = (value: string) => {
-        const filtered = orders.filter(order =>
-            order.customerPhone.includes(value)
-        );
-        setFilteredOrders(filtered);
-    };
-
+    const handleSearch = (e : React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value.toLowerCase());
+      };
+    
+    const filteredOrders = orders.filter( order => {
+        return order.customerPhone.toLowerCase().includes(searchTerm);
+    }
+    );
+    
     const columns: ColumnsType<Orders> = [
         {
             title: 'Order Date',
@@ -108,14 +113,17 @@ const ManageOrders: React.FC = () => {
 
     return (
         <div>
-            <div className="flex justify-between items-center mb-4">
-                <Search className='border border-gray-500 rounded-lg hover:border-blue-500 mr-4' variant='borderless'
-                    placeholder="Search by customer phone"
-                    enterButton={<SearchOutlined className='flex justify-center items-center' />}
-                    onSearch={handleSearch}
-                    type="number"
+            <div className="flex justify-between items-center mb-6 h-10 space-x-0">
+
+                <Input className="focus:placeholder-transparent focus:border-blue-500 w-2/3 h-10 border border-gray-400 rounded-lg shadow-lg " 
+                    placeholder="Search by customer's phone number"
+                    prefix={<SearchOutlined className="mr-2" />}
+                    onChange={handleSearch}
+                    type='number'
+                    min={0}
                 />
-                <Button type="primary" onClick={() => router.push('/pages/orders/create-order')}>
+
+                <Button className='flex justify-center items-center text-center font-semibold h-10 shadow-xl' type="primary" icon={<BookmarkPlus/>} onClick={() => router.push('/pages/orders/create-order')}>
                     Create New Order
                 </Button>
             </div>

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form, Select, Input, Menu, Dropdown } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined, SearchOutlined } from '@ant-design/icons';
 
 import axios from 'axios';
 import { CreateCategory } from '@/src/api/category/categories/AddNewCategory';
@@ -22,6 +22,7 @@ const CategoryManager = () => {
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState<'add' | 'edit'>('edit');
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -76,6 +77,14 @@ const CategoryManager = () => {
       toast.error('Failed to update category');
     }
   };
+
+  const handleSearch = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value.toLowerCase());
+  };
+
+  const filteredCategory = categories.filter(category =>
+    category.name.toLowerCase().includes(searchTerm)
+  );
 
   const showModal = (type: 'add' | 'edit', category: Category | null = null) => {
     setModalType(type);
@@ -133,26 +142,42 @@ const CategoryManager = () => {
   return (
     <div>
       <Toaster />
-      
-      <Button className="flex flex-row text-center items-center space-x-1 text-lg h-10 rounded-lg mb-5"
-        type="primary" 
-        onClick={() => showModal('add')}
-        icon={<BookmarkPlus />}
-        >
-        Add New Category
-      </Button>
+      <div className="flex justify-between items-center w-full mb-6">
+          <Input className="focus:placeholder-transparent focus:border-blue-500 w-2/3 h-10 border border-gray-400 rounded-lg shadow-lg" 
+              placeholder="Search by branch name"
+              prefix={<SearchOutlined className="mr-2" />}
+              onChange={handleSearch}
+          />
+
+        <Button className="flex flex-row text-center items-center space-x-1 font-semibold h-10 rounded-lg shadow-xl"
+          type="primary" 
+          onClick={() => showModal('add')}
+          icon={<BookmarkPlus />}
+          >
+          Add New Category
+        </Button>
+      </div>
+
       <Table 
-        dataSource={categories}
+        dataSource={filteredCategory}
         columns={columns}
         loading={loading}
         pagination={{ pageSize: 6 }}
         //onChange={(p) => setPagination(p)}
-        className="min-w-full rounded-lg shadow-sm border border-gray-400"
+        className="min-w-full rounded-lg shadow-xl border border-gray-400"
         bordered
       />
       <Modal
         visible={visible}
-        title={modalType === 'add' ? 'Add New Category' : 'Edit Category'}
+        title={modalType === 'add' ? 
+          <div className="flex justify-center items-center text-lg font-semibold mb-4 space-x-2">
+              <Slack /> 
+              <span>Add Category</span>
+          </div>
+         : <div className="flex justify-center items-center text-lg font-semibold mb-4 space-x-2">
+         <Slack /> 
+         <span>Category details</span>
+        </div>}
         onCancel={() => setVisible(false)}
         onOk={() => form.submit()}
       >

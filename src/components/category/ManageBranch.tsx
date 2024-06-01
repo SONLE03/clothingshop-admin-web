@@ -8,6 +8,7 @@ import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { BookmarkPlus, Pen, Plus, Slack, Tags, Trash } from "lucide-react";
 import { Branch } from "@/src/types";
+import { SearchOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 
@@ -18,6 +19,7 @@ const ManageBranch: React.FC = () => {
   const [editBranch, setEditBranch] = useState<Branch | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -72,6 +74,14 @@ const ManageBranch: React.FC = () => {
     }
   };
 
+  const handleSearch = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value.toLowerCase());
+  };
+
+  const filteredBranch = branches.filter(branch =>
+    branch.name.toLowerCase().includes(searchTerm)
+  );
+
   const columns = [
     {
       title: "Name",
@@ -112,29 +122,40 @@ const ManageBranch: React.FC = () => {
   return (
     <div>
       <Toaster />
-      
-      <Space style={{ marginBottom: 16 }}>
-        <Button className="flex flex-row text-center items-center space-x-1 text-lg h-10 rounded-lg mb-2"
+      <div className="flex justify-between items-center w-full mb-6">
+          <Input className="focus:placeholder-transparent focus:border-blue-500 w-2/3 h-10 border border-gray-400 rounded-lg shadow-lg" 
+              placeholder="Search by branch name"
+              prefix={<SearchOutlined className="mr-2" />}
+              onChange={handleSearch}
+          />
+
+        <Button className="flex flex-row text-center items-center space-x-1 font-semibold shadow-xl h-10 rounded-lg"
           type="primary"
           icon={<BookmarkPlus />}
           onClick={() => setIsModalVisible(true)}
         >
-          Add Branch
+          Add new Branch
         </Button>
-      </Space>
+
+      </div> 
 
       <Table
-        dataSource={branches}
+        dataSource={filteredBranch}
         columns={columns}
         rowKey="id"
         loading={loading}
         pagination={{ pageSize: 6 }}
-        className="min-w-full rounded-lg shadow-sm border border-gray-400 text-lg font-semibold"
+        className="min-w-full rounded-lg shadow-xl border border-gray-400 text-lg font-semibold"
         bordered
       />
 
       <Modal
-        title="Add Branch"
+        title={
+          <div className="flex justify-center items-center text-lg font-semibold mb-4 space-x-2">
+              <Tags /> 
+              <span>Add new Branch</span>
+          </div>
+        }
         visible={isModalVisible}
         onOk={handleAddBranch}
         onCancel={() => setIsModalVisible(false)}
@@ -148,7 +169,12 @@ const ManageBranch: React.FC = () => {
       </Modal>
 
       <Modal
-        title="Edit Branch"
+        title={
+          <div className="flex justify-center items-center text-lg font-semibold mb-4 space-x-2">
+              <Tags /> 
+              <span>Edit Branch</span>
+          </div>
+        }
         visible={isEditModalVisible}
         onOk={handleEditBranch}
         onCancel={() => setIsEditModalVisible(false)}

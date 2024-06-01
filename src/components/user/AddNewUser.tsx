@@ -24,7 +24,7 @@ const AddNewUsers = () => {
             message.success('User added successfully');
             // 5 seconds delay
             setTimeout(() => {
-                router.push('pages/manage-users/list-users');
+                router.push('/pages/manage-users/list-users');
             }, 5000);
         
         } catch (error) {
@@ -57,28 +57,28 @@ const AddNewUsers = () => {
                         label="Full Name"
                         rules={[{ required: true, message: 'Please enter the full name' }]}
                     >
-                        <Input className='border border-gray-500 rounded-lg hover:border-blue-500' />
+                        <Input className='border border-gray-500 rounded-lg hover:border-blue-500 h-10' />
                     </Form.Item>
                     <Form.Item
                         name="email"
                         label="Email"
                         rules={[{ required: true, message: 'Please enter the email' }]}
                     >
-                        <Input className='border border-gray-500 rounded-lg hover:border-blue-500' type="email" />
+                        <Input className='border border-gray-500 rounded-lg hover:border-blue-500 h-10' type="email" />
                     </Form.Item>
                     <Form.Item
                         name="phone"
                         label="Phone"
                         rules={[{ required: true, message: 'Please enter the phone number' }]}
                     >
-                        <Input className='border border-gray-500 rounded-lg hover:border-blue-500'type='number' min={0} />
+                        <Input className='border border-gray-500 rounded-lg hover:border-blue-500 h-10'type='number' min={0} />
                     </Form.Item>
                     <Form.Item
                         name="password"
                         label="Password"
                         rules={[{ required: true, message: 'Please enter the password' }]}
                     >
-                        <Input.Password className='border border-gray-500 rounded-lg hover:border-blue-500' />
+                        <Input.Password className='border border-gray-500 rounded-lg hover:border-blue-500 h-10' />
                     </Form.Item>
                     <Form.Item
                         name="confirmPassword"
@@ -89,14 +89,14 @@ const AddNewUsers = () => {
                             { validator: validatePassword }
                         ]}
                     >
-                        <Input.Password className='border border-gray-500 rounded-lg hover:border-blue-500' />
+                        <Input.Password className='border border-gray-500 rounded-lg hover:border-blue-500 h-10' />
                     </Form.Item>
                     <Form.Item
                         name="role"
                         label="Role"
                         rules={[{ required: true, message: 'Please select a role' }]}
                     >
-                        <Select className='border border-gray-500 rounded-lg hover:border-blue-500 mr-6 mb-3' variant='borderless'>
+                        <Select className='border border-gray-500 rounded-lg hover:border-blue-500 mr-6 mb-3 h-10' variant='borderless'>
                             <Option value={1}>STAFF</Option>
                             <Option value={0}>ADMIN</Option>
                         </Select>

@@ -115,7 +115,7 @@ const AddImport: React.FC = () => {
     return (
         <div>
             <Form form={form} layout="vertical" onFinish={handleAddItem}>
-                <Form.Item
+                <Form.Item className='mb-4 font-semibold'
                     name="product"
                     label="Product"
                     rules={[{ required: true, message: 'Please select a product' }]}
@@ -128,43 +128,49 @@ const AddImport: React.FC = () => {
                         ))}
                     </Select>
                 </Form.Item>
-                <Form.Item
+                <Form.Item className='mb-4 font-semibold'
                     name="productItem"
                     label="Product Item"
                     rules={[{ required: true, message: 'Please select a product item' }]}
                 >
                     <Select className='border border-gray-500 rounded-lg hover:border-blue-500' variant='borderless' onChange={(value) => setSelectedProductItem(productItems.find(item => item.id === value) || null)} placeholder="Select a product item">
-                        {productItems.map(item => (
+                        {productItems && productItems.map(item => (
                             <Option key={item.id} value={item.id}>
                                 {`${item.sizeName} - ${item.colorName}`}
                             </Option>
                         ))}
                     </Select>
                 </Form.Item>
-                <Form.Item
-                    name="quantity"
-                    label="Quantity"
-                    rules={[{ required: true, message: 'Please enter the quantity' }]}
-                >
-                    <InputNumber type='number' min={1} />
-                </Form.Item>
-                <Form.Item
-                    name="price"
-                    label="Price"
-                    rules={[{ required: true, message: 'Please enter the price' }]}
-                >
-                    <InputNumber className='border border-gray-500 rounded-lg hover:border-blue-500' type='number' min={1} />
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        Add Item
-                    </Button>
-                </Form.Item>
+                <div className='flex flex-row justify-start items-center space-x-20'>
+                    <Form.Item className='mb-4 font-semibold'
+                        name="quantity"
+                        label="Quantity"
+                        rules={[{ required: true, message: 'Please enter the quantity' }]}
+                    >
+                        <InputNumber className='border border-gray-500 rounded-lg hover:border-blue-500' type='number' min={1} />
+                    </Form.Item>
+                    <Form.Item className='mb-4 font-semibold'
+                        name="price"
+                        label="Price"
+                        rules={[{ required: true, message: 'Please enter the price' }]}
+                    >
+                        <InputNumber className='border border-gray-500 rounded-lg hover:border-blue-500' type='number' min={1} />
+                    </Form.Item>
+                    <Form.Item>
+                        <Button className='mt-8 h-8' type="primary" htmlType="submit">
+                            Add Item
+                        </Button>
+                    </Form.Item>
+                </div>
+                    
             </Form>
-            <Table dataSource={importItems} columns={columns} rowKey="productItemId" />
-            <Button type="primary" onClick={handleFinish} loading={loading} disabled={!importItems.length}>
-                Add Import
-            </Button>
+            <Table className='mt-4 mb-8 border border-gray-400 rounded-md' bordered dataSource={importItems} columns={columns} rowKey="productItemId" />
+            <div className=" flex justify-center items-center w-full">
+                <Button type="primary" onClick={handleFinish} loading={loading} disabled={!importItems.length}>
+                    Add Import
+                </Button>
+            </div>
+            
         </div>
     );
 };

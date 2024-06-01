@@ -7,6 +7,7 @@ import { GetDailyRevenue } from '@/src/api/reports/daily-report/GetDailyRevenue'
 import { GetDailyExpense } from '@/src/api/reports/daily-report/GetDailyExpense';
 import { DailyRevenueResponse, DailyExpenseResponse } from '@/src/types';
 import { Line } from '@ant-design/charts';
+import { BaggageClaim, Coins, LineChart, ListChecks, ListOrdered, Package, PackageCheck } from 'lucide-react';
 
 const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
@@ -65,8 +66,8 @@ const DailyReport: React.FC = () => {
         },
         yAxis: { title: { text: yLabel } },
         lineStyle: {
-            stroke: '#1890ff',
-            lineWidth: 3,
+            stroke: '#FFA500',
+            lineWidth: 4,
         },
         smooth: true,
         meta: {
@@ -77,64 +78,116 @@ const DailyReport: React.FC = () => {
 
     return (
         <Form form={form} layout="vertical">
-            <Tabs activeKey={activeTab} onChange={(key) => setActiveTab(key)}>
+            <Tabs className='font-semibold' activeKey={activeTab} onChange={(key) => setActiveTab(key)}>
                 <TabPane tab="Daily Revenue" key="1">
-                    <Form.Item label="Select Date Range">
-                        <RangePicker
-                            onChange={(dates) => {
-                                if (dates) {
-                                    setStartDate(dates[0]?.format('YYYY-MM-DD') || null);
-                                    setEndDate(dates[1]?.format('YYYY-MM-DD') || null);
-                                }
-                            }}
-                        />
+                    <Form.Item className='mt-3 mb-4' label="Select Date Range">
+                        <div className="flex flex-row justify-start items-center space-x-6 w-full">
+                            <RangePicker className='border border-gray-500 rounded-lg hover:border-blue-500 h-10'
+                                
+                                onChange={(dates) => {
+                                    if (dates) {
+                                        setStartDate(dates[0]?.format('YYYY-MM-DD') || null);
+                                        setEndDate(dates[1]?.format('YYYY-MM-DD') || null);
+                                    }
+                                }}
+                            />
+
+                            <Button className='flex justify-center items-center space-x-1 h-10 font-semibold' type="primary" onClick={handleGenerateReport} icon={<LineChart/>}>Generate Report</Button>
+                        </div>
                     </Form.Item>
-                    <Button type="primary" onClick={handleGenerateReport}>Generate Report</Button>
+                    
                     <Row gutter={16} style={{ marginTop: 20 }}>
                         <Col span={8}>
-                            <Card title="Total Orders" bordered={false}>
-                                {calculateSummary(revenueData, 'totalOrders').toString()}
+                            <Card className='border border-gray-500 rounded-lg shadow-xl mb-4' 
+                                title={
+                                    <div className="flex justify-start items-center text-xl font-semibold mb-4 space-x-2">
+                                        <ListOrdered color='blue' /> 
+                                        <span>Total Orders</span>
+                                    </div>
+                                }
+
+                                bordered={false}>
+                                <h1 className=' text-3xl'>{calculateSummary(revenueData, 'totalOrders').toString()}</h1>
                             </Card>
                         </Col>
                         <Col span={8}>
-                            <Card title="Total Products Sold" bordered={false}>
-                                {calculateSummary(revenueData, 'totalProductsSold').toString()}
+                            <Card className='border border-gray-500 rounded-lg shadow-2xl mb-4' 
+                                title={
+                                    <div className="flex justify-start items-center text-xl font-semibold mb-4 space-x-2">
+                                        <PackageCheck color='green' /> 
+                                        <span>Total Products sold</span>
+                                    </div>
+                                } 
+                                bordered={false}>
+                                <h1 className=' text-3xl'>{calculateSummary(revenueData, 'totalProductsSold').toString()}</h1>
                             </Card>
                         </Col>
                         <Col span={8}>
-                            <Card title="Total Revenue" bordered={false}>
-                                {calculateSummary(revenueData, 'totalRevenue').toString()}
+                            <Card className='border border-gray-500 rounded-lg shadow-2xl mb-4' 
+                                title={
+                                    <div className="flex justify-start items-center text-xl font-semibold mb-4 space-x-2">
+                                        <Coins color='#FFA500' /> 
+                                        <span>Total Revenue</span>
+                                    </div>
+                                } 
+                                bordered={false}>
+                                <h1 className=' text-3xl'>{calculateSummary(revenueData, 'totalRevenue').toString()}</h1>
                             </Card>
                         </Col>
                     </Row>
                     <Line {...lineConfig(revenueData, 'totalRevenue', 'Total Revenue')} />
                 </TabPane>
                 <TabPane tab="Daily Expense" key="2">
-                    <Form.Item label="Select Date Range">
-                        <RangePicker
-                            onChange={(dates) => {
-                                if (dates) {
-                                    setStartDate(dates[0]?.format('YYYY-MM-DD') || null);
-                                    setEndDate(dates[1]?.format('YYYY-MM-DD') || null);
-                                }
-                            }}
-                        />
+                    <Form.Item className='mt-3 mb-4' label="Select Date Range">
+                        <div className="flex flex-row justify-start items-center space-x-6 w-full">
+                            <RangePicker className='border border-gray-500 rounded-lg hover:border-blue-500 h-10'
+                                onChange={(dates) => {
+                                    if (dates) {
+                                        setStartDate(dates[0]?.format('YYYY-MM-DD') || null);
+                                        setEndDate(dates[1]?.format('YYYY-MM-DD') || null);
+                                    }
+                                }}
+                            />
+
+                            <Button className='flex justify-center items-center space-x-1 h-10 font-semibold' type="primary" icon={<LineChart/>} onClick={handleGenerateReport}>Generate Report</Button>
+                        </div>
                     </Form.Item>
-                    <Button type="primary" onClick={handleGenerateReport}>Generate Report</Button>
+                    
                     <Row gutter={16} style={{ marginTop: 20 }}>
                         <Col span={8}>
-                            <Card title="Total Invoices" bordered={false}>
-                                {calculateSummary(expenseData, 'totalInvoices').toString()}
+                            <Card className='border border-gray-500 rounded-lg shadow-xl mb-4' 
+                                title={
+                                    <div className="flex justify-start items-center text-xl font-semibold mb-4 space-x-2">
+                                        <ListChecks color='blue' /> 
+                                        <span>Total Invoices</span>
+                                    </div>
+                                } 
+                                bordered={false}>
+                                <h1 className=' text-3xl'>{calculateSummary(expenseData, 'totalInvoices').toString()}</h1>
                             </Card>
                         </Col>
                         <Col span={8}>
-                            <Card title="Total Products" bordered={false}>
-                                {calculateSummary(expenseData, 'totalProducts').toString()}
+                            <Card className='border border-gray-500 rounded-lg shadow-xl mb-4' 
+                                title={
+                                    <div className="flex justify-start items-center text-xl font-semibold mb-4 space-x-2">
+                                        <Package color='green' /> 
+                                        <span>Total Products</span>
+                                    </div>
+                                }
+                                bordered={false}>
+                                <h1 className=' text-3xl'>{calculateSummary(expenseData, 'totalProducts').toString()}</h1>
                             </Card>
                         </Col>
                         <Col span={8}>
-                            <Card title="Total Expense" bordered={false}>
-                                {calculateSummary(expenseData, 'totalExpense').toString()}
+                            <Card className='border border-gray-500 rounded-lg shadow-xl mb-4' 
+                                title={
+                                    <div className="flex justify-start items-center text-xl font-semibold mb-4 space-x-2">
+                                        <BaggageClaim color='#FFA500' /> 
+                                        <span>Total Expense</span>
+                                    </div>
+                                }
+                                bordered={false}>
+                                <h1 className=' text-3xl'>{calculateSummary(expenseData, 'totalExpense').toString()}</h1>
                             </Card>
                         </Col>
                     </Row>

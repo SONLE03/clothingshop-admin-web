@@ -9,6 +9,8 @@ import { GetDailyRevenue } from '@/src/api/reports/daily-report/GetDailyRevenue'
 import { GetAllCustomers } from '@/src/api/customers/GetAllCustomers';
 import { GetAllStaffs } from '@/src/api/users/GetAllStaffs';
 import { Orders, DailyRevenueResponse, UserProps } from '@/src/types';
+import { Coins, ContactRound, ListOrdered, Users } from 'lucide-react';
+import { ColorFactory } from 'antd/es/color-picker/color';
 
 const { RangePicker } = DatePicker;
 
@@ -118,6 +120,7 @@ const Dashboard: React.FC = () => {
             title: 'Total',
             dataIndex: 'total',
             key: 'total',
+    
         },
         {
             title: 'Customer Name',
@@ -138,52 +141,87 @@ const Dashboard: React.FC = () => {
 
     return (
         <div>
-            <RangePicker onChange={handleDateChange} />
+            <RangePicker className='border border-gray-500 rounded-lg hover:border-blue-500 h-10 mb-3' onChange={handleDateChange} />
 
             <Row gutter={16} className="mt-4">
                 <Col span={6}>
-                    <Card title="Total Orders" bordered={false}>
-                        {totalOrders}
+                    <Card className='border border-gray-500 rounded-lg shadow-xl mb-4' 
+                        title={
+                            <div className="flex justify-start items-center text-xl font-semibold mb-4 space-x-2">
+                                <ListOrdered color='blue' /> 
+                             <span>Total Orders</span>
+                            </div>
+                         }
+                        bordered={false}>
+                        <h1 className=' text-3xl'>{totalOrders}</h1>
                     </Card>
                 </Col>
                 <Col span={6}>
-                    <Card title="Total Revenue" bordered={false}>
-                        {totalRevenue}
+                    <Card className='border border-gray-500 rounded-lg shadow-2xl mb-4' 
+                        title={
+                            <div className="flex justify-start items-center text-xl font-semibold mb-4 space-x-2">
+                                <Coins color='#FFA500' /> 
+                                <span>Total Revenue</span>
+                            </div>
+                        } 
+                        bordered={false}>
+                        <h1 className=' text-3xl'>{totalRevenue}</h1>
                     </Card>
                 </Col>
                 <Col span={6}>
-                    <Card title="Total Customers" bordered={false}>
-                        {totalCustomers}
+                    <Card className='border border-gray-500 rounded-lg shadow-2xl mb-4' 
+                        title={
+                            <div className="flex justify-start items-center text-xl font-semibold mb-4 space-x-2">
+                                <Users color='green' /> 
+                                <span>Total Customers</span>
+                            </div>
+                        } 
+                        bordered={false}>
+                    <h1 className=' text-3xl'>{totalCustomers}</h1>
                     </Card>
                 </Col>
                 <Col span={6}>
-                    <Card title="Total Staff" bordered={false}>
-                        {totalStaff}
+                    <Card className='border border-gray-500 rounded-lg shadow-2xl mb-4' 
+                        title={
+                            <div className="flex justify-start items-center text-xl font-semibold mb-4 space-x-2">
+                                <ContactRound color='green' /> 
+                                <span>Total Staffs</span>
+                            </div>
+                        } 
+                        bordered={false}>
+                    <h1 className=' text-3xl'>{totalStaff}</h1>
                     </Card>
                 </Col>
             </Row>
-
-            <Column
-                data={dailyRevenue}
-                xField="date"
-                yField="totalRevenue"
-                xAxis={{
-                    label: {
-                        formatter: (val: string) => moment(val).format('DD/MM/YYYY'),
-                        rotate: 45,
-                    },
-                }}
-                columnStyle={{
-                    fill: 'blue',
-                }}
-            />
-
-            <Table
-                dataSource={orders.slice(0, 6)}
-                columns={columns}
-                rowKey="orderId"
-                className="mt-4"
-            />
+            
+            <div className="flex flex-col justify-start items-start w-full">
+                <h1 className=' text-gray-400 font-semibold mb-2 mt-6'>Revenue stats chart of this month</h1>
+                <Column
+                    data={dailyRevenue}
+                    xField="date"
+                    yField="totalRevenue"
+                    xAxis={{
+                        label: {
+                            formatter: (val: string) => moment(val).format('DD/MM/YYYY'),
+                            rotate: 45,
+                        },
+                    }}
+                    columnStyle={{
+                        fill: 'blue',
+                    }}
+                />
+            </div>
+            <div className="flex flex-col justify-start items-start w-full">
+                <h1 className=' text-gray-400 font-semibold mb-2 mt-6'>Latest 6 Orders</h1>
+                <Table 
+                    dataSource={orders.slice(0, 6)}
+                    columns={columns}
+                    rowKey="orderId"
+                    className="mt-4 w-full border border-gray-400 rounded-lg shadow-xl"
+                    bordered
+                />
+            </div>
+            
         </div>
     );
 };

@@ -14,6 +14,7 @@ const ManageImport: React.FC = () => {
     const [selectedImport, setSelectedImport] = useState<ImportInvoice | null>(null);
     const [importDetails, setImportDetails] = useState<ImportDetailResponse | null>(null);
     const [user, setUser] = useState<UserProps | null>(null);
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         const fetchImports = async () => {
@@ -41,6 +42,7 @@ const ManageImport: React.FC = () => {
             console.error('Failed to fetch import details:', error);
         }
     };
+
 
     const columns = [
         {
@@ -87,10 +89,22 @@ const ManageImport: React.FC = () => {
             >
                 {selectedImport && (
                     <div>
-                        <p><strong>Import ID:</strong> {selectedImport.id}</p>
-                        <p><strong>Created At:</strong> {selectedImport.createdAt}</p>
-                        <p><strong>Created By:</strong> {user ? user.fullName : selectedImport.createdBy}</p>
-                        <p><strong>Total:</strong> {selectedImport.total}</p>
+                        <div className='flex p-2 mb-2 mt-4 font-semibold border border-gray-600 rounded-lg h-10 items-center'>
+                            <p><strong>Import ID:</strong> {selectedImport.id}</p>
+                        </div>
+                        
+                        <div className='flex p-2 mb-2 mt-4 font-semibold border border-gray-600 rounded-lg h-10 items-center'>
+                            <p><strong>Created At:</strong> {selectedImport.createdAt}</p>
+                        </div>
+                        
+                        <div className='flex p-2 mb-2 mt-4 font-semibold border border-gray-600 rounded-lg h-10 items-center'>
+                            <p><strong>Created By:</strong> {user ? user.fullName : selectedImport.createdBy}</p>
+                        </div>
+                        
+                        <div className='flex p-2 mb-4 mt-4 font-semibold border border-gray-600 rounded-lg h-10 items-center'>
+                            <p><strong>Total:</strong> {selectedImport.total}</p>
+                        </div>
+                        
                         <Table
                             columns={[
                                 { title: 'Product Item', dataIndex: 'productItem', key: 'productItem' },
@@ -98,9 +112,11 @@ const ManageImport: React.FC = () => {
                                 { title: 'Price', dataIndex: 'price', key: 'price' },
                                 { title: 'Total', dataIndex: 'total', key: 'total' },
                             ]}
+                            className='min-w-full rounded-lg shadow-sm border border-gray-400'
+                            bordered
                             dataSource={importDetails?.importItemResponseList || []}
                             rowKey="productItem"
-                            pagination={false}
+                            pagination={{pageSize: 5}}
                         />
                     </div>
                 )}

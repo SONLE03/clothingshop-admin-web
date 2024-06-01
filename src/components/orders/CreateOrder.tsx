@@ -11,6 +11,7 @@ import { CreateOrder } from '@/src/api/orders/CreateOrder';
 import { GetVNPayUrl } from '@/src/api/orders/VNPay';
 import { GetAllCoupons } from '@/src/api/events/coupons/GetAllCoupons';
 import { UserProps, Product, ProductItem, CreateOrderRequest, OrderItemRequest, ExistedCoupon } from '@/src/types';
+import { BadgeCheckIcon } from 'lucide-react';
 
 const { Option } = Select;
 
@@ -267,7 +268,7 @@ const CreateOrderComponent: React.FC = () => {
             </div>
 
             <Form.Item className='mt-1 flex justify-center items-center w-full'>
-                <Button className=' w-full' type="primary" htmlType="submit" loading={loading}>Create Order</Button>
+                <Button className=' w-full flex justify-center items-center text-center h-10 font-semibold' type="primary" htmlType="submit" icon={<BadgeCheckIcon className='mr-1'/>} loading={loading}>Create Order</Button>
             </Form.Item>
         </Form>
     );

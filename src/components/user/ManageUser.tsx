@@ -41,8 +41,9 @@ const ManageUsers = () => {
         setVisible(true);
     };
 
+    
     const handleEdit = (id : string) => {
-        router.push(`/manage-users/edit-user/${id}`);
+        router.push(`/pages/manage-users/${id}`);
     };
 
     const handleDelete = (id : string) => {
@@ -102,7 +103,7 @@ const ManageUsers = () => {
                 <Row gutter={16}>
                     {filteredUsers.map((user) => (
                         <Col key={user.id} xs={24} sm={12} md={8} lg={6}>
-                            <Card className='flex flex-col justify-center items-center border border-gray-400 rounded-xl shadow-xl'
+                            <Card className='flex flex-col justify-center items-center border border-gray-400 rounded-xl shadow-xl md:w-full sm:w-3/4 xs:w-1/2'
                                 style={{ marginBottom: 20 }}
                                 actions={[
                                     <Dropdown className='flex justify-center items-center bg-black border rounded-xl hover:bg-white hover:text-black hover:border-black border-white border-t-gray-500 p-2' overlay={menu(user)} trigger={['click']}>
@@ -110,12 +111,12 @@ const ManageUsers = () => {
                                     </Dropdown>,
                                 ]}
                             >
-                                <Meta className='flex flex-col justify-center items-center'
+                                <Meta className='flex flex-col justify-center items-center text-wrap text-center'
                                     avatar={
-                                        <Avatar size={100} src={user.image || '/nextjs-logo.jpg'} />
+                                        <Avatar className='mb-2' size={100} src={user.image || '/nextjs-logo.jpg'} />
                                     }
                                     
-                                    title={user.fullName}
+                                    title={<div className=" truncate w-40">{user.fullName}</div>}
                                     description={user.email}
                                 />
                                 <div className="mt-4">

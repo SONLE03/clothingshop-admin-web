@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Toaster, toast } from 'react-hot-toast';
 import { CreateCustomer } from '@/src/api/customers/CreateCustomer';
 import { Customer } from '@/src/types';
+import { BadgeCheckIcon } from 'lucide-react';
 
 const AddCustomer: React.FC = () => {
   const [user, setUser] = useState<Customer>({ email: '', fullName: '', phone: '' });
@@ -89,10 +90,11 @@ const AddCustomer: React.FC = () => {
         <div className='flex justify-center items-center w-full'>
           <button
             type="submit"
-            className="flex justify-center items-center text-center h-10 w-1/5 px-4 py-2 mt-6 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-blue-500 hover:bg-blue-700"
+            className="flex justify-center items-center text-center text-semibold h-10 w-1/5 px-4 py-2 mt-6 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-blue-500 hover:bg-blue-700"
             disabled={saving || !!emailError}
             
           >
+            <BadgeCheckIcon className='mr-2'/>
             {saving ? 'Saving...' : 'Save'}
           </button>
         </div>

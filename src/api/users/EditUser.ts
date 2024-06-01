@@ -5,7 +5,7 @@ import { ParseJSON } from "../auth/ParseJSON";
 
 const access_token = localStorage.getItem("access_token");
 
-export const EditCustomer = async (id : string, email: string, fullName: string, phone: string, enabled: boolean, role: number) => {
+export const EditUser = async (id : string, email: string, fullname: string, phone: string, password: string, enabled: number, role: number) => {
 
     const UpdateURL = envConfig.NEXT_PUBLIC_API_ENDPOINT + `/users/${id}`;
 
@@ -24,7 +24,7 @@ export const EditCustomer = async (id : string, email: string, fullName: string,
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${parseToken}`,
             },
-            data: JSON.stringify({ email, fullName, phone, enabled, role }),
+            data: JSON.stringify({ email, fullname, phone, password, enabled, role }),
         };
         const response = await axios.request(config);
         return response.data;

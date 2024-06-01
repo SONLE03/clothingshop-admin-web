@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
 import toast, { Toaster } from 'react-hot-toast';
-import { Import } from 'lucide-react';
+import { Import, MailQuestion, SendHorizonal } from 'lucide-react';
 
 import { SendOtp } from '@/src/api/auth/SendEmail';
 import { VerifyOtp } from '@/src/api/auth/VerifyOTP';
@@ -19,6 +19,9 @@ const EmailValidate: React.FC = () => {
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [isSending, setIsSending] = useState(false);
   //const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  localStorage.setItem('email', email);
+  console.log(localStorage.getItem('email'));
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -75,8 +78,8 @@ const EmailValidate: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
         <Toaster/>
-      <div className="bg-white p-8 rounded shadow-md w-96">
-        <h1 className="text-2xl font-bold mb-4">Email Validation</h1>
+      <div className="bg-white p-8 rounded-xl shadow-md w-96">
+        <h1 className="flex justify-center items-center text-2xl font-bold mb-4"><MailQuestion className='font-bold mr-2'/> Email Validation</h1>
         <div className="mb-4">
           <Input
             type="email"
@@ -88,20 +91,21 @@ const EmailValidate: React.FC = () => {
           {emailError && <p className="text-red-500 text-sm mt-2">{emailError}</p>}
         </div>
         {showOtpInput && (
-          <div className="mb-4">
-            <Input
+          <div className="mb-4 mt-4">
+            <Input 
               type="text"
               value={otp}
               placeholder="Enter OTP"
               onChange={handleOtpChange}
-              className="w-full border-gray-300"
+              className="w-full border-gray-300 mt-4"
             />
           </div>
         )}
         <div className="flex justify-between items-center">
           {!showOtpInput && (
-            <Button onClick={handleSendOtp} disabled={isSending}>
+            <Button className='flex justify-center items-center mt-4' onClick={handleSendOtp} disabled={isSending}>
               Send OTP
+              <SendHorizonal className='ml-2'/>
             </Button>
           )}
           {showOtpInput && (

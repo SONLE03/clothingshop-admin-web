@@ -8,6 +8,7 @@ import { GetYearlyRevenue } from '@/src/api/reports/yearly-report/GetYearlyReven
 import { ParseJSON } from '@/src/api/auth/ParseJSON';
 import { Line } from '@ant-design/plots';
 import { useRouter } from 'next/navigation';
+import { BaggageClaim, Coins, LineChart, ListChecks, ListOrdered, Package, PackageCheck } from 'lucide-react';
 
 const { TabPane } = Tabs;
 
@@ -92,84 +93,134 @@ const YearlyReport: React.FC = () => {
 
   return (
     <div>
-      <Tabs activeKey={activeTab} onChange={setActiveTab}>
-        <TabPane tab="Yearly Revenue" key="revenue">
+      <Tabs className='font-semibold' activeKey={activeTab} onChange={setActiveTab}>
+        <TabPane className='mt-3 mb-4' tab="Yearly Revenue" key="revenue">
           <Row gutter={16}>
-            <Col span={8}>
-              <DatePicker
-                picker="year"
-                value={moment(startYear.toString(), 'YYYY')}
-                onChange={(date) => setStartYear(date?.year() || new Date().getFullYear())}
-              />
-            </Col>
-            <Col span={8}>
-              <DatePicker
-                picker="year"
-                value={moment(endYear.toString(), 'YYYY')}
-                onChange={(date) => setEndYear(date?.year() || new Date().getFullYear())}
-              />
-            </Col>
-            <Col span={8}>
-              <Button type="primary" onClick={handleFetchData} loading={loading}>
-                Create Yearly Report
-              </Button>
-            </Col>
+            <div className="flex flex-row justify-start items-center space-x-1 w-full mb-3">
+              <Col span={4}>
+                <DatePicker className='border border-gray-500 rounded-lg hover:border-blue-500 h-10'
+                  picker="year"
+                  value={moment(startYear.toString(), 'YYYY')}
+                  onChange={(date) => setStartYear(date?.year() || new Date().getFullYear())}
+                />
+              </Col>
+              <Col span={6}>
+                <DatePicker className='border border-gray-500 rounded-lg hover:border-blue-500 h-10'
+                  picker="year"
+                  value={moment(endYear.toString(), 'YYYY')}
+                  onChange={(date) => setEndYear(date?.year() || new Date().getFullYear())}
+                />
+              </Col>
+              <Col span={8}>
+                <Button className='flex justify-center items-center space-x-1 h-10 font-semibold' icon={<LineChart/>}
+                  type="primary" onClick={handleFetchData} loading={loading}>
+                  Create Yearly Report
+                </Button>
+              </Col>
+              </div>
           </Row>
           <Row gutter={16} style={{ marginTop: 16 }}>
             <Col span={8}>
-              <Card title="Total Orders">
-                {calculateTotals(yearlyRevenue, 'totalOrders')}
+              <Card className='border border-gray-500 rounded-lg shadow-xl mb-4' 
+                  title={
+                      <div className="flex justify-start items-center text-xl font-semibold mb-4 space-x-2">
+                          <ListOrdered color='blue' /> 
+                          <span>Total Orders</span>
+                      </div>
+                  }
+                  bordered={false}>
+
+                  <h1 className=' text-3xl'>{calculateTotals(yearlyRevenue, 'totalOrders')}</h1>
               </Card>
             </Col>
             <Col span={8}>
-              <Card title="Total Products Sold">
-                {calculateTotals(yearlyRevenue, 'totalProductsSold')}
+              <Card className='border border-gray-500 rounded-lg shadow-xl mb-4'  
+                title={
+                  <div className="flex justify-start items-center text-xl font-semibold mb-4 space-x-2">
+                      <PackageCheck color='green' /> 
+                      <span>Total Products sold</span>
+                  </div>
+                } 
+                bordered={false}>
+                <h1 className=' text-3xl'>{calculateTotals(yearlyRevenue, 'totalProductsSold')}</h1>
               </Card>
             </Col>
             <Col span={8}>
-              <Card title="Total Revenue">
-                {calculateTotals(yearlyRevenue, 'totalRevenue')}
+              <Card className='border border-gray-500 rounded-lg shadow-2xl mb-4' 
+                title={
+                  <div className="flex justify-start items-center text-xl font-semibold mb-4 space-x-2">
+                    <Coins color='#FFA500' /> 
+                    <span>Total Revenue</span>
+                  </div>
+                } 
+                bordered={false}>
+                <h1 className=' text-3xl'>{calculateTotals(yearlyRevenue, 'totalRevenue')}</h1>
               </Card>
             </Col>
           </Row>
           {renderLineChart(yearlyRevenue, 'totalRevenue')}
         </TabPane>
-        <TabPane tab="Yearly Expense" key="expense">
+        <TabPane className='mt-3 mb-4' tab="Yearly Expense" key="expense">
           <Row gutter={16}>
-            <Col span={8}>
-              <DatePicker
-                picker="year"
-                value={moment(startYear.toString(), 'YYYY')}
-                onChange={(date) => setStartYear(date?.year() || new Date().getFullYear())}
-              />
-            </Col>
-            <Col span={8}>
-              <DatePicker
-                picker="year"
-                value={moment(endYear.toString(), 'YYYY')}
-                onChange={(date) => setEndYear(date?.year() || new Date().getFullYear())}
-              />
-            </Col>
-            <Col span={8}>
-              <Button type="primary" onClick={handleFetchData} loading={loading}>
-                Create Yearly Report
-              </Button>
-            </Col>
+            <div className="flex flex-row justify-start items-center space-x-1 w-full mb-3">
+              <Col span={4}>
+                <DatePicker className='border border-gray-500 rounded-lg hover:border-blue-500 h-10'
+                  picker="year"
+                  value={moment(startYear.toString(), 'YYYY')}
+                  onChange={(date) => setStartYear(date?.year() || new Date().getFullYear())}
+                />
+              </Col>
+              <Col span={6}>
+                <DatePicker className='border border-gray-500 rounded-lg hover:border-blue-500 h-10'
+                  picker="year"
+                  value={moment(endYear.toString(), 'YYYY')}
+                  onChange={(date) => setEndYear(date?.year() || new Date().getFullYear())}
+                />
+              </Col>
+              <Col span={8}>
+                <Button className='flex justify-center items-center space-x-1 h-10 font-semibold' icon={<LineChart/>}
+                type="primary" onClick={handleFetchData} loading={loading}>
+                  Create Yearly Report
+                </Button>
+              </Col>
+            </div>
           </Row>
           <Row gutter={16} style={{ marginTop: 16 }}>
             <Col span={8}>
-              <Card title="Total Invoices">
-                {calculateTotals(yearlyExpense, 'totalInvoices')}
+              <Card className='border border-gray-500 rounded-lg shadow-xl mb-4' 
+                title={
+                    <div className="flex justify-start items-center text-xl font-semibold mb-4 space-x-2">
+                        <ListChecks color='blue' /> 
+                        <span>Total Invoices</span>
+                    </div>
+                } 
+                bordered={false}>
+                <h1 className=' text-3xl'>{calculateTotals(yearlyExpense, 'totalInvoices')}</h1>
               </Card>
             </Col>
             <Col span={8}>
-              <Card title="Total Products">
-                {calculateTotals(yearlyExpense, 'totalProducts')}
+              <Card className='border border-gray-500 rounded-lg shadow-xl' 
+                title={
+                    <div className="flex justify-start items-center text-xl font-semibold mb-4 space-x-2">
+                        <Package color='green' /> 
+                        <span>Total Products</span>
+                    </div>
+                }
+
+                bordered={false}>
+                <h1 className=' text-3xl'>{calculateTotals(yearlyExpense, 'totalProducts')}</h1>
               </Card>
             </Col>
             <Col span={8}>
-              <Card title="Total Expense">
-                {calculateTotals(yearlyExpense, 'totalExpense')}
+              <Card className='border border-gray-500 rounded-lg shadow-xl' 
+                title={
+                     <div className="flex justify-start items-center text-xl font-semibold mb-4 space-x-2">
+                         <BaggageClaim color='#FFA500' /> 
+                         <span>Total Expense</span>
+                     </div>
+                }
+                bordered={false}>
+                <h1 className=' text-3xl'>{calculateTotals(yearlyExpense, 'totalExpense')}</h1>
               </Card>
             </Col>
           </Row>

@@ -15,7 +15,7 @@ import { GetDetailCoupon } from '@/src/api/events/coupons/GetDetailCoupon';
 import { GetAllCoupons } from '@/src/api/events/coupons/GetAllCoupons';
 
 import { ExistedCoupon, Coupon } from '@/src/types';
-import { Ticket, TicketPlus } from 'lucide-react';
+import { Search, Ticket, TicketPlus } from 'lucide-react';
 
 const { RangePicker } = DatePicker;
 dayjs.extend(isSameOrBefore);
@@ -29,12 +29,16 @@ const ManageCoupon: React.FC = () => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [isAddDrawerVisible, setIsAddDrawerVisible] = useState(false);
   const [loading, setLoading] = useState(true); // loading state
+  const [searchTerm, setSearchTerm] = useState('');
 
   const fetchCoupons = async () => {
     setLoading(true); // Set loading to true when fetching starts
     try {
       const data = await GetAllCoupons();
-      setCoupons(data);
+      if (data) {
+        setCoupons(data);
+      }
+        
     } catch (error) {
       console.error(error);
     } finally {
@@ -113,6 +117,14 @@ const ManageCoupon: React.FC = () => {
     }
   };
 
+  const handleSearch = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value.toLowerCase());
+  };
+
+  const filteredCoupon = coupons.filter(coupon => {
+    return coupon.name.toLowerCase().includes(searchTerm);
+  });
+
   const columns = [
     {
       title: 'Name',
@@ -173,13 +185,24 @@ const ManageCoupon: React.FC = () => {
   ];
 
   return (
-    <div>  
-      <Button className="flex flex-row text-center items-center space-x-1 text-lg h-10 rounded-lg mb-4"
+    <div> 
+      <div className="flex justify-between items-center w-full space-x-0">
+        <Input 
+          className="focus:placeholder-transparent focus:border-blue-500 mb-6 w-2/3 h-10 border border-gray-400 rounded-lg shadow-lg" 
+          value={searchTerm} 
+          onChange={handleSearch} 
+          placeholder="Search by coupon name"
+          size="middle"
+          prefix={<Search />}
+        />
+        <Button className="flex flex-row text-center items-center space-x-1 h-10 rounded-lg mb-6 shadow-xl"
         type="primary" icon={<TicketPlus />} onClick={() => setIsAddDrawerVisible(true)}>Add New Coupon</Button>
+      </div> 
+      
       {loading ? (
         <Skeleton active />
       ) : (
-        <Table columns={columns} dataSource={coupons} rowKey="id" pagination={{ pageSize: 6 }} className="min-w-full rounded-lg shadow-sm border border-gray-400"
+        <Table columns={columns} dataSource={filteredCoupon} rowKey="id" pagination={{ pageSize: 6 }} className="min-w-full rounded-lg shadow-xl border border-gray-400"
         bordered />
       )}
       <Modal
@@ -248,10 +271,10 @@ const ManageCoupon: React.FC = () => {
               <RangePicker className='border border-gray-500 rounded-lg hover:border-blue-500' />
             </Form.Item>
             <Form.Item name="discountValue" label="Discount Value" rules={[{ required: true, message: 'Please input the discount value!' }]}>
-              <Input className='border border-gray-500 rounded-lg hover:border-blue-500' type="number" min={1} />
+              <Input className='border border-gray-500 rounded-lg hover:border-blue-500' placeholder='%' type="number" min={1} max={100} />
             </Form.Item>
             <Form.Item name="minimumBill" label="Minimum Bill" rules={[{ required: true, message: 'Please input the minimum bill!' }]}>
-              <Input className='border border-gray-500 rounded-lg hover:border-blue-500' type="number" min={1} />
+              <Input className='border border-gray-500 rounded-lg hover:border-blue-500' type="number" min={1}/>
             </Form.Item>
             <Form.Item name="quantity" label="Quantity" rules={[{ required: true, message: 'Please input the quantity!' }]}>
               <Input className='border border-gray-500 rounded-lg hover:border-blue-500' type="number" min={1} />
@@ -274,7 +297,7 @@ const ManageCoupon: React.FC = () => {
             <RangePicker className='border border-gray-500 rounded-lg hover:border-blue-500 h-full' />
           </Form.Item>
           <Form.Item name="discountValue" label="Discount Value" rules={[{ required: true, message: 'Please input the discount value!' }]}>
-            <Input className='border border-gray-500 rounded-lg hover:border-blue-500' type="number" min={1} />
+            <Input className='border border-gray-500 rounded-lg hover:border-blue-500' placeholder='%' type="number" min={1} max={100} />
           </Form.Item>
           <Form.Item name="minimumBill" label="Minimum Bill" rules={[{ required: true, message: 'Please input the minimum bill!' }]}>
             <Input className='border border-gray-500 rounded-lg hover:border-blue-500' type="number" min={1} />

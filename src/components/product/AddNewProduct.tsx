@@ -147,12 +147,18 @@ const AddNewProduct: React.FC = () => {
                     ))}
                 </Select>
                 </Form.Item>
-                <Button className='flex justify-center items-center space-x-0 font-semibold' type="primary" icon={<Plus width={18} height={18}/>}  onClick={() => form.validateFields(['size', 'color']).then(handleAddProductItem)}>Add</Button>
+                <div className="flex justify-end items-center w-full">
+                  <Button className='flex justify-center items-center space-x-0 font-semibold' 
+                    type="primary" icon={<Plus width={18} height={18}/>}  
+                    onClick={() => form.validateFields(['size', 'color']).then(handleAddProductItem)}>
+                      Add</Button>
+                </div>
+                
             </Form.Item>
             <Table className='border border-gray-500 rounded-md' dataSource={productItems} columns={columns} rowKey={record => `${record.size}-${record.color}`} pagination={false} />
             <Form.Item className='flex justify-center items-center w-full'>
-                <Button 
-                    className='mt-6'
+                <Button
+                    className='mt-6 font-semibold'
                     type="primary" 
                     htmlType="submit"
                     loading={loading}

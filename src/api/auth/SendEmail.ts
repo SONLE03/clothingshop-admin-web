@@ -21,7 +21,7 @@ export const SendOtp = async (email: string) => {
             maxBodyLength: Infinity,
             url: Emailurl,
             headers: {
-            'Authorization': `Bearer ${parseToken}`,
+                'Authorization': `Bearer ${parseToken}`,
             }
         };
     

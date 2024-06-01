@@ -8,6 +8,7 @@ import { GetAllColor } from '@/src/api/products/colors/GetAllColor';
 import { AddColors } from '@/src/api/products/colors/AddColor';
 import { Color } from '@/src/types';
 import toast, { Toaster } from 'react-hot-toast';
+import { BgColorsOutlined, SearchOutlined } from '@ant-design/icons';
 
 
 const { Title } = Typography;
@@ -18,6 +19,7 @@ const ManageColor: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
   const [editColor, setEditColor] = useState<Color | null>(null);
   const [currentColor, setCurrentColor] = useState('#ffffff');
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     GetAllColor().then((colors) => setColors(colors));
@@ -74,6 +76,14 @@ const ManageColor: React.FC = () => {
     setCurrentColor('#ffffff');
   };
 
+  const handleSearch = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value.toLowerCase());
+  };
+
+  const filteredColor = colors.filter(color => {
+    return color.name.toLowerCase().includes(searchTerm);
+  });
+
   const columns = [
     {
       title: 'Color',
@@ -101,15 +111,31 @@ const ManageColor: React.FC = () => {
   return (
     <div>
     <Toaster/>
-      <Button className="flex flex-row text-center items-center space-x-1 text-lg h-10 rounded-lg mb-5"
-        type="primary" 
-        onClick={() => setVisible(true)}>
-        {<BookmarkPlus />}
-        Add New Color
-        </Button>
-      <Table className='border border-gray-500 rounded-lg text-lg font-semibold' bordered columns={columns} dataSource={colors} rowKey="id" pagination={{ pageSize: 6 }} />
+        <div className="flex justify-between items-center w-full mb-6">
+          <Input className="focus:placeholder-transparent focus:border-blue-500 w-2/3 h-10 border border-gray-400 rounded-lg shadow-lg" 
+              placeholder="Search by color name"
+              prefix={<SearchOutlined className="mr-2" />}
+              onChange={handleSearch}
+          />
+          <Button className="flex flex-row text-center items-center space-x-1 text-lg h-10 rounded-lg"
+            type="primary" 
+            onClick={() => setVisible(true)}>
+            {<BookmarkPlus />}
+            Add New Color
+            </Button>
+
+      </div>
+      <Table className='border border-gray-500 rounded-lg text-lg font-semibold' bordered columns={columns} dataSource={filteredColor} rowKey="id" pagination={{ pageSize: 6 }} />
       <Modal className='flex flex-col justify-center items-center'
-        title={editMode ? 'Edit Color' : 'Add Color'}
+        title={editMode ? 
+        <div className="flex justify-center items-center text-lg font-semibold mb-4 space-x-2">
+            <BgColorsOutlined /> 
+            <span>Edit Color</span>
+        </div>
+       : <div className="flex justify-center items-center text-lg font-semibold mb-4 space-x-2">
+       <BgColorsOutlined /> 
+       <span>Add Color</span>
+      </div>}
         visible={visible}
         onCancel={handleCancel}
         footer={null}
