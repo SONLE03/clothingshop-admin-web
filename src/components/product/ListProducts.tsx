@@ -165,7 +165,6 @@ const ManageProduct: React.FC = () => {
                     Add New Product
                 </Button>
                 <Button
-                    disabled
                     className="flex flex-row text-center items-center space-x-1 text-sm h-10 rounded-lg mb-4 shadow-xl"
                     type="primary"
                     onClick={() => router.push('/pages/manage-products/products/add-existed-product')}
