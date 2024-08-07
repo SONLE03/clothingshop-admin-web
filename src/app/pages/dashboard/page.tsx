@@ -1,6 +1,13 @@
 import React from 'react';
-import Dashboard from '@/src/components/dashboard/Dashboard';
+
+//import Dashboard from '@/src/components/dashboard/Dashboard';
 import { LayoutDashboard } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+//Dynamic import Dashboard component
+const DashBoard = dynamic(() => import('@/src/components/dashboard/Dashboard'), {
+    ssr: false
+});
 
 const DashboardPage: React.FC = () => {
     return (
@@ -9,7 +16,7 @@ const DashboardPage: React.FC = () => {
             <LayoutDashboard className="ml-5 flex text-lg font-bold text-center text-indigo-600" />
             <h3 className="space-y-0 font-semibold">Dashboard</h3>
         </div>
-            <Dashboard />
+            <DashBoard />
         </div>
     );
 };

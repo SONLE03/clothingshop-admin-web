@@ -1,6 +1,9 @@
 import React from 'react';
-import DailyReport from '@/src/components/reports/DailyReport';
+//import DailyReport from '@/src/components/reports/DailyReport';
 import { LineChart } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const DailyReport = dynamic(() => import('@/src/components/reports/DailyReport'), { ssr: false });
 
 const DailyReportPage: React.FC = () => {
     return (

@@ -1,6 +1,13 @@
 import React  from 'react';
+
 import { BgColorsOutlined } from '@ant-design/icons';
-import ManageColor from '@/src/components/product/MangeColor';
+//import ManageColor from '@/src/components/product/MangeColor';
+import dynamic from 'next/dynamic';
+
+//Dynamic import ManageColor component
+const ManageColor = dynamic(() => import('@/src/components/product/MangeColor'), {
+  ssr: false
+});
 
 
 const ManageColorPage: React.FC = () => {

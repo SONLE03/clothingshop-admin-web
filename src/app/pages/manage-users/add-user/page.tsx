@@ -1,6 +1,12 @@
 import React from 'react';
 import { UserPlus } from 'lucide-react';
-import AddNewUsers from '@/src/components/user/AddNewUser';
+//import AddNewUsers from '@/src/components/user/AddNewUser';
+import dynamic from 'next/dynamic';
+
+//Dynamic import AddNewUsers component
+const AddNewUsers = dynamic(() => import('@/src/components/user/AddNewUser'), {
+    ssr: false
+});
 
 const AddNewUserPage = () => {
 

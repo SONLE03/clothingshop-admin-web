@@ -1,7 +1,13 @@
 import React from "react";
-import { PersonStanding } from "lucide-react";
-import ManagePG from "@/src/components/category/ManageGender";
 
+import { PersonStanding } from "lucide-react";
+//import ManagePG from "@/src/components/category/ManageGender";
+import dynamic from "next/dynamic";
+
+//Dynamic import ManagePG component
+const ManagePG = dynamic(() => import('@/src/components/category/ManageGender'), {
+  ssr: false
+});
 
 const ManagePGPage: React.FC = () => {
 

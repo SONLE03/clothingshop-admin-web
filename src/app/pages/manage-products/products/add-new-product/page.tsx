@@ -1,6 +1,13 @@
 import React from 'react';
-import AddNewProduct from '@/src/components/product/AddNewProduct';
+
+//import AddNewProduct from '@/src/components/product/AddNewProduct';
 import { ImagePlus, PackageOpen } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+//Dynamic import AddNewProduct component
+const AddNewProduct = dynamic(() => import('@/src/components/product/AddNewProduct'), {
+  ssr: false
+});
 
 const AddProductPage: React.FC = () => {
   return (

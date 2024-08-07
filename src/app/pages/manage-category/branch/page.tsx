@@ -1,6 +1,13 @@
 import React from "react";
+
 import { Tags } from "lucide-react";
-import ManageBranch from "@/src/components/category/ManageBranch";
+//import ManageBranch from "@/src/components/category/ManageBranch";
+import dynamic from "next/dynamic";
+
+//Dynamic import ManageBranch component
+const ManageBranch = dynamic(() => import('@/src/components/category/ManageBranch'), {
+  ssr: false
+});
 
 const ManageBranchPage: React.FC = () => {
 

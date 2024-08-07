@@ -1,6 +1,10 @@
 import React from 'react';
-import CreateOrderComponent from '@/src/components/orders/CreateOrder';
+
+//import CreateOrderComponent from '@/src/components/orders/CreateOrder';
 import { FilePlus } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const CreateOrderComponent = dynamic(() => import('@/src/components/orders/CreateOrder'), { ssr: false });
 
 const CreateOrderPage: React.FC = () => {
     return (

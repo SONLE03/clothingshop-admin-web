@@ -1,6 +1,13 @@
 import React from "react";
 import { Tags } from "lucide-react";
-import ManageSize from "@/src/components/product/ManageSize";
+
+//import ManageSize from "@/src/components/product/ManageSize";
+import dynamic from 'next/dynamic';
+
+//Dynamic import ManageSize component
+const ManageSize = dynamic(() => import('@/src/components/product/ManageSize'), {
+  ssr: false
+});
 
 const ManageSizePage: React.FC = () => {
   

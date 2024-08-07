@@ -1,6 +1,14 @@
 import React from 'react';
-import AddImport from '@/src/components/import/AddImport';
+
+//import AddImport from '@/src/components/import/AddImport';
 import { Import } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+//Dynamic import AddImport component
+const AddImport = dynamic(() => import('@/src/components/import/AddImport'), {
+    ssr: false
+});
+
 
 const AddImportPage: React.FC = () => {
     return (

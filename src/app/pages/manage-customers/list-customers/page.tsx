@@ -1,6 +1,13 @@
 import React from 'react';
+
 import { Users } from 'lucide-react';
-import ManageUsers from '@/src/components/customer/ListCustomers';
+//import ManageUsers from '@/src/components/customer/ListCustomers';
+import dynamic from 'next/dynamic';
+
+//Dynamic import ManageUsers component
+const ManageUsers = dynamic(() => import('@/src/components/customer/ListCustomers'), {
+  ssr: false
+});
 
 const ManageUsersPage: React.FC = () => {
   

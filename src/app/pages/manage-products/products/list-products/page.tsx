@@ -1,6 +1,12 @@
 import { PackageOpen } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import ManageProduct from '@/src/components/product/ListProducts';
+//import ManageProduct from '@/src/components/product/ListProducts';
+import dynamic from 'next/dynamic';
+
+//Dynamic import ManageProduct component
+const ManageProduct = dynamic(() => import('@/src/components/product/ListProducts'), {
+  ssr: false
+});
 
 const ManageProductPage: React.FC = () => {
   

@@ -1,6 +1,14 @@
 import React from 'react';
+
 import { Ticket } from 'lucide-react';
-import ManageCoupon from '@/src/components/event/ManageCoupon';
+import dynamic from 'next/dynamic';
+//import ManageCoupon from '@/src/components/event/ManageCoupon';
+
+//Dynamic import
+//const ManageCoupon = React.lazy(() => import('@/src/components/event/ManageCoupon'));
+const ManageCoupon = dynamic(() => import('@/src/components/event/ManageCoupon'), { 
+  ssr : false
+ });
 
 const ManageCouponPage: React.FC = () => {
 

@@ -1,6 +1,12 @@
 import React from 'react';
 import { UserPlus } from 'lucide-react';
-import AddCustomer from '@/src/components/customer/AddCustomer';
+//import AddCustomer from '@/src/components/customer/AddCustomer';
+import dynamic from 'next/dynamic';
+
+//Dynamic import AddCustomer component
+const AddCustomer = dynamic(() => import('@/src/components/customer/AddCustomer'), {
+  ssr: false
+});
 
 const AddCustomerPage: React.FC = () => {
 

@@ -1,6 +1,12 @@
 import React from 'react';
 import { BookUser } from 'lucide-react';
-import ManageUsers from '@/src/components/user/ManageUser';
+//import ManageUsers from '@/src/components/user/ManageUser';
+import dynamic from 'next/dynamic';
+
+//Dynamic import ManageUsers component
+const ManageUsers = dynamic(() => import('@/src/components/user/ManageUser'), {
+    ssr: false
+});
 
 const ManageUsersPage = () => {
 

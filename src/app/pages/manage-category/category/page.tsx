@@ -1,6 +1,13 @@
 import React from 'react';
+
 import { Slack } from 'lucide-react';
-import CategoryManager from '@/src/components/category/ManaCategory';
+//import CategoryManager from '@/src/components/category/ManaCategory';
+import dynamic from 'next/dynamic';
+
+//Dynamic import CategoryManager component
+const CategoryManager = dynamic(() => import('@/src/components/category/ManaCategory'), {
+  ssr: false
+});
 
 const CategoryManagerPage = () => {
 

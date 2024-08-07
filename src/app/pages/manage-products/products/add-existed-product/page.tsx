@@ -1,6 +1,13 @@
 import React from 'react';
-import AddExistedProducts from '@/src/components/product/AddExistedProduct';
+
+//import AddExistedProducts from '@/src/components/product/AddExistedProduct';
 import { PackagePlus } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+//Dynamic import AddExistedProducts component
+const AddExistedProducts = dynamic(() => import('@/src/components/product/AddExistedProduct'), {
+    ssr: false
+});
 
 const AddExistedProductPage: React.FC = () => {
     

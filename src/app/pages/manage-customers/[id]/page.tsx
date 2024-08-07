@@ -1,6 +1,12 @@
 import React from 'react';
-import EditUser from '@/src/components/customer/EditCustomer';
+//import EditUser from '@/src/components/customer/EditCustomer';
 import { UserRoundCheck } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+//Dynamic import EditUser component
+const EditUser = dynamic(() => import('@/src/components/customer/EditCustomer'), {
+  ssr: false
+});
 
 const EditUserPage = () => {
 

@@ -1,6 +1,9 @@
 import React from 'react';
-import ManageOrders from '@/src/components/orders/ManageOrders';
+//import ManageOrders from '@/src/components/orders/ManageOrders';
 import { ListOrdered } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const ManageOrders = dynamic(() => import('@/src/components/orders/ManageOrders'), { ssr: false });
 
 const ManageOrdersPage: React.FC = () => {
     return (

@@ -1,6 +1,10 @@
 import React from 'react';
-import YearlyReport from '@/src/components/reports/YearlyReport';
+
+//import YearlyReport from '@/src/components/reports/YearlyReport';
 import { LineChart } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const YearlyReport = dynamic(() => import('@/src/components/reports/YearlyReport'), { ssr: false });
 
 const YearlyReportPage: React.FC = () => {
     return (

@@ -2,11 +2,18 @@
 
 import React from 'react';
 import { useParams } from 'next/navigation';
-import EditUserComponent from '@/src/components/user/EditUser';
+//import EditUserComponent from '@/src/components/user/EditUser';
 import { UserRoundCog } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+//Dynamic import EditUser component
+const EditUserComponent = dynamic(() => import('@/src/components/user/EditUser'), {
+  ssr: false
+});
 
 const EditUserPage = () => {
-    const { id } = useParams();
+  
+  const { id } = useParams();
 
   if (!id || Array.isArray(id)) {
     return <div>Invalid Customer ID</div>;

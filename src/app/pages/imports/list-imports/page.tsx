@@ -1,7 +1,13 @@
-// pages/manage-import.tsx
 import React from 'react';
-import ManageImport from '@/src/components/import/ManageImport';
+
+//import ManageImport from '@/src/components/import/ManageImport';
 import { Import } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+//Dynamic import ManageImport component
+const ManageImport = dynamic(() => import('@/src/components/import/ManageImport'), {
+    ssr: false
+});
 
 const ManageImportPage: React.FC = () => {
     return (
